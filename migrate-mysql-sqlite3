@@ -1,0 +1,59 @@
+#!/bin/bash
+#################################
+## adroit-developers-stuttgart ##
+##                             ##
+#################################
+
+CMDF=`basename $0`
+while getopts u:p:d: option
+do
+        case "${option}"
+        in
+                u) USER=${OPTARG};;
+                p) PASS=${OPTARG};;
+                d) DB=${OPTARG};;
+	esac
+done
+mysqldump -u$USER -p$PASS --compatible=ansi --skip-opt $DB > export.sql
+
+if [ "x$1" == "x" ]; then
+  echo "Usage: $CMDF -u <USER> -p <PASS> -d <DATABASE> "
+  echo "Creates export.db"
+  exit
+fi
+
+cat export.sql |
+grep -v ' KEY "' |
+grep -v ' UNIQUE KEY "' |
+grep -v ' PRIMARY KEY ' |
+sed '/^SET/d' |
+sed 's/ unsigned / /gI' |
+sed 's/ auto_increment/ primary key autoincrement/gI' |
+sed 's/ smallint([0-9]*) / integer /gI' |
+sed 's/ tinyint([0-9]*) / integer /gI' |
+sed 's/ int([0-9]*) / integer /gI' |
+sed 's/ CHARACTER SET [^ ,]*/ /gI ' |
+sed 's/ enum([^)]*) / varchar(255) /gI' |
+sed 's/ on update [^,]*//gI' |
+sed 's/\\r\\n/\\n/gI' |
+sed 's/\\"/"/gI' |
+perl -e 'local $/;$_=<>;s/,\n\)/\n\)/gs;print "begin;\n";print;print "commit;\n"' |
+perl -pe '
+if (/^(INSERT.+?)\(/) {
+  $a=export;
+  s/\\'\''/'\'\''/g;
+  s/\\n/\n/g;
+  s/\),\(/\);\n$a\(/g;
+}
+' > exportfix.sql
+cat exportfix.sql | sqlite3 export.db > export.err
+ERRORS=`cat export.err | wc -l`
+if [ $ERRORS == 0 ]; then
+  echo "Conversion completed without error. Output file: export.db"
+  rm export.sql
+  rm exportfix.sql
+  rm export.err
+else
+  echo "There were errors during conversion.  Please review export.err and export.sql for details."
+fi
+
