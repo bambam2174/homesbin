@@ -1,0 +1,30 @@
+#!/bin/bash
+if [ "x$1" == "x" ]; then
+  echo "Usage: $0 <dumpname>"
+  exit
+fi
+
+cat $1 |
+grep -v ' KEY "' |
+grep -v ' UNIQUE KEY "' |
+grep -v ' PRIMARY KEY ' |
+sed '/^SET/d' |
+sed 's/ unsigned / /gI' |
+sed 's/ auto_increment/ primary key autoincrement/gI' |
+sed 's/ smallint([0-9]*) / integer /gI' |
+sed 's/ tinyint([0-9]*) / integer /gI' |
+sed 's/ int([0-9]*) / integer /gI' |
+sed 's/ character set [^ ,]*/ /gI' |
+sed 's/ enum([^)]*) / varchar(255) /gI' |
+sed 's/ on update [^,]*//gI' |
+sed 's/\\r\\n/\\n/gI' |
+sed 's/\\"/"/gI' |
+perl -e 'local $/;$_=<>;s/,\n\)/\n\)/gs;print "begin;\n";print;print "commit;\n"' |
+perl -pe '
+if (/^(INSERT.+?)\(/) {
+  $a=$1;
+  s/\\'\''/'\'\''/g;
+  s/\\n/\n/g;
+  s/\),\(/\);\n$a\(/g;
+}
+' > sqlite3_$1

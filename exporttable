@@ -1,0 +1,25 @@
+#!/bin/bash
+# external programs
+ECHO='/bin/echo'
+MYSQL='/usr/bin/mysql'
+
+# verstehe. das ist mir jetzt auch neu, aber genial, das merk ich mir :-)
+# ansonsten ist es übersichtlicher variablennamen immer in GROSSBUCHSTABEN zu schreiben. OPTARG ist ja auch gross geschrieben - und das gibt uns die bash vor. :-)
+if [ "x$1" == "x" ]; then
+  echo "Usage: $CMDF -u <USER> -p <PASS> -d <DATABASE> [-t <TABLE>] "
+  echo "Creates export dump -> export_*.sql"
+  exit
+fi
+
+while getopts d:t:u:p: OPTION
+do
+	case "$OPTION"
+	in
+		d)DATABASE=$OPTARG;;
+		t)TABLE=$OPTARG;;
+		u)USER=$OPTARG;;
+		p)PASS=$OPTARG;;
+	esac
+done
+
+mysqldump -u$USER -p$PASS --compatible=ansi --skip-opt $DATABASE $TABLE > export_$TABLE.sql

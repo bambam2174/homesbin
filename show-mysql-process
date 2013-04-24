@@ -1,0 +1,13 @@
+#!/bin/sh
+
+while getopts d:u:p: OPTION
+do
+	case "$OPTION"
+	in
+		d)DATABASE=$OPTARG;;
+		u)USER=$OPTARG;;
+		p)DBPASS=$OPTARG;;
+	esac
+done
+
+mysql -u$USER -p$DBPASS $DATABASE -e "show full processlist\G"
