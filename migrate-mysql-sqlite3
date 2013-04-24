@@ -5,6 +5,13 @@
 #################################
 
 CMDF=`basename $0`
+
+if [ "x$1" == "x" ]; then
+  echo "Usage: $CMDF -u <USER> -p <PASS> -d <DATABASE> "
+  echo "Creates export.db"
+  exit
+fi
+
 while getopts u:p:d: option
 do
         case "${option}"
@@ -16,11 +23,6 @@ do
 done
 mysqldump -u$USER -p$PASS --compatible=ansi --skip-opt $DB > export.sql
 
-if [ "x$1" == "x" ]; then
-  echo "Usage: $CMDF -u <USER> -p <PASS> -d <DATABASE> "
-  echo "Creates export.db"
-  exit
-fi
 
 cat export.sql |
 grep -v ' KEY "' |
