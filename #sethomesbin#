@@ -1,0 +1,1 @@
+exportT PATH=`pwd`:$PATH
