@@ -1,0 +1,17 @@
+#!/bin/bash
+#@echo off
+PWD=`pwd`
+FILE2CRYPT=$1
+if [ -d $1 ]; then
+	#echo "tar -czvf $1.tar.gz $1";
+	FOLDERNAME=$(basename $1)
+	PATHNAME=$(dirname $1)
+	cd $PATHNAME
+	FILE2CRYPT=$FOLDERNAME.tar.gz
+	tar -czvf $FILE2CRYPT $1 &> /dev/null;
+	rm -rf $1
+fi
+#exit 0
+gpg -c --cipher-algo AES256 $FILE2CRYPT
+mv $FILE2CRYPT.gpg $FILE2CRYPT
+#cd $PWD
