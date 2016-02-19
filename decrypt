@@ -1,0 +1,4 @@
+#!/bin/bash
+gpg -d $1 > "tmp_${1}"
+mv "tmp_${1}" $1
+
