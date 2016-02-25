@@ -1,0 +1,10 @@
+#!/bin/bash
+
+N=80; 
+if [ -n "$2" ]; then 
+	echo '$2' " set"
+	N=$2;
+	echo "$1 x $N"
+else 
+	echo "$1 x $N"
+fi

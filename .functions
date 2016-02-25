@@ -1,0 +1,51 @@
+#!/bin/bash
+export CLICOLOR=1
+function scpup2 () 
+{ 
+	if [ ! $1 ]; then
+		echo "Usage: scpup2 sourcefile destinationfile"
+		return 1
+	elif [ ! $2 ]; then
+		DEST=$(basename $1)
+	else
+		DEST=$2
+    fi
+	echo root@vwebsk.kmundp.de:~/$DEST
+	return $?
+    scp -r $1 root@vwebsk.kmundp.de:~/$DEST
+}
+
+# FileSearch
+function f() {
+    find . -iname "*$1*" ${@:2}
+}
+
+function fp() {
+    SP='./'
+    PARAMCOUNT=2
+    if [ -z $2 ]; then
+        SP=$2
+        PARAMCOUNT=3
+        echo "true"
+    fi
+    echo "find $SP -iname \"*$1*\" ${@:PARAMCOUNT}"
+    find $SP -iname "*$1*" ${@:PARAMCOUNT}
+}
+
+function param() {
+    PC=2
+    echo "1 ${@:1}"
+    echo "2 ${@:2}"
+    echo "3 ${@:3}"
+    echo "$PC ${@:PC}"
+	echo "$1" ${@:2} -R . 
+}
+
+function r() {
+    grep "$1" ${@:2} -R . 
+}
+
+#mkdir and cd
+function mkcd() { mkdir -p "$@" && cd "$_"; }
+
+

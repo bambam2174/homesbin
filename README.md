@@ -1,4 +1,4 @@
-homesbin
+~/bin
 ========
 
 useful bash scripts

@@ -1,0 +1,13 @@
+#!/bin/bash
+LLINK=$(basename $1).url
+echo [InternetShortcut] > $LLINK
+PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
+echo "Protocol PRE : "$PROTOCOL
+if [ -z $PROTOCOL ]; then
+	PROTOCOL=http://
+else
+	PROTOCOL=''
+fi
+echo "Protocol POST : "$PROTOCOL
+echo URL=$PROTOCOL$1 >> $LLINK
+
