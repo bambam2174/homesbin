@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#grep -R '<string>' /Library/Launch*
+grep -rli $1 $2
+
+echo
+echo "!! Fix it, that Wildcards are working !!"

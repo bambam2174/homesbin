@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for zipfile in `ls *.zip`; 						# get all zipfiles
+do 
+	#echo "${zipfile::${#zipfile}-4}/"; 		# echo zipfile name without extension & dot but slash
+	#test -d $_; 								# check if last output exists 
+	test -d "${zipfile::${#zipfile}-4}/"		# combination the two lines above
+	ZIPFILE_EXISTS=$?; 							# saving test result
+	#echo $ZIPFILE_EXISTS;
+	if [ $ZIPFILE_EXISTS -eq 0 ]; then
+		echo -e "${zipfile} already unzipped";
+	else
+		echo -e "${zipfile} not unzipped in this folder yet";
+	fi
+done

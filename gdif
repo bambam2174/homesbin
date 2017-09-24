@@ -1,0 +1,21 @@
+#!/bin/bash
+
+DIROPT='';
+TOOL='kdiff3';
+OBJ2='';
+
+while getopts "t:b:c:o:d:" OPTION
+do
+case "$OPTION" in
+	t)TOOL=$OPTARG;;
+	b)BRANCH1=$OPTARG;;
+	c)BRANCH2=$OPTARG;;
+	o)OBJ1=$OPTARG;;
+	d)OBJ2=$OPTARG;;
+esac
+done
+
+if [[ -d $OBJ1 ]];then DIROPT=' -d '; fi;
+if [[ -z $OBJ2 ]];then OBJ2=$OBJ1; fi;
+CMD="git difftool $DIROPT --tool=$TOOL $BRANCH1:$OBJ1 $BRANCH2:$OBJ2 ";
+$($CMD);

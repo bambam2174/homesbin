@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# TODO: change array DIRS. Set real directories
+DIRS="dir1 dir2 dir3"
+
+echo -n "Date (YYYYMMDD): "
+read YMD
+echo -n "Log name (unique number): "
+read UQM
+for D in $DIRS ; do
+# TODO: edit path in variable LOG, in order to adjust it to MacOS environment. This script was written for LINUX
+  LOG="/$D/usr/home/var/log/logfile-$YMD/$UQM.log"
+  test -f "$LOG" && echo "Located file @ $LOG"
+done
+
+
