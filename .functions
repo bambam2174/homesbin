@@ -43,7 +43,19 @@ function param() {
 }
 
 function r() {
-    grep "$1" ${@:2} -R . 
+#    grep "$1" ${@:2} -R . 
+    PARAM=$1
+    r_it() {
+        grep -irl $PARAM "$@"
+    }
+
+    shift
+    for fname in "$@";
+    do
+        r_it "$fname"
+    done
+
+
 }
 
 #mkdir and cd
