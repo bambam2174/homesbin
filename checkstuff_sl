@@ -1,0 +1,12 @@
+#!/bin/bash
+
+prog="$1"
+#prog=$1
+
+if [ -h "${prog}" ]; then
+	echo "${prog} is symlink"
+	echo "$prog"
+else
+	echo "${prog} is not a symlink"
+	file "$prog"
+fi

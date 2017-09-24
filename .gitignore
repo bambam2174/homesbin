@@ -5,3 +5,21 @@ filename
 fileext
 add-apt-repositoryx.sh
 for_kram
+*/.git*
+shell-storm-api
+farcry2
+fc2benchmarktool
+fc2editor
+fc2serverlauncher
+update_xcode_plugins
+getpw
+ASObjC Runner
+Podfile
+execute_on_router.sh
+generateEntityDiagram
+LogicSim
+openSimDB
+plistbuddy
+simulatorAppFolders.sh
+trash
+trashclean

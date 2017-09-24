@@ -8,5 +8,6 @@ do
 		g)GROUP=$OPTARG;;
 	esac
 done
-echo $USER
-dsmemberutil checkmembership -U $USER -G $GROUP
+#echo -n "$USER "
+OUTPUT=$(dsmemberutil checkmembership -U $USER -G $GROUP)
+echo "${OUTPUT/user/$USER}"
