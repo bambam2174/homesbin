@@ -17,8 +17,23 @@ function scpup2 ()
 
 # FileSearch
 function f() {
-    SEARCHPATH=./
-    find $SEARCHPATH -iname "*$1*" ${@:2}
+    if [ $# -eq 1 ]; then
+        find . -iname "*$1*"
+    fi
+
+    #find $SEARCHPATH -iname "*$1*" ${@:2}
+    
+    PARAM=$1
+    f_it() {
+        find "$@" -iname "*$PARAM*"
+    }
+
+    shift
+    for fname in "$@"; do
+        f_it "$fname"
+    done
+
+
 }
 
 function fp() {
