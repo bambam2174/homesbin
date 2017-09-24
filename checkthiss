@@ -1,0 +1,10 @@
+c=0;
+for a in `cat */.git/config | grep -A0 "url"`; 
+do 
+    c=$((c+1));
+    echo $((c%4)); 
+    if [ $((c%4)) -eq 3 ]; then 
+        echo $a; 
+    fi; 
+done;
+

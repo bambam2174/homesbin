@@ -1,0 +1,8 @@
+the python script in here is nearly the same like the one at /usr/bin/dropbox
+
+if you execute following command you'll only see minor differences
+
+kdiff3 `which dropbox` `which dropbox.py`
+
+wait...maybe they'll reveal their version number, if I call them with some option like "help" or "version"
+

@@ -17,7 +17,8 @@ function scpup2 ()
 
 # FileSearch
 function f() {
-    find . -iname "*$1*" ${@:2}
+    SEARCHPATH=./
+    find $SEARCHPATH -iname "*$1*" ${@:2}
 }
 
 function fp() {
@@ -48,4 +49,29 @@ function r() {
 #mkdir and cd
 function mkcd() { mkdir -p "$@" && cd "$_"; }
 
+function opex() {
+    xdg-open $1 &
+}
+
+#fmp() { 
+#    for fname in "$@"; do 
+#        fmp_helper "$fname";
+#    done  
+#}
+#
+#fmp_helper() { 
+#    nautilus "$@"; 
+#}
+
+fmp ()  {
+
+    fmp2() { 
+        nautilus "$@"; 
+    };
+
+    for fname in "$@";
+    do         
+        fmp2 "$fname";         
+    done; 
+}
 

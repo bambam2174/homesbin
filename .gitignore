@@ -28,3 +28,8 @@ plistbuddy
 simulatorAppFolders.sh
 trash
 trashclean
+.gitignore
+service
+s4in
+reminder
+cdi
