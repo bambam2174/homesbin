@@ -103,7 +103,12 @@ fmp ()  {
 }
 
 checkfile() {
-    COUNT=$1
+    if [ $# -eq 2 ];then
+        COUNT=$1
+    else
+        COUNT=45
+    fi
+
     checkfile_it() {
         while true;
         do 
@@ -113,7 +118,9 @@ checkfile() {
         done
     }
 
-    shift
+    if [ $# -eq 2 ];then
+        shift
+    fi
     for fname in "$@"
     do
         checkfile_it "$fname"
