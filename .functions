@@ -127,3 +127,10 @@ checkfile() {
     done
 
 }
+
+function lns() {
+
+ln -s `pwd`/$1 $2;
+
+}
+
