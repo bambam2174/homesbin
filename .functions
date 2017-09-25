@@ -103,15 +103,17 @@ fmp ()  {
 }
 
 checkfile() {
+    COUNT=$1
     checkfile_it() {
         while true;
         do 
             clear;
-            tail -45 "$@";
+            tail -$COUNT "$@";
             sleep 1;
         done
     }
 
+    shift
     for fname in "$@"
     do
         checkfile_it "$fname"
