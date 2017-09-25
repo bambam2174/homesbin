@@ -102,3 +102,19 @@ fmp ()  {
     done; 
 }
 
+checkfile() {
+    checkfile_it() {
+        while true;
+        do 
+            clear;
+            tail -45 "$@";
+            sleep 1;
+        done
+    }
+
+    for fname in "$@"
+    do
+        checkfile_it "$fname"
+    done
+
+}
