@@ -130,7 +130,31 @@ checkfile() {
 
 function lns() {
 
-ln -s `pwd`/$1 $2;
+    ln -s `pwd`/$1 $2;
 
 }
 
+function lna() {
+PARAM1=$1
+PARAM2=$2
+
+lna_it() {
+    for file in `ls $1`; 
+    do
+        ln -s  $1/$file $2/$file;
+    done
+}
+
+    for file in `ls $1`; 
+    do
+        ln -s  $1/$file $2/$file;
+    done
+}
+
+show() { 
+    cat ~/unutmalist/$1; 
+}
+
+cheat() { 
+    open http://borkware.com/quickies/one?topic=$1; 
+}
