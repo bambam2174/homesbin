@@ -1,0 +1,4 @@
+#!/bin/bash
+mv ~/.gitx ~/.git
+git status
+mv ~/.git ~/.gitx

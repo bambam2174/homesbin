@@ -1,0 +1,2 @@
+#!/bin/bash
+convert $1 -encipher $2 $1
