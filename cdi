@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ -e `which $1` ]; then
+	gnome-desktop-item-edit `which $1` --create-new
+	echo `which $1` 
+elif [ -e `pwd/`$1 ]; then
+	gnome-desktop-item-edit `pwd/`$1 --create-new
+	echo  `pwd/`$1 
+fi

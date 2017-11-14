@@ -1,0 +1,9 @@
+CC=$(cat ~/Documents/__TODO__.txt | wc -w)
+echo $CC;
+echo $GEDIT_PID;
+echo $CC;
+echo $GEDIT_PID;
+if [ $CC -gt 1 ] && [ -z $GEDIT_PID ]; then 
+    gedit '/home/sedat/Documents/__TODO__.txt' & export GEDIT_PID=$! & 
+fi
+
