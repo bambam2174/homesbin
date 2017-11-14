@@ -102,6 +102,38 @@ fmp ()  {
     done; 
 }
 
+
+chparam ()  {
+    chparam2() {
+        echo "$@";
+    };
+      
+    for fname in "$@";
+    do
+        chparam2 "$fname";
+    done;
+}
+
+ 
+chparam_a ()  {
+    echo "$@";
+    echo $1
+    shift
+    echo "1: ${@:1}";
+    echo "2: ${@:2}";
+    echo "####"
+    chparam_a2() {
+        echo "$@";
+    };
+                         
+    #for fname in `ls "${@:1}"`;
+    for fname in `ls "$@"`;
+    do
+        echo "$fname"
+        chparam_a2 "$fname";
+    done;
+ }
+
 checkfile() {
     if [ $# -eq 2 ];then
         COUNT=$1
@@ -130,7 +162,66 @@ checkfile() {
 
 function lns() {
 
-ln -s `pwd`/$1 $2;
+    ln -s `pwd`/$1 $2;
 
 }
 
+function lna() {
+    PARAM1=$1
+    PARAM2=$2
+
+    lna_it() {
+        for file in `ls $1`; 
+        do
+            ln -s  $1/$file $2/$file;
+        done
+    }
+
+    lna_it "$PARAM1" "$PARAM2"
+}
+
+show() { 
+    cat ~/unutmalist/$1; 
+}
+
+cheat() { 
+    open http://borkware.com/quickies/one?topic=$1; 
+}
+
+r2() {
+    PARAM=$1
+    r2_it() {
+        grep -irl $PARAM "$@"
+    }
+    shift
+    callfunction r2_it "$@"
+}
+
+callfunction() {
+    $1 $2
+}
+
+testfunc2 ()
+{
+    echo "$# parameters";
+    echo Using '$*';
+    for p in $*;
+    do
+        echo "[$p]";
+    done;
+    echo Using '"$*"';
+    for p in "$*";
+    do
+        echo "[$p]";
+    done;
+    echo Using '$@';
+    for p in $@;
+    do
+        echo "[$p]";
+    done;
+    echo Using '"$@"';
+    for p in "$@";
+    do
+        echo "[$p]";
+    done
+}

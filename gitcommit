@@ -1,0 +1,4 @@
+#!/bin/bash
+mv ~/.gitx ~/.git
+git commit $1
+mv ~/.git ~/.gitx
