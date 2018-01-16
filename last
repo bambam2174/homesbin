@@ -1,0 +1,16 @@
+#!/bin/bash
+COUNT=4
+ISNUMBER='^[0-9]+$'
+
+if [ $# -gt 1 ]; then
+    FOLDER=$2
+    COUNT=$1
+#elif [ $# -eq 1 ] && ! [[ $1 =~ $RE ]]  ; then
+elif [ $# -eq 1 ] && [ "$1" -eq "$1" ] 2> /dev/null; then
+    COUNT=$1
+elif [ $# -eq 1 ] ; then
+    FOLDER=$1
+else
+    echo "usage: last [count] folder"
+fi
+ls -1 -t $FOLDER | head -n $COUNT | while read line ; do echo "$line" ; done

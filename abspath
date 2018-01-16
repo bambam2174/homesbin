@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "$(cd "$(dirname "$@" 2> /dev/null )" 2> /dev/null; pwd)/$(basename "$@" 2> /dev/null)"
+

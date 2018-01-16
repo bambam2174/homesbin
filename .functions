@@ -35,14 +35,41 @@ function f() {
 
 
 }
+function fpx() {
+    SP='./'
+    echo "$1"
+    echo "$2"
+    if [ -z $1 ]; then
+        echo "-z $1 true"
+    else
+        echo "-z $1 false"
+    fi
+    if [ -z $2 ]; then
+        echo "-z $2 true"
+    else
+        echo "-z $2 false"
+    fi
+    if [ -n $1 ]; then
+        echo "-n $1 true"
+    else
+        echo "-n $1 false"
+    fi
+    if [ -n $2 ]; then
+        echo "-n $2 true"
+    else
+        echo "-n $2 false"
+    fi
+}
 
 function fp() {
     SP='./'
-    PARAMCOUNT=2
-    if [ -z $2 ]; then
-        SP=$2
+    echo $#
+    # PARAMCOUNT=$(($#+1))
+    PARAMCOUNT=$#
+    # PARAMCOUNT=$(($#-1))
+    if [ -n $2 ]; then
+        SP=$(abspath $2)
         PARAMCOUNT=3
-        echo "true"
     fi
     echo "find $SP -iname \"*$1*\" ${@:PARAMCOUNT}"
     find $SP -iname "*$1*" ${@:PARAMCOUNT}
@@ -80,15 +107,16 @@ function opex() {
     xdg-open $1 &
 }
 
-#fmp() { 
-#    for fname in "$@"; do 
-#        fmp_helper "$fname";
-#    done  
-#}
-#
-#fmp_helper() { 
-#    nautilus "$@"; 
-#}
+alldoc() { 
+    for fname in "$@"; do 
+        fmp_helper "$fname";
+    done  
+
+
+    fmp_helper() { 
+        echo "$@"; 
+    }
+}
 
 fmp ()  {
 
@@ -118,19 +146,20 @@ chparam ()  {
 chparam_a ()  {
     echo "$@";
     echo $1
-    shift
-    echo "1: ${@:1}";
-    echo "2: ${@:2}";
-    echo "####"
+    # shift
+    # echo "1: ${@:1}";
+    # echo "2: ${@:2}";
+    echo "####################"
     chparam_a2() {
-        echo "$@";
+        echo "2: $(abspath $@)";
     };
                          
-    #for fname in `ls "${@:1}"`;
+    # echo "for fname in `ls \"$@\"`";
     for fname in `ls "$@"`;
     do
         echo "$fname"
         chparam_a2 "$fname";
+        echo "##########"
     done;
  }
 
@@ -161,8 +190,11 @@ checkfile() {
 }
 
 function lns() {
-
-    ln -s `pwd`/$1 $2;
+    OPT=''
+    if [ -n $3 ]; then
+        OPT=$3
+    fi
+    ln -s$OPT `pwd`/$1 $2;
 
 }
 
@@ -181,7 +213,8 @@ function lna() {
 }
 
 show() { 
-    cat ~/unutmalist/$1; 
+    #cat ~/unutmalist/*$1*;
+    tail -n +1  ~/unutmalist/*$1*;
 }
 
 cheat() { 
@@ -224,4 +257,32 @@ testfunc2 ()
     do
         echo "[$p]";
     done
+}
+
+opentimedoc() {
+    CURRENT_DOC=$(ls -t ~/Documents/Tätigkeitsnachweis/ | head -n 1)
+    echo ~/Documents/Tätigkeitsnachweis/$CURRENT_DOC
+    open /Applications/Microsoft\ Excel.app ~/Documents/Tätigkeitsnachweis/$CURRENT_DOC
+}
+
+manx() {
+    echo $*
+    /usr/bin/man $* > ~/temp.txt
+    if [ -s ~/temp.txt ]; then 
+        subl ~/temp.txt
+    fi
+
+}
+
+giturlp() {
+    PATH2REPO='.'
+    if [ $# -eq 1 ]; then
+        PATH2REPO="$@"
+    fi
+
+    cat $PATH2REPO/.git/config | grep -i url | cut -d'=' -f 2
+}
+
+androiddoc () { 
+    open "http://android-docs.local/$1"; 
 }

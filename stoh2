@@ -1,0 +1,4 @@
+#!/bin/bash
+#ps -ef | grep $((echo 1))
+ls | grep $((echo 1))
+

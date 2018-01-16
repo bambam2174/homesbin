@@ -1,4 +1,4 @@
 #!/bin/bash
 mv ~/.gitx ~/.git
-git rm --cached $1
+git rm --cached "$1"
 mv ~/.git ~/.gitx
