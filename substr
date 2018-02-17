@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#################################
+## adroit-developers-stuttgart ##
+## Sedat Kilinc                ##
+#################################
+
+TARGET='./'
+
+while getopts s:r:t: OPTION
+do
+	case "$OPTION"
+	in
+		s)SEARCH=$OPTARG;;
+		r)REPLACE=$OPTARG;;
+		t)TARGET=$OPTARG;;
+	esac
+done
+
+echo $SEARCH
+echo $REPLACE
+echo $TARGET
+#exit $?
+for file in $TARGET; do mv "$file" "`echo $file | tr "'"$SEARCH $REPLACE"'"`" ; done
+#for file in *;       do mv "$file" "`echo $file | tr '_' ' '`" ; done
+#echo $CMD

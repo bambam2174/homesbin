@@ -1,0 +1,17 @@
+#!/bin/bash
+
+FROM=1
+TO=0
+
+while getopts f:t:c: OPTION
+do
+	case "$OPTION"
+	in
+		f) FROM=$OPTARG;;
+		t) TO=$OPTARG;;
+		c) CMD=$OPTARG;;
+	esac
+done
+echo "From $FROM to $TO doing $CMD"
+#for (( i=6 ; i<22 ; i++ )); do ffmpeg -i /run/user/1000/gvfs/cdda\:host\=sr0/Track\ $i.wav -vn -ar 44100 -ac 2 -ab 192k -f mp3 ~/Musik/track$i.mp3; done
+

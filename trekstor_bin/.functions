@@ -1,0 +1,8 @@
+mkcd() {
+	mkdir $1;
+	cd $_;
+}
+
+exec_save_output() { 
+	$1  | tee -a $2; 
+}

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p $1 
+#cd $_
+#echo $_
+#exit 0
+NEWPATH2DIR=$_
+echo "hier"
+echo $NEWPATH2DIR
+cd $NEWPATH2DIR;
+echo $?
+echo "da"
+

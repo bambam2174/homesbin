@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DIR=${dirname `which $2`}
+echo $DIR
+
