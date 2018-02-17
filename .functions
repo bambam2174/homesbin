@@ -286,3 +286,5 @@ giturlp() {
 androiddoc () { 
     open "http://android-docs.local/$1"; 
 }
+timestamp() {   date +"%s"; }
+ymd() { date "+%Y%m%d"; }

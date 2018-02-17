@@ -1,0 +1,3 @@
+#!/bin/bash
+git stash list | awk -F: '{ print "\n\n\n\n"; print $0; print "\n\n"; system("git stash show -p " $1); }' | less
+echo $0

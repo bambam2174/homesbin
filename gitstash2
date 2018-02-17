@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "usage: gitstash2 outputfile";
+    exit;
+fi
+git stash list | awk -F: '{ print "\n\n\n\n"; print $0; print "\n\n"; system("git stash show -p " $1); }' > $1

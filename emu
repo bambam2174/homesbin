@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/Applications/android-sdk-macosx/emulator/emulator -avd $1 -dns-server 8.8.8.8,8.8.4.4 &
