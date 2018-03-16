@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -z ${ANDROID_HOME+x} ]; then
+    echo "ANDROID_HOME is unset";
+else
+    $ANDROID_HOME/emulator/emulator -list-avds
+fi
