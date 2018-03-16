@@ -1,3 +1,7 @@
 #!/bin/bash
 
-/Applications/android-sdk-macosx/emulator/emulator -avd $1 -dns-server 8.8.8.8,8.8.4.4 &
+if [ -z ${ANDROID_HOME+x} ]; then 
+    echo "ANDROID_HOME is unset"; 
+else
+    $ANDROID_HOME/emulator/emulator -avd $1 -dns-server 8.8.8.8,8.8.4.4 &
+fi
