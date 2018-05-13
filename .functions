@@ -108,8 +108,12 @@ function opex() {
 }
 
 alldoc() { 
+    fmp_helperx() { 
+        echo "$@"; 
+    }
+
     for fname in "$@"; do 
-        fmp_helper "$fname";
+        fmp_helperx "$fname";
     done  
 
 
@@ -221,7 +225,7 @@ cheat() {
     open http://borkware.com/quickies/one?topic=$1; 
 }
 
-r2() {
+gr2() {
     PARAM=$1
     r2_it() {
         grep -irl $PARAM "$@"
@@ -288,3 +292,22 @@ androiddoc () {
 }
 timestamp() {   date +"%s"; }
 ymd() { date "+%Y%m%d"; }
+
+# Xcode-Project: execute from the folder with the Assests.xxasset/ folder
+extractImages() { 
+    cp  *.imageset/*.$1 $2; 
+}
+
+# name of branch as parameter
+lsgit() { 
+    if [ ! $1 ]; then
+         echo "Usage: lsgit branchname"
+         return 1
+     else
+        git ls-tree -r $1 --name-only; 
+     fi
+}
+# get a list of all files that ever existed
+lsgitall() { 
+    git log --pretty=format: --name-status | cut -f2- | sort -u; 
+}
