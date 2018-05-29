@@ -264,9 +264,38 @@ testfunc2 ()
 }
 
 opentimedoc() {
-    CURRENT_DOC=$(ls -t ~/Documents/Tätigkeitsnachweis/ | head -n 1)
-    echo ~/Documents/Tätigkeitsnachweis/$CURRENT_DOC
-    open /Applications/Microsoft\ Excel.app ~/Documents/Tätigkeitsnachweis/$CURRENT_DOC
+    #echo "PID $$"
+    #echo "\$1.length=${#1}"
+    #[ ${#1} -ne 0 ] && [ -r $1 ]; echo $?
+    STANDARD_FOLDER=~/Documents/Tätigkeitsnachweis
+    
+    # getting the last edited excel sheet in the folder
+    if [ ${#1} -ne 0 ] && [ -r $1 ]; then
+        CURRENT_PATH=$1;
+    elif [ "$1" == "-h" ]; then
+        echo "usage: $FUNCNAME [<path to folder containing excel sheets>]"
+        echo "Help: finds the last edited excel sheet in the folder"
+        echo "      if no folder is given, then \"$STANDARD_FOLDER\" is used"
+        return 0
+    else
+        CURRENT_PATH=$STANDARD_FOLDER
+    fi
+    CURRENT_DOC=$(ls -td $CURRENT_PATH/*.xls* 2> /dev/null | head -n 1)
+    
+    # check if there's found at least one
+    NUM=$(ls $CURRENT_PATH/*.xls* 2> /dev/null | wc -l)
+    if [ $NUM -eq 0 ]; then
+    #if [ ! -f $CURRENT_PATH/*.xls* ]; then
+        echo "No Excel Sheet found"
+        echo "usage: $FUNCNAME [<path to folder containing excel sheet>]"
+        echo
+        return 1
+    fi
+    # when using only the folder without any wildcard expression: CURRENT_DOC=$(ls -td $CURRENT_PATH | head -n 1)
+    # PATH2DOC=$CURRENT_PATH/$CURRENT_DOC
+    # open sheet
+    PATH2DOC=$CURRENT_DOC
+    open /Applications/Microsoft\ Excel.app $PATH2DOC
 }
 
 manx() {
@@ -311,3 +340,9 @@ lsgit() {
 lsgitall() { 
     git log --pretty=format: --name-status | cut -f2- | sort -u; 
 }
+# NixOS
+# https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
+
+yell() { echo "$0: $*" >&2; }
+die() { yell "$*"; exit 111; }
+try() { "$@" || die "cannot $*"; }
