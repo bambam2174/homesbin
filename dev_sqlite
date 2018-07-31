@@ -1,0 +1,3 @@
+#!/bin/bash
+ls -ahFGt ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Data/Application/*/Documents/*.sqlite
+ls -ahFGt ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Data/Application/*/Library/Application\ Support/*.sqlite
