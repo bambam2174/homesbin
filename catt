@@ -1,0 +1,25 @@
+#!/bin/bash
+echo '#######'
+C=$#
+echo ${@:$#:1}
+echo ${@:0:$#}
+echo '#######'
+echo $2
+
+FILES=$(ls  ${@:0:$#})
+FILES=$(ls  $@)
+ARRFILES=($(ls  ${@:0:$#+1}))
+echo "LENGTH "${#ARRFILES[@]}
+echo "Last "${ARRFILES[C-1]}
+echo "el 1 $1"
+DEL=––––––––––––––––––––––––––––––––––––––––
+
+if [ -n $2 ]; then
+    echo "not set"
+fi
+
+for ff in $FILES 
+do 
+    cat $ff
+    echo $DEL
+done

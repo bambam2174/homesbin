@@ -1,0 +1,4 @@
+#!/bin/bash
+permission=$1
+COL=$2
+ls -la | grep "^$permission" | awk '{ print $'$COL' }'

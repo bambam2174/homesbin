@@ -1,0 +1,3 @@
+#!/bin/bash
+permission=drwxr-xr-x
+ls -la | grep "^$permission" | awk '{ print $3 }'
