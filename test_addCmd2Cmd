@@ -1,5 +1,5 @@
 #!/bin/bash
 
-DIR=${dirname `which $2`}
+DIR=$(ls -lahFG `which $1`)
 echo $DIR
 
