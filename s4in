@@ -1,3 +1,6 @@
 #!/bin/bash
-$CMD=$("cat $2 | grep -A$3 \"$1\"")
-echo $CMD
+#CMD=$("cat $2 | grep -A$3 \"$1\"")
+CMD=$(cat $2 | grep -i -A $3 "$1")
+#KMD=$(cat $2 | grep -i -A $3 "$1")
+
+echo "$CMD"

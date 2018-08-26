@@ -1,6 +1,12 @@
 #!/bin/bash
 
-for zipfile in `ls *.zip`; 						# get all zipfiles
+SEARCHPATH='.'
+if [ -n "$1" ];
+then
+    SEARCHPATH="$1";
+fi
+
+for zipfile in `ls $SEARCHPATH/*.zip`; 						# get all zipfiles
 do 
 	#echo "${zipfile::${#zipfile}-4}/"; 		# echo zipfile name without extension & dot but slash
 	#test -d $_; 								# check if last output exists 

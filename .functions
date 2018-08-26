@@ -1,6 +1,6 @@
 #!/bin/bash
 export CLICOLOR=1
-function scpup2 () 
+scpup2 () 
 { 
 	if [ ! $1 ]; then
 		echo "Usage: scpup2 sourcefile destinationfile"
@@ -16,7 +16,7 @@ function scpup2 ()
 }
 
 # FileSearch
-function f() {
+f() {
     if [ $# -eq 1 ]; then
         find . -iname "*$1*"
     fi
@@ -35,7 +35,7 @@ function f() {
 
 
 }
-function fpx() {
+fpx() {
     SP='./'
     echo "$1"
     echo "$2"
@@ -61,7 +61,7 @@ function fpx() {
     fi
 }
 
-function fp() {
+fp() {
     SP='./'
     echo $#
     # PARAMCOUNT=$(($#+1))
@@ -75,7 +75,7 @@ function fp() {
     find $SP -iname "*$1*" ${@:PARAMCOUNT}
 }
 
-function param() {
+param() {
     PC=2
     echo "1 ${@:1}"
     echo "2 ${@:2}"
@@ -84,7 +84,7 @@ function param() {
 	echo "$1" ${@:2} -R . 
 }
 
-function r() {
+r() {
 #    grep "$1" ${@:2} -R . 
     PARAM=$1
     r_it() {
@@ -101,9 +101,9 @@ function r() {
 }
 
 #mkdir and cd
-function mkcd() { mkdir -p "$@" && cd "$_"; }
+mkcd() { mkdir -p "$@" && cd "$_"; }
 
-function opex() {
+opex() {
     xdg-open $1 &
 }
 
@@ -193,7 +193,11 @@ checkfile() {
 
 }
 
-function lns() {
+sln() {
+     ln -s `pwd`/$1 $2
+}
+
+lns() {
     OPT=''
     if [ -n $3 ]; then
         OPT=$3
@@ -202,7 +206,7 @@ function lns() {
 
 }
 
-function lna() {
+lna() {
     PARAM1=$1
     PARAM2=$2
 
@@ -345,4 +349,32 @@ lsgitall() {
 
 yell() { echo "$0: $*" >&2; }
 die() { yell "$*"; exit 111; }
-try() { "$@" || die "cannot $*"; }
+trying() { "$@" || die "cannot $*"; }
+
+function try()
+{
+    [[ $- = *e* ]]; SAVED_OPT_E=$?
+    set +e
+}
+
+function throw()
+{
+    exit $1
+}
+
+function catch()
+{
+    export ex_code=$?
+    (( $SAVED_OPT_E )) && set +e
+    return $ex_code
+}
+
+function throwErrors()
+{
+    set -e
+}
+
+function ignoreErrors()
+{
+    set +e
+}

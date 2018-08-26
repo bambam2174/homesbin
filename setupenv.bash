@@ -1,0 +1,1 @@
+/opt/local/share/macports/setupenv.bash
