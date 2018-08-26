@@ -1,0 +1,3 @@
+#!/bin/bash
+git stash show -p $(git stash list | cut -d':' -f1 | sed -n $1p)
+#git stash show -p $(git stash list| sed -n $1p | cut -d':' -f1)
