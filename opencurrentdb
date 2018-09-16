@@ -1,0 +1,13 @@
+#!/bin/bash
+cd ~/Library/Developer/CoreSimulator/Devices/
+CURRENTDEVICE=$(ls -t ~/Library/Developer/CoreSimulator/Devices/ | head -n 1)
+cd $CURRENTDEVICE
+pwd
+cd data/Containers/Data/Application/
+CURRENTAPPLICATION=$(ls -t)
+cd $CURRENTAPPLICATION
+cd Documents
+pwd
+ls -t
+
+open *.sqlite 

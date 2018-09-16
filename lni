@@ -1,0 +1,19 @@
+#!/bin/bash
+if [[ $1 == http* ]]; then
+	FILE=$(echo $1 | awk -F[/:] '{print $4}').webloc
+	URL=$1
+else
+	FILE=$(echo $1 | awk -F[/:] '{print $1}').webloc
+	URL="https://$1"
+fi
+echo $FILE
+cat > $FILE <<- EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>URL</key>
+	<string>$URL</string>
+</dict>
+</plist>
+EOF

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+[ -d ~/Box\ Sync/Tax ] || mkdir -p ~/Box\ Sync/Tax
+[ -d ~/tmp/temptax ] || mkdir -p ~/tmp/temptax
+
+mv $1 ~/tmp/temptax/$1
+
