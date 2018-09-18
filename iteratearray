@@ -1,0 +1,26 @@
+#!/bin/bash
+
+declare -a argAry1=("${1}")
+declare -a argAry1Excl=("${!1}")
+echo " 1 $argAry1"
+echo " 2 $argAry1Excl"
+
+echo "--------------"
+
+echo "1 ${argAry1[@]}"
+echo "2 ${argAry1Excl[@]}"
+
+echo "--------------"
+
+echo "a ${#argAry1[@]}"
+echo "b ${#argAry1Excl[@]}"
+
+for el in ${argAry1[@]}; do
+    echo "xxplain $el";
+    echo "xxcrly ${el}";
+done
+
+
+# https://unix.stackexchange.com/questions/193039/how-to-count-the-length-of-an-array-defined-in-bash
+
+# https://stackoverflow.com/questions/1063347/passing-arrays-as-parameters-in-bash

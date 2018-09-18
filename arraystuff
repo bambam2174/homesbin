@@ -1,0 +1,41 @@
+#!/bin/bash
+
+ARRAY=()
+ARRAY+=('foo')
+ARRAY+=('bar')
+
+for i in ${ARRAY[@]}; do
+    echo "plain "$i"";
+    echo "curly "${i}"";
+done
+
+
+echo $ARRAY
+
+echo ${ARRAY[0]}
+echo ${ARRAY[1]}
+
+
+arr=("new_element" "${arr[@]}")
+
+arr=("new_element1" "new_element2" "..." "new_elementN" "${arr[@]}")
+
+arr=( "${arr[@]}" "new_element" )
+
+arr+=( "new_element" )
+
+arr=( "${arr[@]}" "new_element1" "new_element2" "..." "new_elementN") #Or
+arr+=( "new_element1" "new_element2" "..." "new_elementN" )
+
+for el in ${arr[@]}; do
+    echo "plain $el";
+    echo "crly ${el}";
+done
+echo "_____##############____"
+echo "x ${#arr[@]}"
+echo "y ${#ARRAY[@]}"
+echo "_____##############____"
+iteratearray $arr
+echo "##############"
+iteratearray $ARRAY
+

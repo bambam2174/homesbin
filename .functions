@@ -225,6 +225,11 @@ show() {
     tail -n +1  ~/unutmalist/*$1*;
 }
 
+show2() {
+    #cat ~/unutmalist/*$1*;
+tail -n 1  ~/unutmalist/*$1*;
+}
+
 cheat() { 
     open http://borkware.com/quickies/one?topic=$1; 
 }
@@ -271,7 +276,7 @@ opentimedoc() {
     #echo "PID $$"
     #echo "\$1.length=${#1}"
     #[ ${#1} -ne 0 ] && [ -r $1 ]; echo $?
-    STANDARD_FOLDER=~/Documents/Tätigkeitsnachweis
+    export STANDARD_FOLDER=~/Documents/Tätigkeitsnachweis
     
     # getting the last edited excel sheet in the folder
     if [ ${#1} -ne 0 ] && [ -r $1 ]; then
@@ -377,4 +382,12 @@ function throwErrors()
 function ignoreErrors()
 {
     set +e
+}
+
+activate_xcode_commands() {
+    PATH=/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
+}
+
+reverse() {
+    tail -r -n $(cat "$1" | wc -l) "$1"
 }
