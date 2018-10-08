@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+if [ -n "$1" ]; then 
+    echo $?; 
+    echo "$1 is nonzero"; 
+else 
+    echo $?; 
+    echo "$1 is zero"; 
+fi
+
+
+

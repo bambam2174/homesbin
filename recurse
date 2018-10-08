@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export RCOUNT
+
+if [ ! $RCOUNT ]; then
+    RCOUNT=0
+fi
+export RCOUNT=$((RCOUNT+1))
+
+echo $RCOUNT
+echo "Process $$"
+sleep 1
+recurse # &

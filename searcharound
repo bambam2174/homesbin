@@ -2,24 +2,32 @@
 
 BOTTOM=0
 TOP=0
+CMD=cat
+
+if  [ -n "`which ccat`" ]; then 
+    echo `which ccat`;
+    CMD=ccat
+fi
+
 if [ -z $3 ]
 then
     echo "You can set how many lines after the search word get displayed with a 3rd integer argument"
 else
     TOP=$3
 fi
+
 if [ -z $4 ];
 then
     echo "You can set how many lines before the search word get displayed with a 4th integer argument"
 else
      BOTTOM=$4
 fi
+
 echo
 if [ -f $2 ]; then
-    echo "cat $2 | grep -i -B $BOTTOM -A $TOP $1 "
-    cat $2 | grep -i -B $BOTTOM -A $TOP "$1"
+    echo "$CMD $2 | grep -i -B $BOTTOM -A $TOP $1 "
+    $CMD $2 | grep -i -B $BOTTOM -A $TOP "$1" 
 elif [ -d $2 ]; then
     grep -iR "$1" ./ -B $BOTTOM -A $TOP
     echo "grep -iR \"$1\" ./ -B $BOTTOM -A $TOP"
 fi
-

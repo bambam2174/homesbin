@@ -1,0 +1,9 @@
+#!/bin/bash
+# https://stackoverflow.com/questions/3052867/bash-script-using-grep-to-search-for-a-pattern-in-a-file
+read -p "Enter file name..." fname
+read -p "Enter the search pattern " pattern
+if [ -f "$fname" ]
+then
+    result=$(grep -i "$pattern" "$fname")
+    echo "$result"
+fi
