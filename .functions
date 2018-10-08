@@ -349,8 +349,13 @@ lsgitall() {
 
 yell() { echo "$0: $*" >&2; }
 die() { yell "$*"; exit 111; }
-trying() { "$@" || die "cannot $*"; }
+trying() { "$@" || ([ $0 == "-bash" ] || dying "cannot $*") }
 
+dying() {
+    echo "cannot $*";
+    sleep 1;
+    die "$*"
+}
 function try()
 {
     [[ $- = *e* ]]; SAVED_OPT_E=$?

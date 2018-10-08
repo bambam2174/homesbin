@@ -15,6 +15,11 @@ else
      BOTTOM=$4
 fi
 echo
-echo "cat $2 | grep -i -B $BOTTOM -A $TOP $1 "
-echo 
-cat $2 | grep -i -B $BOTTOM -A $TOP "$1" 
+if [ -f $2 ]; then
+    echo "cat $2 | grep -i -B $BOTTOM -A $TOP $1 "
+    cat $2 | grep -i -B $BOTTOM -A $TOP "$1"
+elif [ -d $2 ]; then
+    grep -iR "$1" ./ -B $BOTTOM -A $TOP
+    echo "grep -iR \"$1\" ./ -B $BOTTOM -A $TOP"
+fi
+

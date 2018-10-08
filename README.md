@@ -1,4 +1,0 @@
-~/bin
-========
-
-useful bash scripts
