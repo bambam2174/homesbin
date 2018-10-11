@@ -71,8 +71,15 @@ fp() {
         SP=$(abspath $2)
         PARAMCOUNT=3
     fi
-    echo "find $SP -iname \"*$1*\" ${@:PARAMCOUNT}"
-    find $SP -iname "*$1*" ${@:PARAMCOUNT}
+
+    if [ $# -gt 2 ]; then
+        _OPTION="-name"
+    else
+        _OPTION="-iname"
+    fi
+
+    echo "find $SP $_OPTION \"*$1*\" ${@:PARAMCOUNT}"
+    find $SP $_OPTION "*$1*" 
 }
 
 param() {

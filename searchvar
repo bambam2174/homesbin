@@ -1,0 +1,3 @@
+#!/bin/bash
+
+set | egrep ^[a-zA-Z_]*=.* | grep -i $1
