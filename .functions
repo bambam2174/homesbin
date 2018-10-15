@@ -214,8 +214,8 @@ lns() {
 }
 
 lna() {
-    PARAM1=$1
-    PARAM2=$2
+    PARAM1="$1"
+    PARAM2="$2"
 
     lna_it() {
         for file in `ls $1`; 
