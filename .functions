@@ -403,3 +403,7 @@ activate_xcode_commands() {
 reverse() {
     tail -r -n $(cat "$1" | wc -l) "$1"
 }
+
+realpathf() { 
+    /usr/bin/python -c "import os,sys; print(os.path.realpath(sys.argv[1]))"     "$0"; 
+}
