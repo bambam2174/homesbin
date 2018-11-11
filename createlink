@@ -1,6 +1,6 @@
 #!/bin/bash
 LLINK=$(basename $1).url
-LLINK=${LLINK//[^a-zA-Z.]/_}
+LLINK=${LLINK//[^a-zA-Z\d\s.]/_}
 echo [InternetShortcut]
 echo $LLINK
 PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
