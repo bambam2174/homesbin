@@ -1,0 +1,12 @@
+#!/bin/bash
+SHEBANG='#!/bin/bash'
+
+if [ "$2" = "node" ]; then
+    SHEBANG='#!/usr/bin/env node';
+elif [ $# -gt 1 ];then
+    SHEBANG="#!/usr/bin/env $2";
+fi
+
+echo  $SHEBANG > $1
+chmod +x $1
+
