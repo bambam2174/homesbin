@@ -221,8 +221,8 @@ lns() {
 }
 
 lna() {
-    PARAM1=$1
-    PARAM2=$2
+    PARAM1="$1"
+    PARAM2="$2"
 
     lna_it() {
         for file in `ls $1`; 
@@ -428,4 +428,8 @@ hexcount() {
         fi;
         echo "0x$i"; 
     done
+}
+    
+realpathf() { 
+    /usr/bin/python -c "import os,sys; print(os.path.realpath(sys.argv[1]))"     "$0"; 
 }

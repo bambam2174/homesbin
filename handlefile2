@@ -1,0 +1,17 @@
+#!/bin/bash
+
+i=1
+sbst=$2
+while read line
+    do
+        echo $i $line
+        #${2} "$line"
+         #echo $(echo $line | cut -d"=" -f2)
+         CMD=$(echo ${sbst/\[URL\]/$line})
+         echo "command $CMD"
+         eval $CMD
+        #echo ${sbst/[URL]/$line}
+        #echo "\${sbst/[URL]/$line}"
+        i=$((i+1))
+    done < $1
+
