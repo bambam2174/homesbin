@@ -1,7 +1,14 @@
 #!/bin/bash
 
-for file in `ls $1`; 
+PP='./'
 
+if [ -n "$1" ]; then
+    PP="$1";
+fi
+
+echo "path $PP";
+
+for file in `ls $PP`; 
 do 
-	ln -s  $1/$file $2/$file; 
+	ln -s  `pwd`/$1/$file $2/$file; 
 done
