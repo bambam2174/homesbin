@@ -1,0 +1,10 @@
+#!/bin/bash
+
+COMMIT="HEAD"
+
+if [ -n "$1" ]; then
+    COMMIT=$1
+fi
+
+git diff-tree --no-commit-id --name-only -r $COMMIT
+

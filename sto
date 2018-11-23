@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# https://stackoverflow.com/questions/71323
+
+STID=$(echo $1 | cut -d"-" -f2)
+open https://stackoverflow.com/questions/$STID

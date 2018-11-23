@@ -78,12 +78,19 @@ fp() {
         _OPTION="-iname"
     fi
 
-    echo "find $SP $_OPTION \"*$1*\" ${@:PARAMCOUNT}"
+    if [ -n "$COLOR_Red" ]; then
+        printf "find $SP ${COLOR_Red}$_OPTION ${COLOR_NC} \"*$1*\" ${@:PARAMCOUNT}"
+    else
+        echo "find $SP $_OPTION \"*$1*\" ${@:PARAMCOUNT}"
+    fi
     find $SP $_OPTION "*$1*" 
 }
 
 param() {
     PC=2
+    echo "count $#"
+    echo "\$0 $0"
+    echo "0 ${@:0}"
     echo "1 ${@:1}"
     echo "2 ${@:2}"
     echo "3 ${@:3}"
@@ -404,6 +411,25 @@ reverse() {
     tail -r -n $(cat "$1" | wc -l) "$1"
 }
 
+hexcount() {
+    for i in {0..15};do 
+        if [ $i -eq 10 ]; then 
+            i=A; 
+        elif [ $i -eq 11 ]; then 
+            i=B; 
+        elif [ $i -eq 12 ]; then 
+            i=C; 
+        elif [ $i -eq 13 ]; then 
+            i=D;  
+        elif [ $i -eq 14 ]; then 
+            i=E; 
+        elif [ $i -eq 15 ]; then 
+            i=F;  
+        fi;
+        echo "0x$i"; 
+    done
+}
+    
 realpathf() { 
     /usr/bin/python -c "import os,sys; print(os.path.realpath(sys.argv[1]))"     "$0"; 
 }
