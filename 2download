@@ -1,5 +1,6 @@
 #!/bin/bash
 TO_DOWNLOAD_FILE="$HOME/Movies/.2download"
+touch $TO_DOWNLOAD_FILE
 CLIPBOARD=$(pbpaste)
 if [ -n "$(ytExists $CLIPBOARD)" ] || [ -n "$(grep $CLIPBOARD $TO_DOWNLOAD_FILE)" ];then 
     echo "Either already added to $TO_DOWNLOAD_FILE or existing in this folder" > /dev/stderr 
