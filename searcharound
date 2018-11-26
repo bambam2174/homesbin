@@ -2,11 +2,11 @@
 
 BOTTOM=0
 TOP=0
-CMD=cat
+CAT=cat
 
 if  [ -n "`which ccat`" ]; then 
     echo `which ccat`;
-    CMD=ccat
+    CAT=ccat
 fi
 
 if [ -z $3 ]
@@ -25,9 +25,9 @@ fi
 
 echo
 if [ -f $2 ]; then
-    echo "$CMD $2 | grep -i -B $BOTTOM -A $TOP $1 "
-    $CMD $2 | grep -i -B $BOTTOM -A $TOP "$1" 
+    echo "$CAT $2 | grep -i -B $BOTTOM -A $TOP $1 "
+    $CAT $2 | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null
 elif [ -d $2 ]; then
-    grep -iR "$1" ./ -B $BOTTOM -A $TOP
     echo "grep -iR \"$1\" ./ -B $BOTTOM -A $TOP"
+    grep -iR "$1" ./ -B $BOTTOM -A $TOP 2> /dev/null
 fi

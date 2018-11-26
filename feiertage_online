@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo replace "10.0.0.1" "#10.0.0.1" /etc/hosts
+
+sudo remove_alias
+
+sudo kill $NODE_PID
+

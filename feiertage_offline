@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo replace "#10.0.0.1" "10.0.0.1" /etc/hosts
+setnetalias
+node /Users/sedatkilinc/Projects/nodeapps/express/LawngreenEntireParallelport.js &
+
+export NODE_PID=$!
+
