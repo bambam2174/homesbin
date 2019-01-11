@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ~/Library/Developer/CoreSimulator/Devices/
-CURRENTDEVICE=$(ls -t ~/Library/Developer/CoreSimulator/Devices/ | head -n 1)
+#CURRENTDEVICE=$(ls -t ~/Library/Developer/CoreSimulator/Devices/ | head -n 1)
+CURRENTDEVICE=$(ls -t ~/Library/Developer/CoreSimulator/Devices/ | head -n 2 | tail -n 1)
 cd $CURRENTDEVICE
 pwd
 cd data/Containers/Data/Application/
