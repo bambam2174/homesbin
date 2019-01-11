@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /Users/sedatkilinc/Movies
+
+handlefile3 .2download 'youtube-dl [URL]'

@@ -1,4 +1,4 @@
 #!/bin/bash
 while IFS='' read -r line || [[ -n "$line" ]]; do 
-    echo "$2 $line"; 
+    $2 $line; 
 done < "$1" 
