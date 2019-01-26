@@ -1,0 +1,32 @@
+#!/bin/bash
+LLINK=$(basename $1).webloc
+
+if [ -n "$2" ] && [ -d "$2" ]; then
+    LLINK="$2/$LLINK"
+elif [ -n "$2" ]; then
+    LLINK="$2.webloc"
+fi
+
+echo [InternetShortcut]
+echo $LLINK
+PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
+                                #echo "Protocol PRE : "$PROTOCOL
+if [ -z "$PROTOCOL" ]; then
+	PROTOCOL=http://
+else
+	PROTOCOL=''
+fi
+                                #echo "Protocol POST : "$PROTOCOL
+read -d '' WEBLOC <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>URL</key>
+        <string>[URL]</string>
+    </dict>
+</plist>
+EOF
+
+echo ${WEBLOC/\[URL\]/$PROTOCOL$1} > $LLINK
+

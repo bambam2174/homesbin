@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIGITS=4
+FORMAT="X"
+
+if [ -n "$2" ]; then
+    DIGITS="$2"
+fi
+if [ -n "$3" ]; then
+    export FORMAT="$3"
+fi 
+echo -n "0x"
+printf %0${DIGITS}${FORMAT} $1
