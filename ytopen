@@ -2,5 +2,12 @@
 
 YT_URL="https://www.youtube.com/watch?v=$1"
 #open $YT_URL
-open -a /Applications/Chrome $YT_URL
+if [ -e /Applications/Chrome ];then
+    open -a /Applications/Chrome $YT_URL
+elif [ -e /Applications/Google\ Chrome.app/ ];then
+    open -a /Applications/Google\ Chrome.app $YT_URL
+else
+    open $YT_URL
+fi
+
 
