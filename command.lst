@@ -1,0 +1,12 @@
+echo $HOME
+cd /Users/sedatkilinc/bin/
+echo 'cd ~/bin/ ...'
+git add .
+echo 'git add . ...'
+git commit -m "update"
+echo 'git commit -m "update" ....'
+git pull
+echo 'git pull ...'
+git push
+echo 'git push ...'
+
