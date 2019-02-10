@@ -2,3 +2,6 @@
 while IFS='' read -r line || [[ -n "$line" ]]; do 
     $2 $line; 
 done < "$1" 
+
+shell_session_update
+

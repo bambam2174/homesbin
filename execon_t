@@ -1,0 +1,13 @@
+#!/bin/bash
+while IFS='' read -r line || [[ -n "$line" ]]; do 
+    CMD="$2 $line"; 
+    echo $CMD;
+    FILENAME=basename "$line"
+    $2 "$line"; 
+    if [ $? -ne 0 ]; then
+        echo $CMD >> ~/tmp/execon_t_errors.txt;
+    fi
+done < "$1" 
+
+shell_session_update
+

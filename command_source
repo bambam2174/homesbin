@@ -1,0 +1,4 @@
+#!/bin/bash
+PATH_COMMAND=$(which "$1")
+echo $BBB
+ccat $PATH_COMMAND
