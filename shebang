@@ -6,5 +6,6 @@ if [ $# -gt 1 ];then
 fi
 
 echo  $SHEBANG > $1
+echo  "" >> $1
 chmod +x $1
 

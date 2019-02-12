@@ -1,5 +1,6 @@
 #!/bin/bash
-LLINK=$(basename $1).url
+URL="${1}"
+LLINK=$(basename $URL).url
 LLINK=${LLINK//[^a-zA-Z\d\s.]/_}
 echo [InternetShortcut]
 echo $LLINK

@@ -1,7 +1,14 @@
 #!/bin/bash
-LLINK=$(basename $1).webloc
+if [ -n "$2" ]; then
+    LLINK=$(basename $1).webloc
+    LLINK=${LLINK//[^a-zA-Z\d\s.]/_}
+else
+    LLINK="$2.webloc"
+fi
+
 echo [InternetShortcut]
-echo $LLINK
+echo "FILE $LLINK"
+
 PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
                                 #echo "Protocol PRE : "$PROTOCOL
 if [ -z "$PROTOCOL" ]; then
