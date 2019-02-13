@@ -1,0 +1,3 @@
+#!/bin/bash
+
+yturl $1 |pbcopy; 2download
