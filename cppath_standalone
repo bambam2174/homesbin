@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CPATH=$(dirname $1)
+ABSPATH=$(echo "$(cd "$(dirname "$1" 2> /dev/null )" 2> /dev/null; pwd)/$(basename "$1" 2> /dev/null)")
+cd $2
+mkdir -p "$CPATH" && cp "$ABSPATH" "$CPATH"
