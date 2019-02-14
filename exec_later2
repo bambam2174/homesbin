@@ -1,5 +1,5 @@
 #!/bin/bash
 
-TMPFILE=".$1.tmp"
+TMPFILE=".$(basename $1).tmp"
 cp $1 $TMPFILE
 (sleep $2; sh $TMPFILE >& ~/tmp/errors)&
