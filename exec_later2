@@ -2,4 +2,4 @@
 
 TMPFILE=".$(basename $1).tmp"
 cp $1 $TMPFILE
-(sleep $2; sh $TMPFILE 2> ~/tmp/errors)&
+(sleep $2; sh $TMPFILE 2>> ~/tmp/errors)&
