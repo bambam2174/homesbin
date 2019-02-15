@@ -1,5 +1,7 @@
 #!/bin/bash
 
-TMPFILE=".$(basename $1).tmp"
-cp $1 $TMPFILE
+TMPFILE="$HOME/tmp/.$(basename $1).tmp"
+CMD="cp $1 $TMPFILE"
+echo $CMD
+$CMD
 (sleep $2; sh $TMPFILE 1>> ~/tmp/log 2>> ~/tmp/errors)&
