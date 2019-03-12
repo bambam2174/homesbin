@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ffmpeg -i $@  -c copy $(fileroot $@).mp4
+
+
