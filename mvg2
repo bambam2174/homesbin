@@ -1,0 +1,47 @@
+#!/bin/bash
+echo $1
+echo $2
+echo $@
+
+OPT=""
+if [ $# -eq 0 ]; then
+    STATION=Ostbahnhof
+elif [ ${#1} -eq 1 ]; then
+    STATION=Ostbahnhof
+    TRANSPORTATION=$1
+elif [ $# -eq 1 ] && [ ${#1} -gt 1 ]; then
+    STATION=$1
+else
+    STATION=$1
+    TRANSPORTATION=$2
+fi
+STATION=$(urlenc $STATION)
+
+case "$TRANSPORTATION" in
+    s)
+        OPT="$OPT&sbahn=checked";;
+    u)
+        OPT="$OPT&ubahn=checked";;
+    b)
+        OPT="$OPT&bus=checked";;
+    t)
+        OPT="$OPT&tram=checked";;
+    *)
+        OPT="$OPT&ubahn=checked&bus=checked&tram=checked&sbahn=checked";;
+esac
+
+FOO=""
+while getopts s:u:b:t: OPTION
+do
+	case "$OPTION"
+	in
+		s)FOO="$FOO&sbahn=checked"; echo $OPTARG;;
+		u)FOO="$FOO&ubahn=checked"; echo $OPTARG;;
+		b)FOO="$FOO&bus=checked"; echo $OPTARG;;
+		t)FOO="$FOO&tram=checked"; echo $OPTARG;;
+	esac
+done
+URL=https://www.mvg-live.de/ims/dfiStaticAnzeige.svc?haltestelle=$STATION
+echo $URL$FOO
+echo $URL$OPT
+#open $URL$OPT

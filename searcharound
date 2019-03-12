@@ -26,8 +26,10 @@ fi
 echo
 if [ -f $2 ]; then
     echo "$CAT $2 | grep -i -B $BOTTOM -A $TOP $1 "
+    echo "-------------------------------------------"
     $CAT $2 | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null
 elif [ -d $2 ]; then
-    echo "grep -iR \"$1\" ./ -B $BOTTOM -A $TOP"
-    grep -iR "$1" ./ -B $BOTTOM -A $TOP 2> /dev/null
+    echo "grep -iR \"$1\" \"$2\" -B $BOTTOM -A $TOP"
+    echo "-------------------------------------------"
+    grep -iR "$1" "$2" -B $BOTTOM -A $TOP 2> /dev/null
 fi
