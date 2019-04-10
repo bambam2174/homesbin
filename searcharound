@@ -29,7 +29,7 @@ if [ -f "$2" ]; then
     echo "-------------------------------------------"
     $CAT "$2" | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null
 elif [ -d "$2" ]; then
-    echo "grep -iR \"$1\" \"$2\" -B $BOTTOM -A $TOP"
+    echo "grep -iRIs \"$1\" \"$2\" -B $BOTTOM -A $TOP"
     echo "-------------------------------------------"
-    grep -iR "$1" "$2" -B $BOTTOM -A $TOP 2> /dev/null
+    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP 2> /dev/null
 fi
