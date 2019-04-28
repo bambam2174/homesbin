@@ -1,0 +1,9 @@
+#!/bin/bash
+INDEX=0
+
+if [ -n "$2" ];then
+    INDEX="$2"
+fi
+
+curl -s http://api.urbandictionary.com/v0/define?term=$@ |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])'
+
