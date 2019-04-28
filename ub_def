@@ -4,8 +4,9 @@ INDEX=0
 if [ -n "$2" ];then
     INDEX="$2"
 fi
-
-curl -s http://api.urbandictionary.com/v0/define?term="$1" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
+TERM=${1/ /%20}
+#echo $TERM
+curl -s http://api.urbandictionary.com/v0/define?term="$TERM" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
 
 ERRORR="$?"
 
