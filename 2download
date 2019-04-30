@@ -1,5 +1,5 @@
 #!/bin/bash
-TO_DOWNLOAD_FILE="$HOME/Movies/.2download"
+TO_DOWNLOAD_FILE="$MOVIE_TARGET_FOLDER"
 touch $TO_DOWNLOAD_FILE
 CLIPBOARD=$(pbpaste)
 if [ -n "$(ytExists $CLIPBOARD)" ] || [ -n "$(grep $CLIPBOARD $TO_DOWNLOAD_FILE)" ];then 
