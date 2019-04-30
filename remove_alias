@@ -1,1 +1,7 @@
+#!/bin/bash
+
 ifconfig lo0 -alias 10.0.0.1
+
+if [ $? -eq 0 ]; then
+    unset IF_ALIAS_10_0_0_1_80_TO_LO_3000_SET
+fi

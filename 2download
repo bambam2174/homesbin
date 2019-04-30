@@ -1,13 +1,18 @@
 #!/bin/bash
-TO_DOWNLOAD_FILE="$MOVIE_TARGET_FOLDER"
-touch $TO_DOWNLOAD_FILE
-CLIPBOARD=$(pbpaste)
-if [ -n "$(ytExists $CLIPBOARD)" ] || [ -n "$(grep $CLIPBOARD $TO_DOWNLOAD_FILE)" ];then 
-    echo "Either already added to $TO_DOWNLOAD_FILE or existing in this folder" > /dev/stderr 
-    exit 1
-fi
+TO_DOWNLOAD_FILE="$HOME/Movies/.2download"
+
 if [ $# -gt 0 ]; then
     TO_DOWNLOAD_FILE="$1"
 fi
+
+touch $TO_DOWNLOAD_FILE
+
+CLIPBOARD=$(pbpaste)
+
+if [ -n "$(ytExists $CLIPBOARD)" ] || [ -n "$(grep $CLIPBOARD $TO_DOWNLOAD_FILE)" ];then 
+    echo "Either already added to $TO_DOWNLOAD_FILE or existing in this folder" > /dev/stderr 
+    exit 257
+fi
+
 echo $CLIPBOARD >> $TO_DOWNLOAD_FILE
 echo "...added"
