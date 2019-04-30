@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p ~/tmp/.difff/
+rm ~/tmp/.difff/A
+rm ~/tmp/.difff/B
+
+echo "$@" >> ~/tmp/.difff/A
+echo "$@" >> ~/tmp/.difff/B
+
+diff ~/tmp/.difff/A ~/tmp/.difff/B
+
+
+
