@@ -463,8 +463,9 @@ fatal() {
      fi
  }
 
- isNumber2() {
-     if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+ isNumeric() {
+     #if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+     if [ "$1" -eq "$1" ] 2> /dev/null; then
          return 0
      else
          return 1
