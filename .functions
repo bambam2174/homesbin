@@ -452,3 +452,29 @@ fatal() {
     exit 1 ; 
 }
 :(){ which $1 > $1.txt; }
+
+ isNumber() {
+     re='^[0-9]+$'
+     #return  [[ $1 =~ $re ]]
+     if ! [[ $1 =~ $re ]] ; then
+         return 1
+     else
+         return 0
+     fi
+ }
+
+ isNumber2() {
+     if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+         return 0
+     else
+         return 1
+     fi
+ }
+
+ isNaN() {
+      if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+          return 1
+      else
+          return 0
+      fi
+  }
