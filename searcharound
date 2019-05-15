@@ -31,5 +31,5 @@ if [ -f "$2" ]; then
 elif [ -d "$2" ]; then
     echo "grep -iRIs \"$1\" \"$2\" -B $BOTTOM -A $TOP"
     echo "-------------------------------------------"
-    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP 2> /dev/null
+    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP --exclude-dir .git 2> /dev/null
 fi

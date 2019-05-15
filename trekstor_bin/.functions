@@ -1,8 +1,19 @@
+#!/bin/bash
+
 mkcd() {
 	mkdir $1;
 	cd $_;
 }
 
 exec_save_output() { 
-	$1  | tee -a $2; 
+    echo "JETETW"
+    CMD="$1"
+    TARGET="$2"
+    echo $CMD
+    echo $TARGET
+
+    DDD=$("$CMD"  | tee -a "$TARGET")
+
+    echo $DDD
+    $DDD
 }

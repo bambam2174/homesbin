@@ -1,4 +1,12 @@
 #!/bin/bash
+
+CAT=ccat
+
 PATH_COMMAND=$(which "$1")
+
+if [ -z $(which ccat) ]; then
+    CAT=cat
+fi
+
 echo $BBB
-ccat $PATH_COMMAND
+$CAT $PATH_COMMAND
