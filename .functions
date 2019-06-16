@@ -479,3 +479,4 @@ fatal() {
           return 0
       fi
   }
+ggg() { export fff=vedat; }

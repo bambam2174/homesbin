@@ -1,5 +1,6 @@
 #!/bin/bash
 
-cd /Users/sedatkilinc/Movies
-
+if [ $# -gt 0 ]; then
+    cd $(dirname $TO_DOWNLOAD_FILE)
+fi
 handlefile3 .2download 'youtube-dl [URL]'
