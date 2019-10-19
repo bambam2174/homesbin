@@ -216,8 +216,8 @@ lns() {
     if [ -n $3 ]; then
         OPT=$3
     fi
-    ln -s$OPT `pwd`/$1 $2;
-
+    #ln -s$OPT `pwd`/$1 $2;
+    ln -s$OPT "$PWD/$1" $2;
 }
 
 lna() {
