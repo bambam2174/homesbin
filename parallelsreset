@@ -1,0 +1,3 @@
+#!/bin/bash
+
+prlctl set {e98f61a9-c52b-4c66-867e-caf2bec0e4bb} --userpasswd sedatkilinc:h***

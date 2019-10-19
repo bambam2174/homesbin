@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PUSER="$1"
+PSHELL="$2"
+
+PUSER_CURRENT_SHELL=$(dscl . -read /Users/$PUSER UserShell)
+PUSER_CURRENT_SHELL=${PUSER_CURRENT_SHELL/UserShell: /}
+echo $PUSER
+echo $PSHELL
+echo $PUSER_CURRENT_SHELL
+
+CMD="dscl . -change /Users/$PUSER UserShell $PUSER_CURRENT_SHELL $PSHELL"
+
+echo $CMD
+$($CMD)

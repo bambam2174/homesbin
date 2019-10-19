@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -n foo ];then
+    foo sedat;
+fi
+
+echo "do stuff"
+

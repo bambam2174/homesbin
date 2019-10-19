@@ -1,0 +1,5 @@
+#!/bin/bash
+
+MINUTEN="$1"
+
+echo $((60*$MINUTEN))

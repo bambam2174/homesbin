@@ -1,6 +1,12 @@
 #!/bin/bash
 
+if [ -d ~/.ytdall ];then
+    mkdir -p ~/.ytdall
+    touch ~/.ytdall
+fi
+
 if [ $# -gt 0 ]; then
     cd $(dirname $TO_DOWNLOAD_FILE)
 fi
+#cat .2download >>  ~/.ytdall/downloaded
 handlefile3 .2download 'youtube-dl [URL]'
