@@ -1,0 +1,30 @@
+#!/bin/bash
+echo $(whoami)
+echo "Usage:"
+echo "$(filename $0) -o rw -g rwx"
+
+while getopts u:g:o: OPTION
+do
+    case "$OPTION"
+        in
+        u)RIGHTS_USER=$OPTARG
+        echo "user"
+        echo "uuu"
+        echo "$OPTARG"
+        ;;
+        g)RIGHTS_GROUP=$OPTARG
+            echo "group"
+            echo "bar"
+            echo "$OPTARG"
+            ;;
+        o)RIGHTS_OTHER=$OPTARG
+            echo "other"
+            ;;
+    esac
+done
+
+# where o+x
+ls -lahFG "$1" | egrep '^-rw[-rwx]{6}x'
+
+# where o+w
+ls -lahFG "$1" | egrep '^-rw[-rwx]{5}w'

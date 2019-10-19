@@ -1,0 +1,19 @@
+#!/bin/bash
+CCC=0
+STEP=1
+while getopts c:s: OPTION
+do
+	case "$OPTION"
+	in
+		c)CCC=$OPTARG;;
+		s)STEP=$OPTARG;;
+	esac
+done
+echo "CCC $CCC"
+echo "STEP $STEP"
+for i in "$(ls)";
+do
+    echo "$i $CCC$i";
+    #mv "$i" "$CCC$i"; 
+    CCC=$(($CCC+$STEP));
+done

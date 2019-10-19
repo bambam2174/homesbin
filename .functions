@@ -216,8 +216,8 @@ lns() {
     if [ -n $3 ]; then
         OPT=$3
     fi
-    ln -s$OPT `pwd`/$1 $2;
-
+    #ln -s$OPT `pwd`/$1 $2;
+    ln -s$OPT "$PWD/$1" $2;
 }
 
 lna() {
@@ -434,7 +434,9 @@ realpathf() {
     /usr/bin/python -c "import os,sys; print(os.path.realpath(sys.argv[1]))"     "$0"; 
 }
 
-. .urlencode
+if [ -f .urlencode ]; then
+    . .urlencode
+fi
 
 inform()  { 
     echo -e "\\033[1;36m[INFO]\\033[0m  $*"; 
@@ -451,9 +453,8 @@ fatal() {
     #echo "boom...exit";
     exit 1 ; 
 }
-:(){ which $1 > $1.txt; }
 
- isNumber() {
+isNumber() {
      re='^[0-9]+$'
      #return  [[ $1 =~ $re ]]
      if ! [[ $1 =~ $re ]] ; then

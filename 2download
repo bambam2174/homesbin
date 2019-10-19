@@ -11,8 +11,10 @@ echo "2 $TO_DOWNLOAD_FILE"
 if [ $# -gt 0 ]; then
     FOLDER=$(dirname "$1/dummy")
     echo "export TO_DOWNLOAD_FILE=$FOLDER/.2download" > ~/.downloadfolder
-    #echo "export TO_DOWNLOAD_FILE=$TO_DOWNLOAD_FILE" > ~/.downloadfolder
+    echo "$FOLDER/.2download" > ~/.downloadfile
     . ~/.downloadfolder
+    TO_DOWNLOAD_FILE_VALUE=$(cat ~/.downloadfile)
+    echo "\$# > 0 -> TO_DOWNLOAD_FILE_VALUE=$TO_DOWNLOAD_FILE_VALUE"
 fi
 echo "3 $TO_DOWNLOAD_FILE"
 
