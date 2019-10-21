@@ -3,4 +3,4 @@
 CPATH=$(dirname $1)
 ABSPATH=$(abspath "$1")
 cd $2
-mkdir -p "$CPATH" && cp "$ABSPATH" "$CPATH"
+mkdir -p "$CPATH" && cp -rf "$ABSPATH" "$CPATH"

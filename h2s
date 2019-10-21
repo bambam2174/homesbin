@@ -1,0 +1,5 @@
+#!/bin/bash
+
+STUNDEN="$1"
+
+echo $((3600*$STUNDEN))

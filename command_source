@@ -4,9 +4,9 @@ CAT=ccat
 
 PATH_COMMAND=$(which "$1")
 
+#if ![ -e "$(which ccat)" ]; then
 if [ -z $(which ccat) ]; then
     CAT=cat
 fi
 
-echo $BBB
 $CAT $PATH_COMMAND

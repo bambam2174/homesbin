@@ -1,0 +1,7 @@
+#!/bin/bash
+
+read scale
+if ! [[ "$scale" =~ "^[0-9]+$" ]]
+        then
+            echo "Sorry integers only"
+fi

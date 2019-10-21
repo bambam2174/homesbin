@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#ffmpeg -fflags +genpts -i "$1" -r 24 $(filename "$(fileroot "$1").mp4")
+MP4=${1/webm/mp4}
+ffmpeg -fflags +genpts -i "$1" -r 24 "$MP4"

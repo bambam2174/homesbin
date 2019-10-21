@@ -1,12 +1,27 @@
 #!/bin/bash
-TO_DOWNLOAD_FILE="$HOME/Movies/.2download"
-
-if [ $# -gt 0 ]; then
-    TO_DOWNLOAD_FILE="$1"
+if [ -z $TO_DOWNLOAD_FILE ]; then
+    #TO_DOWNLOAD_FILE=$(cat ~/.downloadfolder) 2> /dev/null
+    . ~/.downloadfolder
 fi
+echo "1 $TO_DOWNLOAD_FILE"
+if [ $? -eq 1 ]; then
+    TO_DOWNLOAD_FILE="$HOME/Movies/.2download"
+fi
+echo "2 $TO_DOWNLOAD_FILE"
+if [ $# -gt 0 ]; then
+    FOLDER=$(dirname "$1/dummy")
+    echo "export TO_DOWNLOAD_FILE=$FOLDER/.2download" > ~/.downloadfolder
+    echo "$FOLDER/.2download" > ~/.downloadfile
+    . ~/.downloadfolder
+    TO_DOWNLOAD_FILE_VALUE=$(cat ~/.downloadfile)
+    echo "\$# > 0 -> TO_DOWNLOAD_FILE_VALUE=$TO_DOWNLOAD_FILE_VALUE"
+fi
+echo "3 $TO_DOWNLOAD_FILE"
 
 touch $TO_DOWNLOAD_FILE
+#eport TO_DOWNLOAD_FILE
 
+. ~/.downloadfolder
 CLIPBOARD=$(pbpaste)
 
 if [ -n "$(ytExists $CLIPBOARD)" ] || [ -n "$(grep $CLIPBOARD $TO_DOWNLOAD_FILE)" ];then 
