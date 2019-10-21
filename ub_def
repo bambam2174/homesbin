@@ -23,7 +23,7 @@ elif [ "$ERRORR" -gt 0 ]; then
     echo "no definition";
 fi
 
-isNumber() {
+isNumberX() {
     re='^[0-9]+$'
     if ! [[ $yournumber =~ $re ]] ; then
         echo "error: Not a number" >&2; exit 1

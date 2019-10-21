@@ -451,7 +451,7 @@ fatal() {
     #echo "boom...exit";
     exit 1 ; 
 }
-:(){ which $1 > $1.txt; }
+#:(){ which $1 > $1.txt; }
 
  isNumber() {
      re='^[0-9]+$'
