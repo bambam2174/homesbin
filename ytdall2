@@ -2,11 +2,11 @@
 
 if [ -d ~/.ytdall ];then
     mkdir -p ~/.ytdall
-    touch ~/.ytdall
+    touch ~/.ytdall/downloaded
 fi
 
 if [ $# -gt 0 ]; then
     cd $(dirname $TO_DOWNLOAD_FILE)
 fi
 #cat .2download >>  ~/.ytdall/downloaded
-handlefile3 .2download 'youtube-dl [URL]'
+handlefile3 .2download 'youtube-dl [URL]' ~/.ytdall/downloaded

@@ -14,6 +14,7 @@ do
     eval $CMD
     if [ $? -eq 0 ]; then
         replace $line "" $TMP
+        [ $# -eq 3 ] && echo $line >> $3
     fi
     ERR_CNT=$((ERR_CNT+$?))
     echo "Error count $ERR_CNT "
