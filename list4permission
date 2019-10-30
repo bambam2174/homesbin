@@ -1,16 +1,18 @@
 #!/bin/bash
-echo $(whoami)
-echo "Usage:"
-echo "$(filename $0) -o rw -g rwx"
-
+if [ $# -eq 0 ]; then
+    echo $(whoami)
+    echo $1
+    echo "Usage:"
+    echo "$(filename $0) <path> -o rw -g rwx"
+fi
 while getopts u:g:o: OPTION
 do
     case "$OPTION"
         in
         u)RIGHTS_USER=$OPTARG
-        echo "user"
-        echo "uuu"
-        echo "$OPTARG"
+            echo "user"
+            echo "uuu"
+            echo "$OPTARG"
         ;;
         g)RIGHTS_GROUP=$OPTARG
             echo "group"
@@ -24,7 +26,9 @@ do
 done
 
 # where o+x
-ls -lahFG "$1" | egrep '^-rw[-rwx]{6}x'
+#ls -lahFG "$1" | egrep '^-rw[-rwx]{6}x'
 
 # where o+w
-ls -lahFG "$1" | egrep '^-rw[-rwx]{5}w'
+#ls -lahFG "$1" | egrep '^-rw[-rwx]{5}w'
+
+ls -lahFG ./ | egrep '^[d]?[-rwx]{3}[-rwx]{3}[-rwx]{3}'

@@ -1,6 +1,7 @@
-#!/bin/bash
-SHEBANG='#!/bin/bash'
+#!/bin/zsh
 
+SHEBANG="#!$SHELL"
+#![[  -n "$BASH" ]] && SHEBANG=$BASH || SHEBANG=$SHELL
 if [ $# -gt 1 ];then
     SHEBANG="#!/usr/bin/env $2";
 fi

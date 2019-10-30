@@ -481,3 +481,9 @@ isNumber() {
       fi
   }
 ggg() { export fff=vedat; }
+
+lsns() {
+    [ -n "$1" ] && SP="$1" || SP="."
+    [ -n "$2" ] && EXT="$2" || EXT=".*"
+    find "$SP" -maxdepth 1 ! -type l | grep -e "$EXT$" 
+}
