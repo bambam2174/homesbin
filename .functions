@@ -487,3 +487,5 @@ lsns() {
     [ -n "$2" ] && EXT="$2" || EXT=".*"
     find "$SP" -maxdepth 1 ! -type l | grep -e "$EXT$" 
 }
+first() { ls -lhFaGtd * | head -n "$1" }
+last() { ls -lhFaGtd * | tail -n "$1" }

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /Users/sedatkilinc/Projects/nodeapps/express
+node LawngreenEntireParallelport.js

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+valid=true
+count=1
+
+while [ $valid ]; do
+    echo $count
+    if [ $count -eq 5 ]; then
+        #break
+        echo "count = $count"
+    fi
+    if [ $count -eq 8 ]; then
+        valid=false
+        echo $count
+        vared -p 'What would you like to do?: ' -c tmp
+        break
+    fi
+    ((count++))
+done
+

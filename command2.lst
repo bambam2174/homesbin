@@ -1,0 +1,4 @@
+	cd $i; 
+	git branch; 
+	git pull; 
+	cd ../;

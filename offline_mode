@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sed -i -- 's/#10.0.0.1 feiertage.jarmedia.de/10.0.0.1 feiertage.jarmedia.de/' /etc/hosts
+
+setnetalias
+
+start_mock_jarmeida
+
+

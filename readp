@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+export tmp=''
+vared -p 'What would you like to do?: ' -c tmp;
+    echo $tmp;
