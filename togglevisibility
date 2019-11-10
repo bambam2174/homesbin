@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+if [ $(defaults read com.apple.Finder AppleShowAllFiles) = "true" ]; 
+then 
+    echo "hidden";
+    defaults write com.apple.Finder AppleShowAllFiles false
+else 
+    echo "shown";
+    defaults write com.apple.Finder AppleShowAllFiles true
+fi
+
+killall Finder
