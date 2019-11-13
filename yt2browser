@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z $1  ];then
+    echo "Enter YouTube ID ";
+    echo "Usage: $(basename $0) <youtubeID> ";
+    exit 1;
+fi
+
+open https://www.youtube.com/watch?v=$1
