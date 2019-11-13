@@ -1,0 +1,49 @@
+#!/bin/zsh
+
+
+echo '>foo=()'
+foo=()
+echo '>foo+=Sedat'
+foo+=Sedat
+echo '>foo+=Vedat'
+foo+=Vedat
+echo
+echo $foo
+echo
+echo '>foo+=Anne'
+foo+=Anne
+echo '>foo+=Baba'
+foo+=Baba
+echo
+echo $foo
+echo ${foo[1]}
+echo ${foo:#}
+echo ${foo#}
+echo ${foo[#]}
+echo ${foo#}
+grep -irRIs arr ~/bin/.functions
+#grep -irRIs arr ~/bin/
+echo ${#foo}
+echo ${foo[@]}
+
+for i in $foo;do 
+    echo "huhu $i"; 
+done
+
+foo+=("Halamaz" "Tasova" "Yesilimar")
+
+for i in $foo[@];do 
+    echo "huhu $i"; 
+done
+
+echo ${foo[1]}
+echo ${foo[0]}
+echo ${foo[${#foo}]}
+
+foo[${#foo}]=Yesilirmak
+
+echo ${foo[${#foo}]}
+
+for i in $foo;do 
+    echo "huhu $i"; 
+done
