@@ -10,7 +10,7 @@ EOF
 
 INPUT_LINES=$1
 
-# without IFS
+echo ""without IFS""
 for item in $(echo "$INPUT_LINES"); do
 	echo "$item"
 done
@@ -18,8 +18,8 @@ done
 echo
 
 
-# with IFS
-IFS=$':'
+echo " with IFS"
+IFS="$2"
 for item in $(echo "$INPUT_LINES"); do
 	echo "$item"
 done

@@ -78,12 +78,14 @@ fp() {
         _OPTION="-iname"
     fi
 
-    if [ -n "$COLOR_Red" ]; then
-        printf "find $SP ${COLOR_Red}$_OPTION ${COLOR_NC} \"*$1*\" ${@:PARAMCOUNT}"
+    if [ -n "$COLOR_Cyan" ] ; then
+        printf "${COLOR_LightGreen}find ${COLOR_Yellow}$SP ${COLOR_Cyan}$_OPTION ${COLOR_LightCyan}\"*${COLOR_LightGreen}$1${COLOR_LightCyan}*\"${COLOR_NC} ${@:$PARAMCOUNT}"
     else
-        echo "find $SP $_OPTION \"*$1*\" ${@:PARAMCOUNT}"
+        echo "find $SP $_OPTION \"*$1*\" ${@:$PARAMCOUNT}"
     fi
-    find $SP $_OPTION "*$1*" 
+    echo
+    CMD=$(find $SP $_OPTION "*$1*")
+    printf "${COLOR_Cyan}$CMD"
 }
 
 param() {
@@ -495,4 +497,10 @@ first() {
 last() { 
     ls -lhFaGtd * | tail -n "$1" 
 }
+members () { 
+    dscl . -list /Users | while read user; do 
+        printf "$user "; 
+        dsmemberutil checkmembership -U "$user" -G "$*"; 
+    done | grep "is a member" | cut -d " " -f 1; 
+} 
 

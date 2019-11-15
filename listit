@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+INPUT="$1"
+
+IFS=$','
+
+if [ -n "$2" ]; then
+    IFS="$2"
+fi
+
+for i in $(echo $INPUT); do 
+    echo $i; 
+done 
+IFS=""
+unset IFS
