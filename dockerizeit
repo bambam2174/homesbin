@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+docker service create --name jenkins -p 8080:8080 jenkins/jenkins:lts-alpine
+
+
