@@ -18,14 +18,14 @@ scpup2 ()
 # FileSearch
 f() {
     if [ $# -eq 1 ]; then
-        find . -iname "*$1*"
+        find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
     fi
 
     #find $SEARCHPATH -iname "*$1*" ${@:2}
     
     PARAM=$1
     f_it() {
-        find "$@" -iname "*$PARAM*"
+        find "$@" -iname "*$PARAM*"  | tee -a "/var/log/find/$PARAM.log"
     }
 
     shift
@@ -84,7 +84,7 @@ fp() {
         echo "find $SP $_OPTION \"*$1*\" ${@:$PARAMCOUNT}"
     fi
     echo
-    CMD=$(find $SP $_OPTION "*$1*")
+    CMD=$(find $SP $_OPTION "*$1*"  | tee -a "/var/log/find/$1.log")
     printf "${COLOR_Cyan}$CMD"
 }
 
