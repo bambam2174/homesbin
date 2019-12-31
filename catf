@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+FROM=$([ -n "$2" ] && echo "$2" || echo "0")
+FILE="$1"
+
+CMD="tail -n $(($(cat $FILE | wc -l) - $FROM)) $FILE"
+echo $CMD
+
+$(echo $CMD)

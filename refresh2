@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+source $HOME/.bash_vars &
+
