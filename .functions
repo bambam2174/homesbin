@@ -504,3 +504,40 @@ members () {
     done | grep "is a member" | cut -d " " -f 1; 
 } 
 
+FileOrDirectory2 () {
+	for i in "$@"
+	do
+		[ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+	done
+
+#    for i in "${@}/*"
+#    do
+#        [ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+#    done
+}
+
+#for f in $(ls); do echo "bumm $f"; done
+FileOrDirectory () {
+    for i in $(ls $@)
+     do
+         [ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+     done
+ }
+
+isFile () {
+    if [ -d "$1" ]
+    then
+        return 1
+    else
+        return 0
+    fi
+}
+
+ isDirectory () {
+     if [ -d "$1" ]
+     then
+         return 0
+     else
+         return 1
+     fi
+ }
