@@ -543,3 +543,7 @@ isFile () {
          return 1
      fi
  }
+dckrh () {
+	COMMAND="$1" 
+	docker $COMMAND --help
+}

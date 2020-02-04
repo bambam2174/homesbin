@@ -1,0 +1,25 @@
+#!/bin/bash
+
+ERR_CNT=0
+i=1
+sbst=$2
+while read line
+do
+    echo $i $line
+    CMD=$(echo ${sbst//\[URL\]/$line})
+    echo "command $CMD"
+    eval $CMD
+    ERR_CNT=$((ERR_CNT+$?))
+    echo "Error count $ERR_CNT "
+    #echo ${sbst/[URL]/$line}
+    #echo "\${sbst/[URL]/$line}"
+    i=$((i+1))
+done < $1
+
+if [ $ERR_CNT -eq 0 ] && [ -n "$3" ]; then
+    mv $1 ~/.Trash;
+    touch $1;
+fi
+
+# example call
+# handlefile2 2download.txt 'echo [URL]; echo $(echo [URL] | cut -d"=" -f2)'
