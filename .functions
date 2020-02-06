@@ -547,3 +547,17 @@ dckrh () {
 	COMMAND="$1" 
 	docker $COMMAND --help
 }
+
+listarray() { 
+    # listarray "$ARRAY" ; Don't forget the double quotes like in the sample
+    pARRAY="$1"; 
+    IFS=$'\n'; 
+    echo "${pARRAY[@]}" 
+}
+
+
+listarray2() {
+    pARRAY="$1";
+    IFS=$'\n';
+    echo "${pARRAY[*]}"
+}
