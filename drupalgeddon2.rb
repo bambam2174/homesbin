@@ -1,0 +1,1 @@
+/Users/sedatkilinc/Projects/github/_exploits/Drupalgeddon2/drupalgeddon2.rb

@@ -496,6 +496,11 @@ first() {
     ls -lhFaGtd * | head -n "$1" 
 }
 
+ffirst() {
+     OPTIONS="-lhFaGtd"
+     ls $OPTIONS * | head -n "$1"
+ }
+
 last() { 
     ls -lhFaGtd * | tail -n "$1" 
 }
