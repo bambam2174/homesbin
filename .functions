@@ -493,7 +493,12 @@ lsns() {
 }
 
 first() { 
-    ls -lhFaGtd * | head -n "$1" 
+    LINECOUNT=5
+    if [ -n "$1" ]; then
+        LINECOUNT=$1
+    fi
+    echo $LINECOUNT
+    ls -lhFaGtd * | head -n "$LINECOUNT" 
 }
 
 ffirst() {
@@ -567,3 +572,12 @@ listarray2() {
     echo "${pARRAY[*]}"
 }
 wwhich() { l `which "$1"`; }
+
+gituser () {
+	PATH2REPO='.'
+	if [ $# -eq 1 ]
+	then
+		PATH2REPO="$@"
+	fi
+	cat $PATH2REPO/.git/config | grep -i email | cut -d'=' -f 2
+}
