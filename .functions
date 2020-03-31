@@ -581,3 +581,6 @@ gituser () {
 	fi
 	cat $PATH2REPO/.git/config | grep -i email | cut -d'=' -f 2
 }
+addPath2Places() { 
+    echo "$1" >> /Users/sedatkilinc/__Places/paths.txt
+}
