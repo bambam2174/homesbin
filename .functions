@@ -571,7 +571,7 @@ listarray2() {
     IFS=$'\n';
     echo "${pARRAY[*]}"
 }
-wwhich() { l `which "$1"`; }
+wwhich() { ls -lahF `which "$1"`; }
 
 gituser () {
 	PATH2REPO='.'
@@ -583,4 +583,8 @@ gituser () {
 }
 addPath2Places() { 
     echo "$1" >> /Users/sedatkilinc/__Places/paths.txt
+}
+
+iterm2_print_user_vars() {
+  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
 }
