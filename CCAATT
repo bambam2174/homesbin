@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+export CAT=cat
+
+if  [ -n "`which ccat`" ]; then
+    echo `which ccat`;
+    CAT=ccat
+fi
