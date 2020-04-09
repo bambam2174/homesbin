@@ -1,0 +1,4 @@
+#!/bin/zsh
+gpg -c $1
+mv $1.gpg $1
+

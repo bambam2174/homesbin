@@ -1,0 +1,22 @@
+#!/bin/bash
+URL="${1}"
+LLINK=$(basename $URL).url
+LLINK=${LLINK//[^a-zA-Z\d\s.]/_}
+echo [InternetShortcut]
+echo $LLINK
+PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
+if [ -z "$PROTOCOL" ]; then
+	PROTOCOL=http://
+else
+	PROTOCOL=''
+fi
+
+if [ -n "$2" ]; then
+    cd "$2"
+fi
+
+echo URL=$PROTOCOL$1 > $LLINK
+
+ if [ -n "$2" ]; then
+     cd "$OLDPWD"
+ fi

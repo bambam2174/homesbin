@@ -493,11 +493,45 @@ lsns() {
 }
 
 first() { 
-    ls -lhFaGtd * | head -n "$1" 
+    LINECOUNT=5
+    WHERE=$PWD
+
+    if [ -n "$1" ]; then
+        LINECOUNT=$1
+    fi
+
+    if [ -n "$2" ]; then
+         WHERE="$2"
+    fi
+    
+    echo $LINECOUNT
+    echo $WHERE
+
+    ls -lhFaGt "$WHERE" | head -n "$(($LINECOUNT+1))" 
 }
 
+ffirst() {
+     OPTIONS="-lhFaGtd"
+     ls $OPTIONS * | head -n "$1"
+ }
+
 last() { 
-    ls -lhFaGtd * | tail -n "$1" 
+    LINECOUNT=5
+     WHERE=$PWD
+
+     if [ -n "$1" ]; then
+         LINECOUNT=$1
+     fi
+
+     if [ -n "$2" ]; then
+          WHERE="$2"
+     fi
+
+     echo $LINECOUNT
+     echo $WHERE
+ 
+     ls -lhFaGt "$WHERE" | tail -n "$LINECOUNT"
+    #ls -lhFaGtd * | tail -n "$1" 
 }
 members () { 
     dscl . -list /Users | while read user; do 
@@ -546,4 +580,35 @@ isFile () {
 dckrh () {
 	COMMAND="$1" 
 	docker $COMMAND --help
+}
+
+listarray() { 
+    # listarray "$ARRAY" ; Don't forget the double quotes like in the sample
+    pARRAY="$1"; 
+    IFS=$'\n'; 
+    echo "${pARRAY[@]}" 
+}
+
+
+listarray2() {
+    pARRAY="$1";
+    IFS=$'\n';
+    echo "${pARRAY[*]}"
+}
+wwhich() { ls -lahF `which "$1"`; }
+
+gituser () {
+	PATH2REPO='.'
+	if [ $# -eq 1 ]
+	then
+		PATH2REPO="$@"
+	fi
+	cat $PATH2REPO/.git/config | grep -i email | cut -d'=' -f 2
+}
+addPath2Places() { 
+    echo "$1" >> /Users/sedatkilinc/__Places/paths.txt
+}
+
+iterm2_print_user_vars() {
+  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
 }
