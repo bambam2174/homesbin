@@ -5,8 +5,8 @@ CAT=ccat
 PATH_COMMAND=$(which "$1")
 
 #if ![ -e "$(which ccat)" ]; then
-if [ -z $(which ccat) ]; then
-    CAT=cat
+if [ -z $(which ccat) ] || [ $# -gt 1 ]; then
+    CAT="cat -n"
 fi
 
 $CAT $PATH_COMMAND
