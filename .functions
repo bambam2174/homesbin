@@ -494,11 +494,20 @@ lsns() {
 
 first() { 
     LINECOUNT=5
+    WHERE=$PWD
+
     if [ -n "$1" ]; then
         LINECOUNT=$1
     fi
+
+    if [ -n "$2" ]; then
+         WHERE="$2"
+    fi
+    
     echo $LINECOUNT
-    ls -lhFaGtd * | head -n "$LINECOUNT" 
+    echo $WHERE
+
+    ls -lhFaGt "$WHERE" | head -n "$(($LINECOUNT+1))" 
 }
 
 ffirst() {
@@ -507,7 +516,22 @@ ffirst() {
  }
 
 last() { 
-    ls -lhFaGtd * | tail -n "$1" 
+    LINECOUNT=5
+     WHERE=$PWD
+
+     if [ -n "$1" ]; then
+         LINECOUNT=$1
+     fi
+
+     if [ -n "$2" ]; then
+          WHERE="$2"
+     fi
+
+     echo $LINECOUNT
+     echo $WHERE
+ 
+     ls -lhFaGt "$WHERE" | tail -n "$LINECOUNT"
+    #ls -lhFaGtd * | tail -n "$1" 
 }
 members () { 
     dscl . -list /Users | while read user; do 
