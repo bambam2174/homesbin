@@ -36,5 +36,5 @@ read -d '' WEBLOC <<EOF
 
 EOF
 
-echo ${WEBLOC/\[URL\]/$PROTOCOL$1} > $LLINK
+echo ${WEBLOC/\[URL\]/$PROTOCOL$1} > "$LLINK"
 
