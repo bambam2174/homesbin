@@ -627,3 +627,4 @@ savelink2() {
     echo "$TARGET"
     createlink "$1" "$TARGET";
 }
+countchar() { echo "$1" | wc -c; }
