@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Number of parameters: $# also in curly braces ${s#}. \nPATH with \$-sign inside the curly braces and also outside of them   ";
 BOTTOM=0
 TOP=0
 CAT=cat
