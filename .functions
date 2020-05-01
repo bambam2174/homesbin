@@ -507,11 +507,11 @@ first() {
     echo $LINECOUNT
     echo $WHERE
 
-    ls -lhFaGt "$WHERE" | head -n "$(($LINECOUNT+1))" 
+    ls -lhFaGct "$WHERE" | head -n "$(($LINECOUNT+1))" 
 }
 
 ffirst() {
-     OPTIONS="-lhFaGtd"
+     OPTIONS="-lhFaGctd"
      ls $OPTIONS * | head -n "$1"
  }
 
@@ -530,7 +530,7 @@ last() {
      echo $LINECOUNT
      echo $WHERE
  
-     ls -lhFaGt "$WHERE" | tail -n "$LINECOUNT"
+     ls -lhFaGct "$WHERE" | tail -n "$LINECOUNT"
     #ls -lhFaGtd * | tail -n "$1" 
 }
 members () { 
