@@ -617,12 +617,18 @@ addPath2Places() {
 iterm2_print_user_vars() {
   iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
 }
-savelink() { createlink "$1" ~/Desktop/LINKS; }
+savelink() { 
+    TARGET='';
+    if [ -n $2 ]; then
+        TARGET="$2";
+    fi
+    createlink "$1" ~/Desktop/LINKS/$TARGET; 
+}
 
 savelink2() {
     TARGET="$HOME/Desktop/LINKS/";
     if [ -n "$2" ]; then
-        TARGET="$2"
+        TARGET="$TARGET/$2"
     fi
     echo "$TARGET"
     createlink "$1" "$TARGET";
