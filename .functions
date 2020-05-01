@@ -628,3 +628,4 @@ savelink2() {
     createlink "$1" "$TARGET";
 }
 countchar() { echo "$1" | wc -c; }
+aliasesStartingWith() { LETTER="$1"; alias | grep -e "^$LETTER"; } 
