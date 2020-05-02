@@ -507,7 +507,7 @@ first() {
     echo $LINECOUNT
     echo $WHERE
 
-    ls -lhFaGct "$WHERE" | head -n "$(($LINECOUNT+1))" 
+    ls -lhFaGct "$WHERE/" | head -n "$(($LINECOUNT+1))" 
 }
 
 ffirst() {
