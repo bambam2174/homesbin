@@ -621,6 +621,7 @@ savelink() {
     TARGET='';
     if [ -n $2 ]; then
         TARGET="$2";
+        mkdirlinks $(dirname $TARGET);
     fi
     createlink "$1" ~/Desktop/LINKS/$TARGET; 
 }
@@ -629,9 +630,18 @@ savelink2() {
     TARGET="$HOME/Desktop/LINKS/";
     if [ -n "$2" ]; then
         TARGET="$TARGET/$2"
+        echo $TARGET;
+        if ! [ -d " $TARGET" ]; then
+            mkdir $(dirname $TARGET);
+        fi
     fi
     echo "$TARGET"
     createlink "$1" "$TARGET";
 }
 countchar() { echo "$1" | wc -c; }
 aliasesStartingWith() { LETTER="$1"; alias | grep -e "^$LETTER"; } 
+
+mkdirlinks () {
+	mkdir "$LINKS/$1"
+}
+
