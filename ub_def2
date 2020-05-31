@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+r=0
+i=0
+while [ $r -eq 0 ]; do 
+    ub_def "$1" $i
+    r=$?
+    i=$((i+1))
+    echo ""
+done
+
