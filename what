@@ -1,4 +1,18 @@
 #!/bin/bash
 
-echo "$@" "$@"
+echo "$@" 
+dirname "$@"
+
+echo "--------------------" 
+if [ -d "$@" ]; then
+    echo "$@ is directory"
+fi
+
+if [ -L "$@" ]; then
+    echo "-L $@ is true...SymLink"
+fi
+
+if [ -h "$@" ]; then
+    echo "-h $@ is true..symlink"
+fi
 
