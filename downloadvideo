@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+FILENAME='-o "%(title)s.%(ext)s"'
+
+if [ -n "$2" ]; then
+     FILENAME='-o '$2'.%(ext)s'
+fi
+
+CMD="youtube-dl $1 $FILENAME"
+
+#${CMD[@]}
+#
+$(echo $CMD)
+
