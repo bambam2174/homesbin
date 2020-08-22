@@ -240,7 +240,7 @@ lna() {
 
 show() { 
     #cat ~/unutmalist/*$1*;
-    tail -n +1  ~/unutmalist/*$1*;
+    tail -n +1  ~/unutmalist/**/*$1*;
 }
 
 show2() {
