@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+SP='./'
+
+echo $#
+PARAMCOUNT=$#
+
+LOGPATH="/var/log/find/$1.log"
+
+if [ -n $2 ]
+then
+	SP=$(abspath $2)
+	PARAMCOUNT=3
+    FOLDER2CREATE=$(basename "$2")
+    TARGETPATH="/var/log/find/$FOLDER2CREATE"
+    mkdir -p "$TARGETPATH" 2> /dev/null && LOGPATH="$TARGETPATH/$1.log"
+    echo "LOGPATH $LOGPATH"
+    echo "SP $SP"
+    echo "FOLDER2CREATE $FOLDER2CREATE"
+    exit 0
+fi
+if [ $# -gt 2 ]
+then
+	_OPTION="-name"
+else
+	_OPTION="-iname"
+fi
+if [ -n "$COLOR_Cyan" ]
+then
+	printf "${COLOR_LightGreen}find ${COLOR_Yellow}$SP ${COLOR_Cyan}$_OPTION ${COLOR_LightCyan}\"*${COLOR_LightGreen}$1${COLOR_LightCyan}*\"${COLOR_NC} ${@:$PARAMCOUNT}"
+else
+	echo "find $SP $_OPTION \"*$1*\" ${@:$PARAMCOUNT}"
+fi
+echo
+CMD=$(find $SP $_OPTION "*$1*"  | tee -a $LOGPATH)
+printf "${COLOR_Cyan}$CMD"

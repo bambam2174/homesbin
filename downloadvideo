@@ -1,13 +1,32 @@
-#!/bin/zsh
+#!/bin/bash
+
+ALL="$@"
+SECOND="$2"
+PREV_IFS="$IFS"
+
+IFS=' '; 
+read -ra my_array <<< "$@"
+COUNT=0
 
 FILENAME='-o "%(title)s.%(ext)s"'
 
 if [ -n "$2" ]; then
      FILENAME='-o '$2'.%(ext)s'
 fi
+if [ $# -eq 4 ]; then
+    echo "Anzahl 4"
+    echo $ALL
+    echo $SECOND
+    echo $FILENAME
+    PARAMS="${ALL/$SECOND/$FILENAME}"
+    CMD="youtube-dl $PARAMS"
+elif [ $# -eq 2 ]; then
+    CMD="youtube-dl $1 $FILENAME"
+else
+    CMD="youtube-dl $@"
+fi
 
-CMD="youtube-dl $1 $FILENAME"
-
+IFS=$PREV_IFS
 #${CMD[@]}
 #
 $(echo $CMD)

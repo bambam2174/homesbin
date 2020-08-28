@@ -13,7 +13,7 @@ SEARCHTERM=${1// /%20}
 if [ $# -gt 2 ];then
     echo "$SEARCHTERM"
 fi
-curl -s http://api.urbandictionary.com/v0/define?term="$SEARCHTERM" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
+curl -s http://api.urbandictionary.com/v0/define?term="$SEARCHTERM" 
 
 ERRORR="$?"
 
