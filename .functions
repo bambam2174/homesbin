@@ -238,7 +238,7 @@ lna() {
     lna_it "$PARAM1" "$PARAM2"
 }
 
-show() { 
+show_() { 
     #cat ~/unutmalist/*$1*;
     tail -n +1  ~/unutmalist/**/*$1*;
 }
@@ -246,6 +246,12 @@ show() {
 show2() {
     #cat ~/unutmalist/*$1*;
 tail -n 1  ~/unutmalist/*$1*;
+}
+
+show () {
+	echo foo > "$HOME/unutmalist/foo$1.tmp"
+	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
+	rm "$HOME/unutmalist/foo$1.tmp"
 }
 
 cheat() { 
