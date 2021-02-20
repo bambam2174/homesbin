@@ -17,7 +17,6 @@ then
     echo "LOGPATH $LOGPATH"
     echo "SP $SP"
     echo "FOLDER2CREATE $FOLDER2CREATE"
-    exit 0
 fi
 if [ $# -gt 2 ]
 then

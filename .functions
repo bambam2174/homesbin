@@ -1,4 +1,8 @@
 #!/bin/bash
+
+[ -z $ALIASES_SET ] && source ~/.bash_aliases
+[ -z $BASHVARS ] && source $HOME/.bash_vars
+
 export CLICOLOR=1
 scpup2 () 
 { 
@@ -65,7 +69,9 @@ fpx() {
 
 fp() {
     SP='./'
-    echo $#
+    if isDebug; then
+        echo "Parameters: $# arguments";
+    fi
     # PARAMCOUNT=$(($#+1))
     PARAMCOUNT=$#
     # PARAMCOUNT=$(($#-1))
@@ -80,14 +86,13 @@ fp() {
         _OPTION="-iname"
     fi
 
-    if [ -n "$COLOR_Cyan" ] ; then
+    if isDebug && [ -n "$COLOR_Cyan" ] ; then
         printf "${COLOR_LightGreen}find ${COLOR_Yellow}$SP ${COLOR_Cyan}$_OPTION ${COLOR_LightCyan}\"*${COLOR_LightGreen}$1${COLOR_LightCyan}*\"${COLOR_NC} ${@:$PARAMCOUNT}"
-    else
+    elif isDebug; then
         echo "find $SP $_OPTION \"*$1*\" ${@:$PARAMCOUNT}"
     fi
-    echo
-    CMD=$(find $SP $_OPTION "*$1*"  | tee -a "/var/log/find/$1.log")
-    printf "${COLOR_Cyan}$CMD"
+    RESULT=$(find $SP $_OPTION "*$1*"  | tee -a "/var/log/find/$1.log")
+    printf "${COLOR_Cyan}$RESULT"
 }
 
 param() {
@@ -251,7 +256,7 @@ tail -n 1  ~/unutmalist/*$1*;
 show () {
 	echo foo > "$HOME/unutmalist/foo$1.tmp"
 	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
-	rm "$HOME/unutmalist/foo$1.tmp"
+	rm -f "$HOME/unutmalist/foo$1.tmp"
 }
 
 cheat() { 
@@ -492,6 +497,10 @@ isNumber() {
   }
 ggg() { export fff=vedat; }
 
+exx() {
+        eval "export $1=$2"
+}
+
 lsns() {
     [ -n "$1" ] && SP="$1" || SP="."
     [ -n "$2" ] && EXT="$2" || EXT=".*"
@@ -509,11 +518,11 @@ first() {
     if [ -n "$2" ]; then
          WHERE="$2"
     fi
-    
-    echo $LINECOUNT
-    echo $WHERE
-
-    ls -lhFaGct "$WHERE/" | head -n "$(($LINECOUNT+1))" 
+    if isDebug; then    
+        echo $LINECOUNT
+        echo $WHERE
+    fi
+    ls -lhFaGct "$WHERE/" | head -n "$(($LINECOUNT+1))" | tail -n $LINECOUNT
 }
 
 ffirst() {
@@ -523,8 +532,7 @@ ffirst() {
 
 last() { 
     LINECOUNT=5
-     WHERE=$PWD
-
+    WHERE=$PWD
      if [ -n "$1" ]; then
          LINECOUNT=$1
      fi
@@ -532,9 +540,10 @@ last() {
      if [ -n "$2" ]; then
           WHERE="$2"
      fi
-
-     echo $LINECOUNT
-     echo $WHERE
+     if isDebug; then
+         echo $LINECOUNT
+         echo $WHERE
+     fi
  
      ls -lhFaGct "$WHERE" | tail -n "$LINECOUNT"
     #ls -lhFaGtd * | tail -n "$1" 
@@ -651,3 +660,205 @@ mkdirlinks () {
 	mkdir "$LINKS/$1"
 }
 
+func_tmpdirr ()
+{
+    echo "run"
+    : ${TMPDIR=/Users/sedatkilinc/tmp}
+    {
+        tmp=$TMPDIR
+    }
+}
+
+_debug () {
+	STATE="off"
+	if [ "$DEBUG" = $TRUE ]
+	then
+		STATE="on"
+	fi
+	echo "DEBUG is $STATE"
+}
+
+debug () {
+    echo -n "DEBUGGING is "
+    if isDebug; 
+    then 
+        echo "on"; 
+    else 
+        echo "off";
+    fi
+}
+
+# absolute value
+abs() { 
+    echo "$1" | tr -d - 
+}
+
+# negating command exit status
+# successfully executed command exits with 0 an failed one with 1
+# so here, the negating is not mathematically but in the sense of obtaining the opposite
+# possible that the YAGNI principle will kick my ass
+_negate() {
+    echo $(( ($1 - 1) * -1 ))
+}
+
+negate () {
+    echo $(( $1 * -1  ))
+}
+
+
+_isTrue() {
+    if [ "$1" = $TRUE ]; then
+        return 0
+    else
+        return 1
+    fi
+    #[ $1 = 1 ]
+    #RESULT=$(_negate $?)
+    #echo "Param $1. Result $RESULT"
+}
+
+isDebug() {
+    if [ "$DEBUG" -eq $TRUE ] 2> /dev/null || [ "$DEBUG" = $TRUE ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+setDebug() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$TRUE
+}
+
+unsetDebug() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$FALSE
+}
+
+setProd() {
+#     NEWSTATE=$(lowercase $1)
+     DEBUG=$FALSE
+}
+
+unsetProd() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$TRUE
+}
+
+lowercase() { echo "$1" | tr '[:upper:]' '[:lower:]'; }
+uppercase() { echo "$1" | tr '[:lower:]' '[:upper:]'; }
+
+listGBElements() {
+    DEPTH=1
+    if [ $# -gt 1 ];
+    then
+        DEPTH=$2
+    fi
+
+    du -h -d $DEPTH "$1" | grep '[0-9]G\>'
+}
+
+listGBElements2() {
+    isDebug && echo \$#\ \=\ $#;
+    echo "\$0 = $0, \$1 = $1, \$2 = $2, \$3 = $3, \$4 = $4, \$5 = $5, \$6 = $6"
+    while [[ $# -gt 0 ]];# && [[ "$1" == "--"* ]];
+    do
+        OPT=$1
+        shift;
+        echo $OPT
+    done
+
+ }
+
+webextrun() { 
+    BROWSER=/Applications/Firefox.app
+    if [ -n "$1" ]; then
+        BROWSER="$1"
+    fi
+
+    web-ext run --firefox="$BROWSER/Contents/MacOS/firefox-bin" 
+}
+
+mans2add() { 
+    echo "man $1" >> $mans2read; 
+}
+
+searchFolderForGitRepoX() { for i in $(ls -1 "$1"); do [ -e "$i/.git" ] && echo "$i is a repo" && giturlp $i || echo "$i is a NOT repo"; done }
+
+searchFolderForGitRepo() { 
+    for i in $(ls -1 "$1"); 
+    do 
+        [ -e "$i/.git" ] && 
+            echo "$i is a repo" && 
+            giturlp "$i" || 
+            echo "$i is a NOT repo"; 
+    done 
+}
+
+searchreplace() { 
+    SOURCETEXT="$1"
+    DELIMITER="$2"
+    REPLACER=$([ -n "$3" ] && $(echo "$3") || echo ";")
+    echo "$1" | perl -pe "s/$2{1,}/$REPLACER/g" 
+}
+
+addalias () {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: $(basename "$0") alias command"
+        return 1
+    fi
+    ALIASESFILE=$HOME/.bash_aliases
+    WC_ORIG=$(cat $ALIASESFILE | wc -l)
+    TMPFOLDER=$HOME/tmp/.bashstuff
+    mkdir -p $TMPFOLDER
+    TMPFILE=$TMPFOLDER/bash_aliases.prev
+    \cp -f $ALIASESFILE $TMPFILE
+
+    echo "alias $1='$2'" >> $ALIASESFILE
+
+    WC_NEW=$(cat $ALIASESFILE | wc -l)
+    if [[ $WC_NEW -lt $WC_ORIG ]]; then
+        echo "Error: New aliases-file didn't get extended"
+        echo "Number of lines of previous aliases-file $WC_ORIG"
+        echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
+        echo "Backing up new aliases-file $ALIASESFILE to ${TMPFILE}.backup\! for further analysis."
+        \cp -f $ALIASESFILE "${TMPFILE}.backup\!"
+        [[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
+        echo "Restoring previous aliases-file..."
+        \cp -f $TMPFILE $ALIASESFILE
+        [[ $? -eq 0 ]] && echo "...previous aliases-file $TMPFILE got restored to $ALIASESFILE" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
+    fi
+
+
+
+}
+
+useOfTripple_Chevrons_LeftArrows() {
+    CMD='ccat < $(echo $PWD)';
+    echo "Executing $CMD";
+    eval "$CMD"
+    
+    CMD='ccat << $(echo $PWD)';
+    echo "Executing $CMD";
+    eval "$CMD"
+
+    CMD='ccat <<< $(echo $PWD)';
+    echo "Executing $CMD";
+    ccat <<< $(echo $PWD);
+}
+
+find_aliasi_by_whole_word() {
+    echo "alias | grep -i \\\'\\\b$1\\\b\\\'"
+}
+
+strip_protocol () {
+	echo ${$(echo $1 | cut -d ":" -f2)/\/\//}
+}
+
+string_contains() { 
+	if [[ $1 == *"$2"* ]]; then 
+		return 0; 
+	else 
+		return 1; 
+	fi 
+}

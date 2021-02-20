@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ $DEBUG -eq 1 ]
+then
+    echo "Debug mode is set"]
+fi
+
 if [ -z $TO_DOWNLOAD_FILE ]; then
     #TO_DOWNLOAD_FILE=$(cat ~/.downloadfolder) 2> /dev/null
     . ~/.downloadfolder

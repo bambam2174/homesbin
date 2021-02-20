@@ -6,6 +6,11 @@ if [ $# -eq 0 ] ||  [ $# -lt 3 ]; then
     exit 1
 fi
 
+if [ -e "$HOME/unutmalist/$1.txt" ]; then
+    echo "" >> "$HOME/unutmalist/$1.txt"
+fi
+
+
 echo "$2" >> "$HOME/unutmalist/$1.txt"
 echo "$3" >> "$HOME/unutmalist/$1.txt"
 

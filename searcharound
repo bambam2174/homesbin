@@ -4,7 +4,7 @@ echo "Number of parameters: $# also in curly braces ${s#}. \nPATH with \$-sign i
 BOTTOM=0
 TOP=0
 CAT=cat
-
+LOG="$HOME/tmp/search_"$1.txt
 if  [ -n "`which ccat`" ]; then 
     echo `which ccat`;
     CAT=ccat
@@ -28,9 +28,9 @@ echo
 if [ -f "$2" ]; then
     echo "$CAT $2 | grep -i -B $BOTTOM -A $TOP $1 "
     echo "-------------------------------------------"
-    $CAT "$2" | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null
+    $CAT "$2" | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null | tee $LOG
 elif [ -d "$2" ]; then
     echo "grep -iRIs \"$1\" \"$2\" -B $BOTTOM -A $TOP"
     echo "-------------------------------------------"
-    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP --exclude-dir .git 2> /dev/null
+    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP --exclude-dir .git 2> /dev/null | tee $LOG
 fi

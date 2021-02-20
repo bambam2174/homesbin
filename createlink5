@@ -1,5 +1,12 @@
-#!/bin/bash
+#!/bin/zsh
 LLINK=$(basename $1).webloc
+
+if [ -n "$2" ]; then
+    IFS='/' read -r -A array <<< "$2"
+    if [ ${#array[@]} -gt 2 ] && ! [ -d "$(dirname $2)" ]; then
+        mkdir -p "$(dirname $2)"
+    fi
+fi
 
 if [ -n "$2" ] && [ -d "$2" ]; then
     LLINK="$2/$LLINK"
@@ -7,7 +14,7 @@ elif [ -n "$2" ]; then
     LLINK="$2.webloc"
 fi
 
-echo [InternetShortcut]
+echo "[InternetShortcut]"
 echo $LLINK
 PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
                                 #echo "Protocol PRE : "$PROTOCOL
@@ -35,6 +42,6 @@ read -d '' WEBLOC <<EOF
 </plist>
 
 EOF
-
+echo "$LLINK"
 echo ${WEBLOC/\[URL\]/$PROTOCOL$1} > "$LLINK"
 
