@@ -862,3 +862,14 @@ string_contains() {
 		return 1; 
 	fi 
 }
+
+get_subtitle_all () {
+	PARAM="$1"
+	[[ -z $sub_formats ]] && sub_formats=('vtt' 'srv1' 'srv2' 'srv3' 'ttml' )
+	[[ -n $2 ]] && LANG=$2  || LANG="de" 
+	string_contains $PARAM "youtube" && URL="$PARAM" || URL="https://www.youtube.com/watch\?v\=$PARAM";
+	for f in $sub_formats
+	do
+		youtube-dl --skip-download --write-auto-sub --no-check-certificate --sub-lang $LANG --sub-format $f https://www.youtube.com/watch\?v\=$1
+	done
+}
