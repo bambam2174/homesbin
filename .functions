@@ -311,7 +311,7 @@ opentimedoc() {
     if [ ${#1} -ne 0 ] && [ -r $1 ]; then
         CURRENT_PATH=$1;
     elif [ "$1" == "-h" ]; then
-        echo "usage: $FUNCNAME [<path to folder containing excel sheets>]"
+        echo "usage: $0 [<path to folder containing excel sheets>]"
         echo "Help: finds the last edited excel sheet in the folder"
         echo "      if no folder is given, then \"$STANDARD_FOLDER\" is used"
         return 0
@@ -325,7 +325,7 @@ opentimedoc() {
     if [ $NUM -eq 0 ]; then
     #if [ ! -f $CURRENT_PATH/*.xls* ]; then
         echo "No Excel Sheet found"
-        echo "usage: $FUNCNAME [<path to folder containing excel sheet>]"
+        echo "usage: $0 [<path to folder containing excel sheet>]"
         echo
         return 1
     fi
@@ -510,6 +510,8 @@ lsns() {
 first() { 
     LINECOUNT=5
     WHERE=$PWD
+
+    H="-h"
 
     if [ -n "$1" ]; then
         LINECOUNT=$1
@@ -848,7 +850,11 @@ useOfTripple_Chevrons_LeftArrows() {
 }
 
 find_aliasi_by_whole_word() {
-    echo "alias | grep -i \\\'\\\b$1\\\b\\\'"
+    CMD="alias | grep -i \\\'\\\b$1\\\b\\\'"
+    echo $CMD
+    CMD="alias | grep -i '\b$1\b'"
+    echo "$CMD"
+    $(echo $CMD)
 }
 
 strip_protocol () {
@@ -864,12 +870,61 @@ string_contains() {
 }
 
 get_subtitle_all () {
-	PARAM="$1"
-	[[ -z $sub_formats ]] && sub_formats=('vtt' 'srv1' 'srv2' 'srv3' 'ttml' )
+	pVIDEO="$1"
+	pFORMATS="$3"
+
+	[[ -z $pFORMATS ]] && sub_formats=('vtt' 'srv1' 'srv2' 'srv3' 'ttml' ) || sub_formats=( "${pFORMATS[@]}" );
 	[[ -n $2 ]] && LANG=$2  || LANG="de" 
-	string_contains $PARAM "youtube" && URL="$PARAM" || URL="https://www.youtube.com/watch\?v\=$PARAM";
+	string_contains $pVIDEO "youtube" && URL="$pVIDEO" || URL="https://www.youtube.com/watch\?v\=$pVIDEO";
 	for f in $sub_formats
 	do
-		youtube-dl --skip-download --write-auto-sub --no-check-certificate --sub-lang $LANG --sub-format $f https://www.youtube.com/watch\?v\=$1
+		CMD="youtube-dl --skip-download --write-auto-sub --no-check-certificate --sub-lang $LANG --sub-format $f https://www.youtube.com/watch\?v\=$1"
+		if isDebug; then
+			echo $f;
+			echo $CMD;
+		fi
 	done
+}
+
+write_img_2_storage() {
+	IMG="$1"
+	DISKNR="$2"
+	FUNCNAME=$0
+	isDebug && echo $@ 
+	if [ $# -eq 2 ] && string_contains "$(file $IMG)" "MBR boot sector" &&  [[ $(hdiutil imageinfo -format $IMG) == "RAW*" ]] && isNumeric "$DISKNR"; 
+	then        
+        CMD="sudo dd if=${IMG} of=/dev/rdisk${DISKNR} bs=1m"
+        isDebug && echo $CMD
+        $(echo $CMD)
+    elif [ "$1" = "-h" ] || [ "$1" = "--help" ]
+	then
+		_print_usage
+        return 0
+    else
+    	echo "Errors: look up usage with $FUNCNAME --help"
+        [ $# -lt 2 ] && echo "arguments missing"
+        [ $# -gt 0 ] && ! string_contains "$(file $IMG)" "MBR boot sector" && echo "MBR boot sector is missing in $IMG"
+        [ $# -gt 0 ] && ! [[ $(hdiutil imageinfo -format $IMG) == "RAW*" ]] && echo "do the conversion with echo \"hdiutil convert -format UDRW -o $IMG source.iso\""
+        ! isNumeric "$DISKNR" && echo "$DISKNR should be a number: execute \"diskutil list\" again and look for the right number"
+        return 1
+    fi
+
+    _print_usage() {
+    	echo "usage: $FUNCNAME <path to bootable disk image> <disk-nr of removable storage device (e.g. USB-Stick)"
+		echo "To find out the disk number execute diskutil list w/ and w/o the storage device plugged in"
+		echo "Look for an entry like \"/dev/disk4 (external, physical)\""
+		echo "the example above would lead to the disk-nr »4«"
+		echo "Create the diskimage-file with"
+		echo "hdiutil convert -format UDRW -o target.img source.iso"
+		echo ""
+    }
+    
+}
+
+mancat () {
+    MAN_OUTPUT_FOLDER="$TMP/manoutput"
+    [ -d $MAN_OUTPUT_FOLDER ] || mkdir -p "$MAN_OUTPUT_FOLDER"
+    TARGET_MAN_FILE="$MAN_OUTPUT_FOLDER/man_${1}.txt"
+    [ -f $TARGET_MAN_FILE ] || man "$1" > "$TARGET_MAN_FILE"
+	cat "$MAN_OUTPUT_FOLDER/man_${1}.txt"
 }
