@@ -928,3 +928,22 @@ mancat () {
     [ -f $TARGET_MAN_FILE ] || man "$1" > "$TARGET_MAN_FILE"
 	cat "$MAN_OUTPUT_FOLDER/man_${1}.txt"
 }
+
+update_video_content () {
+	cd $MOVIESe;
+	ls -G -1 ./**/*.(mp4|mkv|webm|mov) > $MOVIESe/TOC.txt;
+	cd $OLDPWD;
+}
+
+phpserve() {
+    URL=$([ -n "$1" ] && echo "$1" || echo "localhost")
+    PORT=$([ -n "$2" ] && echo "2" || echo "8080")
+    DOCROOT=$([ -n "$3" ] && echo "3" || echo ".")
+    php -S "$URL:$PORT" -t $DOCROOT
+}
+
+chhE () {
+	CMD='history | grep -i -E "[^a-zA-Z0-9_]{1}'$1'[^a-zA-Z0-9_]{1}"';
+	echo $CMD;
+	eval $CMD;
+}
