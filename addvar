@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+source ~/bin/.functions
+
+if [ $# -eq 0 ] ||  [ $# -lt 2 ]; then
+    echo "$# is $((2-$#)) too few"
+    echo "Usage: $(basename $0) name value"
+    exit 1
+else
+    PNAME="$1"
+    PVALUE="$2"
+    ! string_contains $PVALUE "(" && PVALUE=${PVALUE// /\\ }
+fi
+
+echo "export $PNAME=$PVALUE " >>  $BASHVARS
+
+
