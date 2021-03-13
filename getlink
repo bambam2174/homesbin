@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+WEBLOC="$1"
+
+if [ $# -gt 1 ]; then
+    WEBLOC="$2"
+    OPTION="$1"
+fi
+
+URL_NODE=$(cat "$WEBLOC" | grep -E '<.+string>')
+
+URL1=${URL_NODE//<string>/ }
+URL2=${URL1//<\/string>/ }
+URL=${URL2// /}
+echo $OPTION $URL
