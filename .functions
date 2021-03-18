@@ -510,25 +510,32 @@ lsns() {
 first() { 
     LINECOUNT=5
     WHERE=$PWD
-
-    H="-h"
+    H=''
 
     if [ -n "$1" ]; then
-        LINECOUNT=$1
+        PARAM1="$1";startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
+        #LINECOUNT=$1
     fi
 
     if [ -n "$2" ]; then
-         WHERE="$2"
+        PARAM2="$2";startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
+        #WHERE="$2"
     fi
+
+    if [ -n "$2" ]; then
+        PARAM3="$3";startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
+    fi
+
     if isDebug; then    
         echo $LINECOUNT
         echo $WHERE
     fi
-    ls -lhFaGct "$WHERE/" | head -n "$(($LINECOUNT+1))" | tail -n $LINECOUNT
+    ls -l${H}FAGct "$WHERE" | head -n "$(($LINECOUNT+1))"
 }
 
 ffirst() {
-     OPTIONS="-lhFaGctd"
+    [ -n "$2" ] && H="h" || H=''
+     OPTIONS="-l${H}FAiGctd"
      ls $OPTIONS * | head -n "$1"
  }
 
@@ -547,7 +554,9 @@ last() {
          echo $WHERE
      fi
  
-     ls -lhFaGct "$WHERE" | tail -n "$LINECOUNT"
+    [ -n "$3" ] && H="h" || H=''
+    
+    ls -l${H}FAGct "$WHERE" | tail -n "$LINECOUNT"
     #ls -lhFaGtd * | tail -n "$1" 
 }
 members () { 
@@ -947,3 +956,44 @@ chhE () {
 	echo $CMD;
 	eval $CMD;
 }
+
+allcommands () {
+	for i in $(list_path)
+	do
+		echo "==> $i <=="
+		for cmd in $(ls -1 $i)
+		do
+			echo "$cmd"
+			isDebug && echo "$i/$cmd"
+		done
+	done
+}
+
+all_commands () {
+    for i in $(list_path)
+    do
+        echo "==> $i <=="
+        ls -1l $i
+        #for cmd in $(ls -1 $i)
+        #   do
+        #       echo "$cmd"
+        #       isDebug && echo "$i/$cmd"
+        #   done
+    done
+}
+
+pink2() { echo "\033[1;35m$1\033[00m"; }
+pink() { echo "${COLOR_Purple}${1}${W}"; }
+red() { echo "${COLOR_Red}${1}${W}"; }
+blue() { echo "${COLOR_Blue}${1}${W}"; }
+green() { echo "${COLOR_Green}${1}${W}"; }
+
+
+Pink() { echo "${COLOR_Purple}${1}${W}"; }
+
+startsWithDash () {
+	PARAM="$1"
+	isDebug && echo $PARAM
+	[[ $PARAM[1] = "-" ]] && return 0 || return 1
+}
+
