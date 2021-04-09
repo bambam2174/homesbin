@@ -1,9 +1,13 @@
 #!/bin/bash
 
-[ -z $ALIASES_SET ] && source ~/.bash_aliases
-[ -z $BASHVARS ] && source $HOME/.bash_vars
+#source $HOME/.debug_state
+{ isDebug && echo "Script name $0" } 2> /dev/null
 
 export CLICOLOR=1
+
+[[ -z "$ALIASES_SET" ]] && source ~/.bash_aliases
+[[ -z "$BASHVARS" ]] && source ~/.bash_vars
+
 scpup2 () 
 { 
 	if [ ! $1 ]; then
@@ -45,22 +49,22 @@ fpx() {
     SP='./'
     echo "$1"
     echo "$2"
-    if [ -z $1 ]; then
+    if [[ -z $1 ]]; then
         echo "-z $1 true"
     else
         echo "-z $1 false"
     fi
-    if [ -z $2 ]; then
+    if [[ -z $2 ]]; then
         echo "-z $2 true"
     else
         echo "-z $2 false"
     fi
-    if [ -n $1 ]; then
+    if [[ -n $1 ]]; then
         echo "-n $1 true"
     else
         echo "-n $1 false"
     fi
-    if [ -n $2 ]; then
+    if [[ -n $2 ]]; then
         echo "-n $2 true"
     else
         echo "-n $2 false"
@@ -79,8 +83,8 @@ fp() {
         SP=$(abspath $2)
         PARAMCOUNT=3
     fi
-
-    if [ $# -gt 2 ]; then
+å
+    if [[ $# -gt 2 ]]; then
         _OPTION="-name"
     else
         _OPTION="-iname"
@@ -870,8 +874,8 @@ strip_protocol () {
 	echo ${$(echo $1 | cut -d ":" -f2)/\/\//}
 }
 
-string_contains() { 
-	if [[ $1 == *"$2"* ]]; then 
+string_contains() {
+	if [[ $1 == *"$2"* ]] || [[ $2 == *"$1"* ]]; then
 		return 0; 
 	else 
 		return 1; 
@@ -940,7 +944,7 @@ mancat () {
 
 update_video_content () {
 	cd $MOVIESe;
-	ls -G -1 ./**/*.(mp4|mkv|webm|mov) > $MOVIESe/TOC.txt;
+	#ls -G -1 ./**/*.(mp4|mkv|webm|mov) > $MOVIESe/TOC.txt;
 	cd $OLDPWD;
 }
 
@@ -997,3 +1001,136 @@ startsWithDash () {
 	[[ $PARAM[1] = "-" ]] && return 0 || return 1
 }
 
+
+_progressed () {
+    DOWNLOAD_FILE="$1"
+    [[ -f $DOWNLOAD_FILE ]] || { echo "usage $0 <path 2 file getting downloaded>"; return 1 }
+    TMP_FILE=$TMP/.byte_counter.txt
+	CURRENT=$(ls -s $DOWNLOAD_FILE | cut -d ' ' -f1)
+    [[ -f $TMP_FILE ]] || echo $CURRENT > $TMP_FILE
+	PREVIOUS=$(cat  $TMP_FILE)
+	PROGRESS=$(($CURRENT-$PREVIOUS))
+    echo "$CURRENT B - $PREVIOUS B"
+	echo "$PROGRESS Bytes"
+	echo "$(($PROGRESS/1024)) KiloBytes"
+	echo $CURRENT > $TMP_FILE
+}
+
+getSymlinks () {
+	FOLDER='.'
+	[[ -d "$1" ]] && FOLDER="$1"
+	ls -G -lAct $FOLDER/ | grep --color=auto -E ^l
+}
+
+exists () {
+	[[ -n "$1" ]] && return 0 || return 1
+}
+
+
+add-function () {
+	function_exists "$1" && { echo "$1 already exists."; which $1; return 1 }
+	FUNCTIONS=$BIN/.functions
+	echo >> $FUNCTIONS
+	FUNCTION_NAME=$1
+	which $FUNCTION_NAME >> $FUNCTIONS
+}
+
+isFunction () {
+	WHICHRESULT=$(which "$1")
+    if isDebug; then
+        echo "1: $1"
+        echo "WHICHRESULT: \n$WHICHRESULT"
+        echo "wc -l = $(echo $WHICHRESULT | wc -l)"
+        echo -n "greater than 1 " && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && echo "return 0/true" || echo "return 1/false" 
+        echo -n "not containing 'not found' (exists) AND greater than 1 " && ! string_contains $WHICHRESULT 'not found' && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && echo "return 0/true" || echo "return 1/false"
+    fi
+	! string_contains $WHICHRESULT 'not found' && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && return 0 || return 1
+}
+
+function_exists() {
+    FUNC="$1"
+    FUNC_HEAD1="${FUNC}()"
+    FUNC_HEAD2="${FUNC} ()"
+    [[ $(cat $BIN/.functions | grep $FUNC_HEAD2 | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions | grep $FUNC_HEAD1 | wc -l) -eq 1 ]] && return 0 || return 1
+}
+
+secho () {
+	echo "Number of args ${#}"
+}
+
+createTOC-Video () {
+	IFS=$DELIMITER_ENDL
+	for i in $(ls -G -1 ./**/*.(mp4|mkv|webm|mov))
+	do
+		TMP_ROW="EXT-Movies,$(dirname $i),$(basename $i)"
+		echo $TMP_ROW | tee -a TOC-Tabelle2.csv
+	done
+}
+
+print_usage() {
+IFS=''
+read -r -d '' USAGE << EOT
+What does it do?
+The option "-D" opens a SOCKS port and tunnels it to the machine you are connected to.
+How can i use it?
+Go to the settings in your browser and look for proxy settings.
+Set as proxy server (Socks 5): 127.0.0.1 and port the port you defined with option "-D", 7070 in above example.
+
+That's all, all your traffic from your browser is now tunneled though your SSH connection!
+EOT
+echo $USAGE
+}
+
+ssh-proxy () {
+    usage "$0" "$#" 1 'user@your-server.com' "$(print_usage)" || return $?
+
+    ssh -D 7070 -p22 $1;
+
+}
+
+_command_exists() {
+	WHICHRESULT=$(which "$1" | head -n 1)
+	if string_contains $WHICHRESULT 'not found'
+	then
+		return 1
+	else
+		return 0
+	fi
+
+}
+
+video_audio_merge () {
+    usage "$0" "$#" 2 '<videofile> <audiofile> [<filetype>]' "merges videofile with audiofile to avi or other videofile" || return $?
+	MP4="$1" 
+	M4A="$2" 
+	EXT=avi
+    FILEEXT1=$(fileext $MP4)
+    FILEEXT2=$(fileext $M4A)
+    OUTPUT=${MP4//$FILEEXT/$EXT}
+	[[ -n $3 ]] && EXT="$3" 
+	ffmpeg -i $MP4 -i $M4A -acodec copy -vcodec copy $(timestamp).$OUTPUT
+}
+
+startsWith () {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
+    HAYSSTACK="$1"
+    NEEDLE="$2"
+    isDebug && echo "HAYSSTACK = $HAYSSTACK"
+    isDebug && echo "NEEDLE = $NEEDLE"
+    [[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
+}
+
+endsWith () {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack ends with needle" || return $?
+    HAYSSTACK="$1"
+    NEEDLE="$2"
+    isDebug && echo "HAYSSTACK = $HAYSSTACK"
+    isDebug && echo "NEEDLE = $NEEDLE"
+    [[ "$HAYSSTACK" = *"$NEEDLE" ]] && return 0 || return 1
+}
+
+_list_user_groups () {
+	IFS=$DELIMITER_ENDL 
+	listit $(groups $1) $" "
+	IFS=$IFS_ORIG 
+}

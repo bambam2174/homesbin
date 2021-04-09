@@ -2,8 +2,10 @@
 
 #ffmpeg -fflags +genpts -i "$1" -r 24 $(filename "$(fileroot "$1").mp4")
 
-CLIP="$1"
-EXT=$(fileext "$CLIP") 
-MP4=${CLIP/$EXT/mp4}
+IN="$1"
+EXT=$(fileext "$IN")
+TO_TYPE=mp4
+[[ -n "$2" ]] && TO_TYPE="$2"
+OUT=${IN//$EXT/$TO_TYPE}
 
-ffmpeg -fflags +genpts -i "$CLIP" -r 24 "$MP4"
+ffmpeg -fflags +genpts -i "$IN" -r 24 "$OUT"

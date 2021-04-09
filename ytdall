@@ -2,4 +2,4 @@
 
 cd /Users/sedatkilinc/Movies
 
-handlefile2 .2download 'youtube-dl [URL]'
+handlefile2 .2download 'youtube-dl --no-check-certificate [URL]'

@@ -1,2 +1,14 @@
 #!/bin/bash
-echo $1 | rev  | cut -d '.' -f2  | rev
+
+#echo $1 | rev  | cut -d '.' -f2  | rev # didn't work with filename with dots in it
+
+source ~/bin/.functions
+
+FILENAME="$1"
+FILEEXT=$(fileext "$FILENAME")
+isDebug && echo "FILENAME = $FILENAME"
+isDebug && echo "FILEEXT = $FILEEXT"
+
+FILEROOT=${FILENAME//.$FILEEXT/}
+echo $FILEROOT
+
