@@ -1134,3 +1134,7 @@ _list_user_groups () {
 	listit $(groups $1) $" "
 	IFS=$IFS_ORIG 
 }
+
+isText () {
+	string_contains "$(file $1)" ASCII && return 0 || return 1
+}
