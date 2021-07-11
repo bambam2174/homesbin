@@ -1,7 +1,9 @@
-#!/bin/bash
+#!/bin/zsh
 
-#source $HOME/.debug_state
-{ isDebug && echo "Script name $0" } 2> /dev/null
+source $HOME/.debug_state
+isDebug && echo "Script name $0" 2> /dev/null
+BASHFUNCTIONS=$0
+BINFUNCITONS=$BASHFUNCTIONS
 
 export CLICOLOR=1
 
@@ -24,7 +26,7 @@ scpup2 ()
 }
 
 # FileSearch
-f() {
+f () {
     touch "/var/log/find/$1.log"
     if [ $# -eq 1 ]; then
         find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
@@ -74,7 +76,7 @@ fpx() {
 fp() {
     SP='./'
     if isDebug; then
-        echo "Parameters: $# arguments";
+        echo "Parameters: ${#} arguments";
     fi
     # PARAMCOUNT=$(($#+1))
     PARAMCOUNT=$#
@@ -83,7 +85,7 @@ fp() {
         SP=$(abspath $2)
         PARAMCOUNT=3
     fi
-å
+    
     if [[ $# -gt 2 ]]; then
         _OPTION="-name"
     else
@@ -111,7 +113,7 @@ param() {
 	echo "$1" ${@:2} -R . 
 }
 
-r() {
+r_() {
 #    grep "$1" ${@:2} -R . 
     PARAM=$1
     r_it() {
@@ -233,20 +235,24 @@ lns() {
     ln -s$OPT "$PWD/$1" $2;
 }
 
-lna() {
-    PARAM1="$1"
-    PARAM2="$2"
-
-    lna_it() {
-        for file in `ls $1`; 
-        do
-            ln -s  $1/$file $2/$file;
-        done
-    }
-
-    lna_it "$PARAM1" "$PARAM2"
-}
-
+##############################
+##        DEPRECATED        ##
+##        see lnsa()        ##
+##############################
+# lna() {
+#    PARAM1="$1"
+#    PARAM2="$2"
+#
+#    lna_it() {
+#        for file in `ls $1`; 
+#        do
+#            ln -s  $1/$file $2/$file;
+#        done
+#    }
+#
+#    lna_it "$PARAM1" "$PARAM2"
+#}
+#############################
 show_() { 
     #cat ~/unutmalist/*$1*;
     tail -n +1  ~/unutmalist/**/*$1*;
@@ -517,24 +523,38 @@ first() {
     H=''
 
     if [ -n "$1" ]; then
-        PARAM1="$1";startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
+        PARAM1="$1";
+        startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
         #LINECOUNT=$1
     fi
 
     if [ -n "$2" ]; then
-        PARAM2="$2";startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
+        PARAM2="$2";
+        startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
         #WHERE="$2"
     fi
 
     if [ -n "$2" ]; then
-        PARAM3="$3";startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
+        PARAM3="$3";
+        startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
     fi
 
     if isDebug; then    
         echo $LINECOUNT
         echo $WHERE
     fi
-    ls -l${H}FAGct "$WHERE" | head -n "$(($LINECOUNT+1))"
+
+    [[ -L $WHERE ]] && 
+    ! endsWith $WHERE '/' && 
+    WHERE="${WHERE}/"
+
+    isDebug && { echo "\$WHERE=${WHERE}"; echo "\$LINECOUNT=${LINECOUNT}"; }
+    CMD="ls -l${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+1))"
+    isDebug && echo ${CMD}
+
+    eval ${CMD}
+
+    #$(echo "${CMD[@]}")
 }
 
 ffirst() {
@@ -645,7 +665,7 @@ addPath2Places() {
 }
 
 iterm2_print_user_vars() {
-  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
+  iterm2_set_user_var "gitBranch" "$(git branch 2> /dev/null | grep \* | cut -c3-)"
 }
 savelink() { 
     TARGET='';
@@ -893,9 +913,10 @@ get_subtitle_all () {
 	do
 		CMD="youtube-dl --skip-download --write-auto-sub --no-check-certificate --sub-lang $LANG --sub-format $f https://www.youtube.com/watch\?v\=$1"
 		if isDebug; then
-			echo $f;
-			echo $CMD;
+			echo ""$f
+			echo $CMD
 		fi
+        eval $CMD
 	done
 }
 
@@ -1004,7 +1025,7 @@ startsWithDash () {
 
 _progressed () {
     DOWNLOAD_FILE="$1"
-    [[ -f $DOWNLOAD_FILE ]] || { echo "usage $0 <path 2 file getting downloaded>"; return 1 }
+    [[ -f $DOWNLOAD_FILE ]] || { echo "usage $0 <path 2 file getting downloaded>"; return 1; }
     TMP_FILE=$TMP/.byte_counter.txt
 	CURRENT=$(ls -s $DOWNLOAD_FILE | cut -d ' ' -f1)
     [[ -f $TMP_FILE ]] || echo $CURRENT > $TMP_FILE
@@ -1028,14 +1049,14 @@ exists () {
 
 
 add-function () {
-	function_exists "$1" && { echo "$1 already exists."; which $1; return 1 }
+	function_exists "$1" && { echo "$1 already exists."; which $1; return 1; }
 	FUNCTIONS=$BIN/.functions
 	echo >> $FUNCTIONS
 	FUNCTION_NAME=$1
 	which $FUNCTION_NAME >> $FUNCTIONS
 }
 
-isFunction () {
+isFunction1 () {
 	WHICHRESULT=$(which "$1")
     if isDebug; then
         echo "1: $1"
@@ -1051,7 +1072,7 @@ function_exists() {
     FUNC="$1"
     FUNC_HEAD1="${FUNC}()"
     FUNC_HEAD2="${FUNC} ()"
-    [[ $(cat $BIN/.functions | grep $FUNC_HEAD2 | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions | grep $FUNC_HEAD1 | wc -l) -eq 1 ]] && return 0 || return 1
+    [[ $(cat $BIN/.functions | grep -E "^[ ]?$FUNC_HEAD2" | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions | grep -E "^[ ]?$FUNC_HEAD1" | wc -l) -eq 1 ]] && return 0 || return 1
 }
 
 secho () {
@@ -1137,4 +1158,509 @@ _list_user_groups () {
 
 isText () {
 	string_contains "$(file $1)" ASCII && return 0 || return 1
+}
+
+lsd () {
+    setIFS
+	isDebug && echo "Number of Parameters $#"
+    POPT='-F'
+	[[ $# -gt 1 ]] && {
+		POPT+=${1/-/} 
+		PPATH=$2 
+	} || PPATH=$1 
+	isDebug && echo "PPATH=$PPATH"
+	isDebug && echo "POPT=$POPT"
+	for i in $(ls -l $POPT $PPATH | grep -oE "^d{1}.*")
+	do
+		[[ $# -gt 1 ]] && echo $i || {
+			echo $i | rev | cut -d " " -f1 | rev
+		}
+	done
+    resetIFS
+}
+
+lsd2 () {
+    setIFS
+	isDebug && echo "Number of Parameters $#"
+    POPT='-F'
+	[[ $# -gt 1 ]] && {
+		POPT+=${1/-/} 
+		PPATH=$2 
+	} || PPATH=$1 
+	isDebug && echo "PPATH=$PPATH"
+	isDebug && echo "POPT=$POPT"
+	for i in $(ls -lt $POPT $PPATH  | grep -oE "^d{1}.*")
+	do
+		[[ $# -gt 1 ]] && echo $i || {
+			[[ $i =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]] && {
+				isDebug && echo "# of matches $#match\n $match"
+				echo $match[2]
+			}
+		}
+	done
+    resetIFS
+}
+
+
+parrram () {
+	isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
+	POPT=() 
+	PPATH=() 
+	for i in $@
+	do
+		echo ">> $i"
+		[[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
+	done
+    echo $POPT $PPATH
+    ls $POPT $PPATH
+}
+
+lsd3 () {
+    setIFS
+    isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
+    POPT=() 
+    PPATH=() 
+    
+    for i in $@
+    do
+        isDebug && echo ">> $i"
+        [[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
+    done
+
+    isDebug && echo "PPATH=$PPATH #PPATH=${#PPATH}"
+    isDebug && echo "POPT=$POPT #POPT=${#POPT}"
+    for i in $(ls -lt $POPT $PPATH)
+    do
+        isDebug && echo "## $i ##"
+        echo $i | grep -E "^\s*.*[/]{0,1}:$"
+        CURRENT_FOLDER=$(echo $i | grep -E "^d{1}.*")
+        isDebug && echo "CURRENT_FOLDER=$CURRENT_FOLDER"
+        if [[ -z $CURRENT_FOLDER ]]; then 
+            isDebug && echo "CURRENT_FOLDER empty"
+            continue
+        fi
+        if [[ $#POPT -gt 0 ]]; then 
+            echo $i | grep -E "^d{1}.*";
+        else
+            if [[ $CURRENT_FOLDER =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]]; then
+                isDebug && echo "# of matches $#match\n $match"
+                echo $match[2]
+            fi
+        fi
+        
+    done
+    resetIFS
+}
+
+lsd4 () {
+    #setIFS
+    isDebug && echo "Number of Parameters $# PARAMS $@"
+    POPT='-F'
+    PPATH='.'
+
+    [[ -d "$1" ]] && STARTIDX=1 || { STARTIDX=2; POPT+=${1/-/}; }
+
+    # also possible but ugly result set
+    #CMD="ls $POPT $@[$STARTIDX,$#@]"
+    #$(echo $CMD) | grep -E ".*/$"
+    #return 0
+    for x in $@[$STARTIDX,$#@]; do
+        echo "$x:"
+        ls $POPT $x | grep -E ".*/$"  # Why haven't I came up with that idea in the first place? (calling ls -F and grepping the trailing slash '/')
+    done
+    #resetIFS
+}
+
+setPromptTime () {
+	PROMPT="${PROMPT/\%\#/%T \%\#}"
+}
+
+# https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository
+git_sparse_clone () {
+	rurl="$1"
+    localdir="$2" && shift 2
+	mkdir -p "$localdir"
+	cd "$localdir"
+	git init
+	git remote add -f origin "$rurl"
+	git config core.sparseCheckout true
+	for i;
+	do
+		echo "$i" >> .git/info/sparse-checkout
+	done
+	git pull origin master
+}
+
+
+scriptStartsWith () {
+	TILL=$#@ 
+	isNumber "$@[$#@]" && { A="$@[$#@]"; TILL=$((${TILL}-1)); } || A=1
+	isNumber "$@[$((${#@}-1))]" && { B="$@[$((${#@}-1))]"; TILL=$((${TILL}-1)); } || B=1 
+    echo '$# '${#}
+    szstart=$(echo $@[2,${TILL}])
+    rgx_start=${szstart//\ /\|}
+    echo $szstart
+    echo $rgx_start
+
+    ccat "$1" | grep --color=auto -E "^($rgx_start)" -A $A -B $B
+    isDebug && echo "ccat \"$1\" | grep --color=auto -E \"^($rgx_start)\" -A $A -B $B"
+}
+
+farbe () {
+	echo "$(eval echo\  \$COLOR_${1})${2}"
+}
+
+capitalcase () {
+	echo -n $(uppercase ${1[1]})
+	lowercase "${1[2,$#1]}"
+}
+
+source $BIN/.functions-color
+
+isFunction2 () {
+	local result=$(which "${1}" | grep -oE "^${1} \(\)") 
+	[[ -n $result ]] && return 0 || return 1
+}
+
+isFunction3 () {
+	local result=$(functions | grep -oE "^${1} \(\)") 
+	[[ -n $result ]] && return 0 || return 1
+}
+
+alias isFunction=isFunction3
+
+toc_it () {
+	ls -G -1ActF "${1}"/**/*.pdf > ~/PDFs/TOC_$(filename "${1}").txt
+	IFS=$DELIMITER_ENDL 
+	for i in $(cat  ~/PDFs/TOC_$(filename "${1}").txt)
+	do
+		echo "$(dirname $i); $(filename $i);;" >> ~/PDFs/TOC_$(filename "${1}").csv
+	done
+}
+
+TARGTFOLDER=~/tmp/.curledcontentfolder
+write2tmp() {
+	local TARGETFILE="$TARGTFOLDER/$(url2filename ${1})"
+	mkdir -p $TARGTFOLDER;
+	curl "${1}" > $TARGETFILE
+	echo $TARGETFILE
+}
+
+get-content-url() {
+	_usage "$0" "$#" 1 "<url>" "obtains the content of the html-documents and caches the result." || return 1
+	FILE_FROM_URL=$(get-temp-file-url "$1")
+    isDebug && echo $FILE_FROM_URL
+	[[ -f $FILE_FROM_URL ]] && cat "$FILE_FROM_URL" || curl "${1}" | tee $FILE_FROM_URL
+	isDebug && echo "$FILE_FROM_URL"
+}
+
+get-title-of-url () {
+
+	echo $CURRENT_HTML_CONTENT curl "${1}" | grep --color=auto -oE "<title.*>.*</title>" | sed -e 's/<[\/]*title>//g'
+}
+
+## replaced by get-tag-attr-value-of-url
+# iframe-src () {
+# 	IFS=$DELIMITER_ENDL 
+# 	TAG=iframe 
+# 	curl "${1}" | grep --color=auto -oE "<${TAG}.*>.*</${TAG}>" | sed -e "s/<${TAG}/\\${IFS}<${TAG}/g" | sed -e "s/<\/${TAG}>/<\/${TAG}>\\${IFS}/g" | grep --color=auto -oE "src=\"[^ ]*\""
+# }
+#
+# a-href () {
+# 	IFS=$DELIMITER_ENDL 
+#	TAG=a 
+#	curl "${1}" | grep --color=auto -oE "<${TAG}.*>.*</${TAG}>" | sed -e "s/<${TAG}/\\${IFS}<${TAG}/g" | sed -e "s/<\/${TAG}>/<\/${TAG}>\\${IFS}/g" | grep --color=auto -oE "href=\"[^ ]*\""
+# }
+
+get-tag-attr-value-of-url () {
+	_usage "$0" "$#" 3 "<url> <tag-name> <attribute-name>" "obtains the attribute value of the html-documents's concerned tags" || return 1
+	IFS=$DELIMITER_ENDL 
+	TAG=$2 
+	TAG_ATTRIBUTE=$3 
+    
+    [[ $# -eq 3  ]] && SZ_REGEX="<${TAG}.*>.*</${TAG}>" ||  SZ_REGEX="<${TAG}.*>"
+
+	get-content-url "${1}" | grep --color=auto -oE "$SZ_REGEX" | sed -e "s/<${TAG}/\\${IFS}<${TAG}/g" | sed -e "s/<\/${TAG}>/<\/${TAG}>\\${IFS}/g" | grep --color=auto -oE "${TAG_ATTRIBUTE}=\"[^ ]*\""
+}
+
+url2filename () {
+	echo "$1" | sed -e "s/http[s]*:\/\///g" | sed -e "s/[=&?\/]/./g"
+}
+
+tmpfunc() {
+	_usage "$0" "${#}" 1 "<any>" "nur um params zu checkn" || return 1 # '$0 $# <ARG CONT MIN> <PARAMS> <Description>' "checks parameters and prints help if necessary"
+
+	echo "$0 $@";
+}
+
+get-temp-file-url() {
+	_usage "$0" "${#}" 1 "<url>" "obtains the path of an HTML-Document's tempfile by its URL" || return 1
+	echo "$TARGTFOLDER/$(url2filename ${1})"
+}
+
+_usage() {
+	if isFunction3 "$1"; then
+		CMD="$1"
+	else
+		CMD=$(basename "$1")
+	fi
+
+	ARG_CNT=$2
+	ARG_CNT_MIN=$3
+	PARAM="$4"
+	USAGE="$5"
+
+	if isDebug; then
+		echo "0:function $0\n1:CMD $1\n2:ARG_CNT $2\n3:ARG_CNT_MIN $3\n4:PARAM $4\n5:USAGE $5"
+		echo "0:function $0\n1:CMD $CMD\n2:ARG_CNT $ARG_CNT\n3:ARG_CNT_MIN $ARG_CNT_MIN\n4:PARAM $PARAM\n5:USAGE $USAGE"
+	fi
+
+	if [[ $ARG_CNT -lt $ARG_CNT_MIN ]]; then
+
+		echo "Usage: $CMD $PARAM"
+		echo
+		echo "$USAGE"
+		return 1
+	fi
+}
+
+arrrgh() {
+    echo "what"
+}
+
+get-n-functions-of-script () {
+	n=$(cat  "${1}" | wc -l) 
+	i=0 
+	tail -n $(($n - $i + 1)) "${1}" | head -n $( get-line-starts-with '}' "${1}" ${2})
+}
+
+get-content-of-script-starting-and-ending-with () {
+    n=$(cat  "${1}" | wc -l)
+    i="."
+    TMPFILE=~/tmp/.get-content-of-script-starting-and-ending-with/$(filename "${1}")
+    #echo $TMPFILE
+    mkdir -p $(dirname $TMPFILE)
+    [[ -n $3 ]] && i="${3}"
+#    tail -n $(($n - $i)) "${1}" | head -n $( get-line-starts-with '}' "${1}" ${2})
+	#echo "$(($n -$(get-line-starts-with  $i ${1} ${2}) ))"
+	#echo "$(get-line-starts-with  $i ${1} ${2})"
+    #echo "$(get-line-starts-with '}' ${1} ${2})"
+	tail -n $(($n -$(get-line-starts-with  "$i" "${1}" ${2}) + 1)) "${1}" > $TMPFILE
+    cat "$TMPFILE" | head -n $(get-line-starts-with '}' "$TMPFILE" ${2})
+}
+
+get-line-starts-with () {
+	CNT=1 
+	[[ -n $3 ]] && CNT=$3 
+	grep --color=auto -En '^'${1} "${2}" | head -n $CNT | tail -n 1 | cut -d ':' -f1
+}
+
+lightcyan () {
+	echo "${COLOR_LightCyan}${1}${W}"
+}
+
+cyan() {
+	echo "${COLOR_Cyan}${1}${W}"
+}
+
+
+
+foocyan () {
+	echo "${COLOR_Cyan}${1}${W}"
+}
+
+isFunctionDefined () {
+	[[ $(which ${1} | wc -l) -gt 1 ]] && return 0 || return 1
+}
+
+n-lines-from-m () {
+usage $0 $# 1 "<path to file: string> [<line to start from=0: number> [<count of lines to show: number>]]" "displays n lines from m-th line of an ASCII file (cat-like)\n (shell not miaow)\n1st param is the path to a file (mandatory)\n2nd argument is m, defaults to 0 and indicates the starting line \n3rd argument is n, defaults to 10 and indicates to count of lines to be displayed\na command like \"head\" or \"tail\" starting anywhere but the start (head) or the end (tail) of a file" || return 1
+	M=0 
+	N=10 
+	[[ -n $2 ]] && M=$2 
+	[[ -n $3 ]] && N=$3 
+	CNTLNS=$(cat "${1}" | wc -l) 
+	tail -n $(($CNTLNS-$M)) "${1}" | head -n $N
+}
+
+
+ _n-lines-from-m () {
+ usage $0 $# 0 "<path to file: string> [<line to start from=0: number> [<count of lines to show:    number>]]" "displays n lines from m-th line of an ASCII file (cat-like)\n (shell not miaow)\n1st   param is the path to a file (mandatory)\n2nd argument is m, defaults to 0 and indicates the        starting line \n3rd argument is n, defaults to 10 and indicates to count of lines to be            displayed\na command like \"head\" or \"tail\" starting anywhere but the start (head) or the end   (tail) of a file" || return 1
+     M=0
+     N=10
+     [[ -n $2 ]] && M=$2
+     [[ -n $3 ]] && N=$3
+     CNTLNS=$(cat "${1}" | wc -l)
+     tail -n $(($CNTLNS-$M)) "${1}" | head -n $N
+ }
+
+display_n-lines-from-m() {
+    M=0
+    N=10
+	[[ -n $1 ]] && isNumber $1 && M=$1 || FILEPATH="${1}" 
+    echo "\tM=$M\tN=$N\tFILEPATH=$FILEPATH"
+	[[ -n $2 ]] && isNaN $1 && M=$2 || N=$2 
+    echo "\tM=$M\tN=$N\tFILEPATH=$FILEPATH"
+	[[ -n $3 ]] && N=$3 
+    echo "\tM=$M\tN=$N\tFILEPATH=$FILEPATH"
+    return 100
+    if [[ -z $FILEPATH ]] ; then
+        while read -r line ; do
+            #echo ">> ${line}"
+            echo ">> ${line}" | tail -n $(($CNTLNS-$M)) | head -n $N
+        done
+    else
+        #echo "${@}"
+        tail -n $(($CNTLNS-$M)) "${FILEPATH}" | head -n $N
+    fi
+}
+
+get-functions () {
+	cat "${1}" | grep --color=auto -E "^\S*\s?\(\)"
+}
+
+get-number-of-functions () {
+	get-functions "${1}" | wc -l
+}
+
+get-launchagents() { 
+    SK="."
+    [[ -n "${1}" ]] && SK="${1}"
+    launchagents | grep -E "(${SK})|(==>\s{3}/(Users/sedatkilinc/)?Library/Launch.*[s]{1}.*$)" 
+}
+
+get-functions-containing_name () {
+	SCRIPTFILE="$BIN/.functions" 
+    [[ -n ${2} ]] && SCRIPTFILE="${2}"
+	cat $SCRIPTFILE | grep --color=auto --color=auto -oE "^\S*${1}\S*\s?\(\)"
+}
+
+add-moron () {
+	NAME="${1}" 
+	SURNAME="${2}" 
+	[[ -n "${3}" ]] && RESIDENCE="${3}" 
+	echo "${NAME};${SURNAME};${NAME} ${SURNAME};${RESIDENCE}" >> $JANUARY_6th_INSURRECTION
+}
+
+path2string () {
+	ARG_PATH="${1}" 
+	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//-} || echo ${ARG_PATH//\//-}
+}
+
+lnsa () {
+	CWD="${1}" 
+	TRGTDIR="." 
+	[[ -n $2 ]] && TRGTDIR="${2}" 
+	for i in $CWD/*
+	do
+		CMD="ln -s $i $TRGTDIR/"
+        echo $CMD
+        $(echo $CMD)
+	done
+}
+
+lnsa2 () {
+	CWD="${1}" 
+	[[ $# -eq 1 ]] && [[ $(getInode $PWD) -eq $(getInode $CWD) ]] && {
+		CWD="${PWD}" 
+		TRGTDIR="${1}" 
+	} || TRGTDIR="${PWD}" 
+	[[ -n $2 ]] && TRGTDIR="${2}" 
+	for i in $CWD/*
+	do
+		CMD="ln -s $i $TRGTDIR/"
+        echo $CMD
+        $(echo $CMD)
+	done
+}
+
+
+lsdir2 () {
+	ls -G -l ${1} | grep --color=auto -oE "^d.*" | rev | cut -d ' ' -f1 | rev
+}
+
+getInode () {
+	CURRENT_INODE=$( ls -di "${1}" | cut -d ' ' -f1) 
+	echo $CURRENT_INODE
+}
+
+show-DTTK-example () {
+	cat /usr/share/examples/DTTk/* | grep --color=auto -E "^\s*\#\s{0,2}\S"
+}
+
+getFirstDirectory () {
+	ls -G -l "${1}/" | grep --color=auto -E '^d' | head -n 1 | rev | cut -d ' ' -f1 | rev
+}
+
+getFirstDirectory () {
+        _usage "$0" "${#}" 1 "<path2folder>" "Argument missing. Path to folder. \nGet 1st directory" || return 1
+        ls -G -l "${1}/" | grep --color=auto -E '^d' | head -n 1 | rev | cut -d ' ' -f1 | rev
+}
+
+get-all-function-names () {
+	{
+		[[ -d $1 ]] && cat "${1}/"* 2> /dev/null || cat "${1}"
+	} | grep --color=auto -oE '^\S*\s{0,1}\(\)'
+}
+
+lowercase-all-file-ext () {
+	for i in *
+	do
+		EXT=$(fileext $i) 
+		EXT=$(lowercase $EXT) 
+		ROOT=$(fileroot $i) 
+		echo "$i -> ${ROOT}.${EXT}"
+		mv -i -f "${i}" "${ROOT}.${EXT}"
+	done
+}
+
+getNthDirectory () {
+	_usage "$0" "${#}" 2 "<path2folder>" "Argument missing.\n 1st parameter Path to folder.\n 2nd parameter number \nGet n-th directory" || return 1
+	ALLDIRS=$(ls -G -l "${1}/" | grep --color=auto --color=auto -E '^d') 
+	COUNTDIRS=$(echo $ALLDIRS | wc -l) 
+	echo $ALLDIRS | head -n $2 | tail -n 1 | rev | cut -d ' ' -f1 | rev
+}
+
+show-aliases-in-functions () {
+	alias
+}
+
+download-all-img-from-url () {
+	for line in $(get-tag-attr-value-of-url "${1}" img src true)
+	do
+		curl https://$(gethostname ${1})/${line[1,$#line-1]//src=\"/} -O
+	done
+}
+
+jsonKV () {
+    mkdir -p $HOME/tmp/
+	local json="$1" 
+	local ARR=(${(@s:.:)json}) 
+	               #echo ${#ARR[@]}
+	               #echo $ARR[2,$#ARR]
+    KEYS=""
+    for i in {2..$#ARR}
+    do
+        if [[ $i -gt 1 ]] && [[ -n $ARR[$i] ]] # if only json without any keys -> $#ARR=1 => {2..1}
+        then
+            #echo "el $i: $ARR[$i]"
+            if isNaN $ARR[$i]
+            then
+                KEYS+="[\"$ARR[$i]\"]"
+            else
+                KEYS+="[$ARR[$i]]"
+            fi
+        fi
+    done
+                #echo $KEYS
+    CODE_PY='import json,sys;obj=json.load(sys.stdin);print (obj'$KEYS')'
+                    #echo $json 
+                    #echo $CODE_PY
+    echo $ARR[1] | python3 -c $CODE_PY 2> $HOME/tmp/.error_jsonKV
+     if [[ $? -ne 0 ]]
+     then
+        tail -n 1 $HOME/tmp/.error_jsonKV
+        rm -f $HOME/tmp/.error_jsonKV
+    fi
+
 }

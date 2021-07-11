@@ -1,0 +1,61 @@
+#!/bin/zsh
+
+# [[ -z $BASHDEBUGSTATE ]] && source ~/.debug_state   || echo "$BASHDEBUGSTATE already sourced"
+ [[ -z $BASHFUNCTIONS ]]  && source ~/bin/.functions || echo "$BASHFUNCTIONS already sourced"
+ #[[ -z $BASHVARS  ]]      && source ~/.bash_vars     || echo "$BASHVARS already sourced"
+ #[[ -z $BASHALIASES  ]]   && source ~/.bash_aliases  || echo "$BASHALIASES already sourced"
+ #[[ -z $DEBUG ]]          && echo "\$DEBUG zero"     || echo "\$DEBUG is set"
+
+source $HOME/.debug_state
+source $BIN/.functions
+
+isDebug && echo "$@"
+isDebug && echo "$2"
+#echo "end"
+
+[[ $(uname) = "darwin" ]] && command_exists pbpaste &&  TOOL="pbpaste" 
+[[ $(uname) = "linux" ]] && command_exists clipit &&  TOOL="clipit -p"
+
+KEYWORD=$(echo "$TOOL")
+INDEX=0
+
+if [[ -n "$1" ]] && isNaN "$1";then
+    KEYWORD="$1"
+else
+    isNumeric "$1" && INDEX="$1"
+    KEYWORD=$(echo "$TOOL")
+fi
+
+if [ -n "$2" ];then
+    INDEX="$2"
+fi
+
+SEARCHTERM=${KEYWORD// /%20}
+
+#if [ $# -gt 2 ];then
+#    isDebug && echo "${SEARCHTERM}\[${INDEX}\]"
+#fi
+
+CMD="curl -s http://api.urbandictionary.com/v0/define?term=\"${SEARCHTERM}\" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj[\"list\"][${INDEX}][\"definition\"]) 2> /dev/null'"
+isDebug && echo $CMD
+
+get-content-url "http://api.urbandictionary.com/v0/define?term=\"$SEARCHTERM\"" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
+#echo ${$(curl http://api.urbandictionary.com/v0/define\?term\="$SEARCHTERM")/%/} | python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
+ERRORR="$?"
+
+if [ "$ERRORR" -gt 0 ] && [ -n "$2" ] && [ "$2" -gt 0 ]; then
+    echo "out of range";
+    echo "error = $ERRORR"
+elif [ "$ERRORR" -gt 0 ]; then
+    echo "error = $ERRORR"
+    echo "no definition";
+fi
+
+exit $ERRORR
+
+isNumberX() {
+    re='^[0-9]+$'
+    if ! [[ $yournumber =~ $re ]] ; then
+        echo "error: Not a number" >&2; exit 1
+    fi
+}
