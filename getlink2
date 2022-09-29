@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-echo ${0}\$SHLVL=$SHLVL
 #usage "$0" "$#" 1 '[-c] <WEBLOC>' "displays URL that the webloc file points to. \n -c makes all URLs appear at once"
 CMDSCRIPT=$0
 isExecutable "${CMDSCRIPT}" || CMDSCRIPT=$(which -a "${CMDSCRIPT}" | tail -n 1)
@@ -14,15 +13,21 @@ SIGN=+
 while startsWithDash ${1}
 do
     [[ ${1} = '--at-once'  ]] && AT_ONCE=true && shift
-    [[ ${1} = '--color-start'  ]] && shift  && isNumber "${2}" && COLOR_START="${2}" && shift
+    [[ ${1} = '--color-start'  ]] && contains ${1} '=' && VALUE=${1//.*=/} && isNumber "${VALUE}" && COLOR_START="${VALUE}" && shift
     [[ ${1} = '--color-step'  ]] && shift  && isNumber "${2}" && COLOR_STEP="${2}" && shift
     [[ ${1[1]} = '-'  ]] &&  OPTS+="${1[2,-1]}" && shift
 done
 
-[[ $COLOR_START -lt 0 ]] && SIGN=- || SIGN=+
+[[ $COLOR_START -lt 0 ]] && SIGN=- && ((COLOR_START*=-1))
 
-usage "$0" "$#" 1 '[---at-once] [-ABCFGHLOPRSTUW@abcdefghiklmnopqrstuwx1%] <WEBLOC> [<WEBLOC> …]' "• Displays URLs that the webloc files point to. \n• \"--at-once\" makes all URLs render in background and appear at once" || source retexit 69
+usage "$0" "$#" 1 '[---at-once] [--color-start=<1-255>]  [-ABCFGHLOPRSTUW@abcdefghiklmnopqrstuwx1%] <WEBLOC> [<WEBLOC> …]' "• Displays URLs that the webloc files point to. \n• \"--at-once\" makes all URLs render in background and appear at once" || source retexit 69
 
+_extract-value() {
+    TEST_OPERATOR=${2:-'-n'}
+    cat_ $SHELL_VARS | grep --color=auto REGEX
+    contains ${1} '=' && VALUE=${1//.*=/}
+    isNumber "${VALUE}" && return "${VALUE}"
+}
 _getlink() {
 
     BOOKMARK_FILE="$1"
@@ -81,3 +86,4 @@ $AT_ONCE && {
 } || {
     output-links ${@}
 }
+
