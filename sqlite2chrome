@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+ARR_OPTS=()
+
+for opts in ${@}
+do
+    startsWithDash "${opts}" && ARR_OPTS+="${opts}" && shift
+done
+
+
+DB="${1}"
+SQL='select * from sqlite_master'
+[[ -n ${2} ]] && SQL="${2}"
+
+sqlite3 ${ARR_OPTS} "${DB}" "${SQL}" | tee ${OUTPUT}/sqlite3_output$(date +%s).txt
+
+echo -n "Im Chrome anzeigen (y/N)?"; read YN;
+
+[[ -n $YN ]] && [[ $(lowercase $YN)! = 'y' ]] || 
+    ([[ ${SHLVL} = 1 ]] && 
+    { echo "returning" ; return 0 } || 
+        { echo "exiting"; exit 0})
+echo "Chroming"
+
+echo '<pre>' > $TMP/output.html
+	
+sqlite3 -html "${DB}" "${SQL}" >> $TMP/output.html
+	
+echo '</pre>' >> $TMP/output.html
+	
+open -a /Applications/Google\ Chrome.app $TMP/output.html

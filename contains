@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+_contains () {
+	LCOUNT=$(cat "${1}" | grep "${2}" | wc -l) 
+	[[ $LCOUNT -eq "0" ]] && return 1 || return 0
+}
+_contains ${@}

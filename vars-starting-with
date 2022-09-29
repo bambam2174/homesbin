@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+local PARAM="${1}"
+local CURRENTVARS=${$(cat $SHELL_VARS | grep -oE " ${PARAM}\w*\=.*")//=/\\t\\t->\\t}
+
+local OUTPUT=${CURRENTVARS//  /\\n}
+#echo ${CURRENTVARS}
+
+echo ${OUTPUT//$PARAM/\\n$PARAM}

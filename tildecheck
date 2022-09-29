@@ -1,0 +1,52 @@
+#!/bin/zsh
+
+echo
+ecko '                                                ' 227 1
+ecko '–––––––––––––––   resolving $@ –––––––––––––––––' 227 1
+ecko "Content of \"\$@:\"" 227 1
+ecko "$@" 1 227
+ecko "Content of \$@:" 227 1
+echo $@ 1 227
+if [[ $# -eq 0 ]]
+then
+    echo "Usage: for the awareness of the tilde character's handling as parameter"
+    echo "execute this script in following ways"
+    echo "$(filename $0) ~/anyfolder"
+    echo "$(filename $0) \"~/anyfolder\""
+    echo "$(filename $0) '~/anyfolder'"
+    echo "you could do it also with \"echo\" instead"
+    exit 1
+fi
+echo
+ecko '                                                ' 227 2
+ecko '–––––––––––––––   resolving $1 –––––––––––––––––' 227 2
+echo
+
+ecko 'executing:  echo $1' 227 2
+ecko $1 2 227 
+echo
+
+ecko 'executing:  echo "$1"' 227 2
+ecko "$1" 2 227
+echo
+
+
+echo
+ecko '                                                ' 22 1
+ecko '––––––––––––  resolving irating $@   –––––––––––' 22 1
+echo
+
+for i in "${@}"
+do
+    ecko "echoing \${i} "${i} 1 22
+    ecko "echoing \"\${i}\" ${i}" 1 22
+    ecko "ls -1a@F \"${i}\" | head -n 5" 1 22
+    ecko " " 22 3 x;
+    ls -1a@F "${i}/" | head -n 5
+    ekko ' ' 22 3
+    ecko "ls -1a@F ${i} | head -n 5" 1 22
+    ecko " " 22 3 x;
+    ls -1a@F ${i}/ | head -n 5
+    ekko ' ' 22 3
+done
+

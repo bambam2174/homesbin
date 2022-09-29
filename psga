@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_psga () {
+    LAST_ARG=${@[-1]}
+    ps aux | head -n 1
+    ps aux | grep --color=auto ${@} | tee -a "${OUTPUT_PROCESS_STATUS}/${LAST_ARG//\//_}.txt"
+}
+_psga ${@}

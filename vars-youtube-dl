@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+OPTX=${$(cat $SHELL_VARS | grep -oE ' YOUTUBE\w*\=.*')//=/ }
+
+echo ${OPTX//  /\\n}

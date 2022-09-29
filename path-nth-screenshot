@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo "$(latest -f ${1} $SCREENSHOTS | tail -n 1)"
+

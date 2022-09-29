@@ -1,0 +1,53 @@
+#!/bin/zsh
+
+source $SHELL_DEBUGSTATE
+
+FOLDER='./'
+COUNT=1
+FULLPATH='false'
+NOFOLDERS='true'
+OPTS='U'
+COL=1
+WILDCARD='*'
+
+while [[ $# -gt 0 ]]
+do
+    # isDir
+    [[ -d "${1}" ]] && FOLDER="${1}" && echo "FOLDER = ${FOLDER}"
+    # ls
+    [[ "${1[1]}" = '-'  ]] && [[ "${1[2]}" != 'f'  ]] && OPTS+="${1[2,-1]}" && echo "OPTS = ${OPTS}"
+    isNumeric "${1}" && COUNT="${1}" && echo "isNumber COUNT = ${COUNT}"
+    if [[ "${1}" = "--fullpath" ]] || [[ "${1}" = "-f" ]]
+    then
+        FULLPATH="true"
+        echo "FULLPATH = ${FULLPATH}"
+    fi
+
+    if [[ "${1}" = "--folders" ]] || [[ "${1//-/}" = *"F"* ]]
+    then
+        WILDCARD='*'
+        OPTS+=d
+        COL=2
+        echo "--folder or -F VWILDCARD, OPTS=${OPTS} COL=2"
+    fi
+
+    shift
+done
+
+OPTS="t${OPTS}"
+FOLDER_ESC=${FOLDER//\//\\\/}\\/
+if ${FULLPATH}
+then
+    CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT}"
+else
+    CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT} | sed -E \"s/${FOLDER_ESC}//g\" " #rev | cut -d '/' -f${COL} | rev"
+fi
+
+CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT}"
+#isDebug && 
+    echo "${CURRCMD}"
+eval "${CURRCMD}"
+
+# not working…find out how to add wildcards to a path string…eval worked in the example above
+#ls -lUt1 "$(echo \"${FOLDER}/\"${WILDCARD})" | head -n ${COUNT}
+

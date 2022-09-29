@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+CONTENTS="${1}/Contents"
+MACOS="${CONTENTS}/MacOS"
+RESOURCES="${CONTENTS}/Resources"
+
+mkdir -p "${RESOURCES}"
+mkdir -p "${MACOS}"
+
+RUN_SCRIPT="${MACOS}/run.sh"
+
+SHELL='/bin/sh'
+
+shebang "${RUN_SCRIPT}"
+
+

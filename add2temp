@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+TEMP_FILE_PERSISTENCE=${TMPBIN}/.tempFile
+r[[ -r ${TEMP_FILE_PERSISTENCE} ]] && source ${TEMP_FILE_PERSISTENCE}
+TEMP_FILE=${${TEMP_FILE}:-${TMP}/Schmierzettel} 
+
+
+persistTempFile() {
+    echo "export TEMP_FILE=${TEMP_FILE}" > ${TMPBIN}/.tempFile
+}
+
+_add2temp () {
+	usage "$0" "$#" 1 '<content> [<TARGETFILE>]' "add content to targetfile" || return $?
+	TEMP_FILE=${${2}:-${TEMP_FILE}} 
+	echo "${1}" >> ${TEMP_FILE}
+}
+
+persistTempFile
+
+_add2temp ${@}

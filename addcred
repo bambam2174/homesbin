@@ -6,12 +6,27 @@ if [ $# -eq 0 ] ||  [ $# -lt 3 ]; then
     exit 1
 fi
 
-if [ -e "$HOME/unutmalist/$1.txt" ]; then
-    echo "" >> "$HOME/unutmalist/$1.txt"
+UNUTMA_FILE="${1}"
+shift
+
+if [ -e "$HOME/unutmalist/${UNUTMA_FILE}.txt" ]; then
+    echo "" >> "$HOME/unutmalist/${UNUTMA_FILE}.txt"
 fi
 
 
-echo "$2" >> "$HOME/unutmalist/$1.txt"
-echo "$3" >> "$HOME/unutmalist/$1.txt"
+echo "$1" >> "$HOME/unutmalist/${UNUTMA_FILE}.txt"
+shift
+echo -n "$1" >> "$HOME/unutmalist/${UNUTMA_FILE}.txt"
+shift
+echo "\$# = ${#}"
 
+if [[ $# -gt 0  ]]
+then
+    echo "_${@}" | sed -e "s/ //g" >> "$HOME/unutmalist/${UNUTMA_FILE}.txt"
+    unutmabunu ${UNUTMA_FILE} ${@}
+else
+    read IT
+    [[ -n ${IT} ]] && unutmabunu ${UNUTMA_FILE} ${IT}
+fi
 
+echo "" >> "$HOME/unutmalist/${UNUTMA_FILE}.txt"

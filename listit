@@ -1,5 +1,12 @@
 #!/bin/zsh
 
+ISDEBUG=$(which isDebug | wc -l)
+
+NUMBERALIASES=$(alias | wc -l)
+
+[[ $ISDEBUG -eq 1  ]] && source $BASHDEBUGSTATE
+[[ $NUMBERALIASES -lt 3  ]] && source ~/.bash_aliases
+
 INPUT="$1"
 
 IFS=$','
@@ -11,5 +18,5 @@ fi
 for i in $(echo $INPUT); do 
     echo $i; 
 done 
-IFS=""
-unset IFS
+#unset IFS
+resetIFS

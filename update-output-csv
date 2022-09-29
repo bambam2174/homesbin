@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+update-output-var-csv
+
+OUTPUT_CSV=$OUTPUT/\$OUTPUT_VARS_VALUE_ENTRIES.csv
+
+echo '"Varname"; "Value";"# of entries"' > $OUTPUT_CSV
+for i in $(cat $OUTPUT_TABTAB/\$OUTPUT_.csv)
+do 
+    TMP_PATH=$(eval "echo \$${i}")
+    echo -n "${i};"
+    echo -n "${TMP_PATH};"
+    ls -1 ${TMP_PATH} | wc -l
+done >> $OUTPUT_CSV
+

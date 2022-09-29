@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_searchPATH4folder () {
+    local RESULT=1
+	local FG=${2:-9} 
+	local BG=${3:-99} 
+	local SPATH=${1}
+    [[ "${1[-1]}" = '/' ]] && SPATH=${1[1,-2]} 
+	for p in $(list_path)
+	do
+		[[ ${p} = ${SPATH} ]] && ecko -n "	Found ${ARROWS[7,14]}	" ${BG} ${FG} && ecko "		${p}			" ${FG} ${BG} && RESULT=0 || echo ${p}
+	done
+    retexit ${RESULT}
+}
+_searchPATH4folder ${@}

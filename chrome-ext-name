@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_chrome-ext-name () {
+    cat $CHROME_EXT/${1}/*/manifest.json | grep --color=auto -E "(\"default_title\"|\"name\")\s?:.*"
+}
+_chrome-ext-name $(chrome-ext-folder ${@})

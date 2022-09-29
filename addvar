@@ -1,17 +1,37 @@
 #!/bin/zsh
 
-source ~/bin/.functions
+[[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
 
-if [ $# -eq 0 ] ||  [ $# -lt 2 ]; then
-    echo "$# is $((2-$#)) too few"
-    echo "Usage: $(basename $0) name value"
-    exit 1
-else
-    PNAME="$1"
-    PVALUE="$2"
-    ! string_contains $PVALUE "(" && PVALUE=${PVALUE// /\\ }
-fi
+SCRIPTNAME="$(basename $0)"
 
-echo "export $PNAME=$PVALUE " >>  $BASHVARS
+CURR_SHELL_VARS=${${3}:-${SHELL_VARS}}
+# add alias like
+# alias addvar='source addvar'
 
+[[ ${SHLVL} -eq 1  ]] && [[  -z $(alias ${SCRIPTNAME}) ]] && addalias ${SCRIPTNAME} "source ${SCRIPTNAME}" && update_aliases
+
+_addvar() {
+    SZ_EXPORT='export '
+
+    if [ $# -eq 0 ] ||  [ $# -lt 2 ]; then
+        echo "$# is $((2-$#)) too few"
+        echo "Usage: ${SCRIPTNAME} name value"
+        echo "addalias ${SCRIPTNAME} 'source ${SCRIPTNAME}'"
+        return 1
+    else
+        PNAME="${1//-/_}"
+        PNAME=$(uppercase ${PNAME})
+        PVALUE="${2}"
+        ! string_contains $PVALUE "(" && ! startsWith $PVALUE '"' && ! endsWith $PVALUE '"' && PVALUE=${PVALUE// /\\ }
+    fi
+
+    LASTCHAR=${PNAME[$#PNAME]}
+
+    [[ "$LASTCHAR" = "+" ]] && SZ_EXPORT=''
+
+    echo "${SZ_EXPORT}${PNAME}=${PVALUE} " >> $CURR_SHELL_VARS
+    source $CURR_SHELL_VARS
+}
+
+_addvar ${@}
 

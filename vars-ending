@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vars-ending () {
+	set | grep --color=auto -oE "^[_0-9A-Z]*${1}=" | sed -E 's/=$//g'
+}
+_vars-ending ${@}

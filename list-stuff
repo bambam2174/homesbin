@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_list-stuff () {
+	for i in *
+	do
+		[[ $i =~ 'zip$' ]] && ecko $i $((255-$#i)) || source ekko $i 10 2
+	done
+}
+_list-stuff ${@}

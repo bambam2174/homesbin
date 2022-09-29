@@ -1,0 +1,83 @@
+#!/bin/zsh
+
+echo ${0}\$SHLVL=$SHLVL
+#usage "$0" "$#" 1 '[-c] <WEBLOC>' "displays URL that the webloc file points to. \n -c makes all URLs appear at once"
+CMDSCRIPT=$0
+isExecutable "${CMDSCRIPT}" || CMDSCRIPT=$(which -a "${CMDSCRIPT}" | tail -n 1)
+CMDDIR=$(dirname ${CMDSCRIPT})
+
+AT_ONCE=false
+OPTS="d1"
+COLOR_START=16
+COLOR_STEP=1
+SIGN=+
+while startsWithDash ${1}
+do
+    [[ ${1} = '--at-once'  ]] && AT_ONCE=true && shift
+    [[ ${1} = '--color-start'  ]] && shift  && isNumber "${2}" && COLOR_START="${2}" && shift
+    [[ ${1} = '--color-step'  ]] && shift  && isNumber "${2}" && COLOR_STEP="${2}" && shift
+    [[ ${1[1]} = '-'  ]] &&  OPTS+="${1[2,-1]}" && shift
+done
+
+[[ $COLOR_START -lt 0 ]] && SIGN=- || SIGN=+
+
+usage "$0" "$#" 1 '[---at-once] [-ABCFGHLOPRSTUW@abcdefghiklmnopqrstuwx1%] <WEBLOC> [<WEBLOC> …]' "• Displays URLs that the webloc files point to. \n• \"--at-once\" makes all URLs render in background and appear at once" || source retexit 69
+
+_getlink() {
+
+    BOOKMARK_FILE="$1"
+
+
+    EXT=$(fileext $BOOKMARK_FILE)
+
+
+#    if [ $# -gt 1 ]; then
+#        BOOKMARK_FILE="$2"
+#        OPTION="$1"
+#    fi
+
+
+    if [ $EXT = "url" ]
+    then
+        URL=$(cat $BOOKMARK_FILE | cut -d "=" -f2)
+    else if [ $EXT = "webloc" ]
+
+        URL_NODE=$(cat "$BOOKMARK_FILE" | grep -E '<.+string>')
+
+        URL1=${URL_NODE//<string>/ }
+
+        URL2=${URL1//<\/string>/ }
+
+        URL=${URL2// /}
+
+    fi
+
+    [[ -n ${URL} ]] && echo -n ${URL} | pbcopy
+            
+    [[ ${3} -gt 1 ]] && ecko "• $(basename ${BOOKMARK_FILE})" $((${COLOR_START/}+${2})) 15
+    ecko "\t${URL}" 15 $((${COLOR_START}${SIGN}${2})) > /dev/stdin
+    #ecko "\t${URL}" 15 $((${COLOR_START}+${2})) > /dev/stdin
+    
+    echo "${URL}"
+}
+
+output-links () {
+	CNT=0
+
+    IFS=$'\n'
+((COLOR_START${SIGN}=${COLOR_STEP}))
+    for i in $(ls -${OPTS} ${@})
+	do
+		[[ -f "${i}" ]] && _getlink "${i}" $((CNT+=${COLOR_STEP})) ${#@} 
+	#	((CNT++))
+	done
+}
+
+$AT_ONCE && {
+    imgcat "${CMDDIR}/hotupshirt.gif"
+    RNDR=$(output-links ${@})
+    clear
+    echo ${RNDR}
+} || {
+    output-links ${@}
+}

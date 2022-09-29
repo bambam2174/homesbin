@@ -1,3 +1,10 @@
 #!/bin/bash
 
-echo https://www.youtube.com/watch?v=$1
+VIDEO_ID="${1}"
+
+if [[ -n  $(echo "${1}" | grep -E ".*\.[a-z]{3}") ]]
+then
+    VIDEO_ID=$(getYouTubeID "${1}")
+fi
+
+echo https://www.youtube.com/watch?v=$VIDEO_ID

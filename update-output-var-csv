@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+set | grep -oE "^OUTPUT[_0-9A-Z]*" > ${OUTPUT_TABTAB}/\$OUTPUT_.csv

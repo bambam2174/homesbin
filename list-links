@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_list-links () {
+    FOLDER='.'
+    [[ -n "${1}" ]] && FOLDER="${1}"
+	for tmpLink in ${FOLDER}/*webloc
+	do
+		echo -n ">$(filename \"${tmpLink}\") :➫➬➫➬➠"
+		getlink ${tmpLink}
+	done
+}
+_list-links ${@}

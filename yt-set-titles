@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+for wl in *.webloc
+do
+    FN=$(yt-title ${wl})
+	FN=${FN//\?/}
+    mv -i "${wl}" "$(fileroot ${wl})-${FN//\//}.webloc"
+done

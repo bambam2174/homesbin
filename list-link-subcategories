@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+CATEGORYFOLDER=$(filename ${1})
+
+list-link-categories i | grep -i "${CATEGORYFOLDER}.*"

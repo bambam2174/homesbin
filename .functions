@@ -1,14 +1,24 @@
 #!/bin/zsh
 
 source $HOME/.debug_state
-isDebug && echo "Script name $0" 2> /dev/null
-BASHFUNCTIONS=$0
-BINFUNCITONS=$BASHFUNCTIONS
 
+isDebug && echo "Script name $0" 2> /dev/null
+log-write "com.googlecode.iterm2" "$0 :"
+log-write "com.googlecode.iterm2" "\$SHELL_FUNCTIONS = ${SHELL_FUNCTIONS}"
+log-write "com.googlecode.iterm2" "\$BASHFUNCTIONS = ${BASHFUNCTIONS}"
+log-write "com.googlecode.iterm2" "\$SHELLFUNCTIONS = ${SHELLFUNCTIONS}"
+log-write "com.googlecode.iterm2" "alias ekko $(alias ekko)"
+
+BASHFUNCTIONS=$0
+SHELLFUNCTIONS=$0
+BINFUNCTIONS=$SHELL_FUNCTIONS
+SCRIPTNAME="$0"
 export CLICOLOR=1
 
-[[ -z "$ALIASES_SET" ]] && source ~/.bash_aliases
-[[ -z "$BASHVARS" ]] && source ~/.bash_vars
+[[ -z "$ALIASES_SET" ]] && source ~/.shell_aliases
+[[ -z "$SHELL_VARS" ]] && source ~/.shell_vars
+
+source $BIN/.functions-broot.sh
 
 scpup2 () 
 { 
@@ -129,8 +139,10 @@ r_() {
 
 }
 
-#mkdir and cd
-mkcd() { mkdir -p "$@" && cd "$_"; }
+# mkdir -p and cd
+mkcd() { 
+    mkdirp "$@" && cd "$_"
+}
 
 opex() {
     xdg-open $1 &
@@ -347,21 +359,33 @@ opentimedoc() {
 }
 
 manx() {
-    echo $*
-    /usr/bin/man $* > ~/temp.txt
-    if [ -s ~/temp.txt ]; then 
-        subl ~/temp.txt
+    #echo $*
+    PATH2PS=$HOME/tmp/man2type/${1}.ps
+    mkdir -p $(dirname ${PATH2PS})
+    /usr/bin/man -t ${1} > "${PATH2PS}"
+    if [ -s "${PATH2PS}" ]; then 
+        open "${PATH2PS}"
     fi
+}
 
+man2type() {
+    OUTPUT_TYPE=ps
+    [[ -n "${2}" ]] && OUTPUT_TYPE="${2}"
+    CURREN_MAN_PATH=$(man-path ${1})
+    groff -T${OUTPUT_TYPE} -I $(dirname ${CURREN_MAN_PATH}) -mandoc -c $(filename ${CURREN_MAN_PATH}) > ${1}.${OUTPUT_TYPE}
+    original cp -f ${1}.${OUTPUT_TYPE} $HOME/tmp/man2type/
 }
 
 giturlp() {
     PATH2REPO='.'
-    if [ $# -eq 1 ]; then
+    if [ $# -gt 0 ]; then
         PATH2REPO="$@"
     fi
 
-    cat $PATH2REPO/.git/config | grep -i url | cut -d'=' -f 2
+    for folder in ${PATH2REPO}
+    do
+        cat ${folder}/.git/config | grep -i url | cut -d'=' -f 2
+    done
 }
 
 androiddoc () { 
@@ -480,16 +504,16 @@ fatal() {
 }
 
 isNumber() {
-     re='^[0-9]+$'
+     #re='^[0-9]+$'
      #return  [[ $1 =~ $re ]]
-     if ! [[ $1 =~ $re ]] ; then
+     if ! [[ $1 =~ $REGEX_IS_NUMERIC ]] ; then
          return 1
      else
          return 0
      fi
  }
 
- isNumeric() {
+ isNumeric () {
      #if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
      if [ "$1" -eq "$1" ] 2> /dev/null; then
          return 0
@@ -498,26 +522,25 @@ isNumber() {
      fi
  }
 
- isNaN() {
+ isNaN () {
       if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
           return 1
       else
           return 0
       fi
   }
-ggg() { export fff=vedat; }
 
-exx() {
+exx () {
         eval "export $1=$2"
 }
 
-lsns() {
+lsns () {
     [ -n "$1" ] && SP="$1" || SP="."
     [ -n "$2" ] && EXT="$2" || EXT=".*"
     find "$SP" -maxdepth 1 ! -type l | grep -e "$EXT$" 
 }
 
-first() { 
+first () { 
     LINECOUNT=5
     WHERE=$PWD
     H=''
@@ -539,7 +562,7 @@ first() {
         startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
     fi
 
-    if isDebug; then    
+    if isDebugLocal; then    
         echo $LINECOUNT
         echo $WHERE
     fi
@@ -548,9 +571,9 @@ first() {
     ! endsWith $WHERE '/' && 
     WHERE="${WHERE}/"
 
-    isDebug && { echo "\$WHERE=${WHERE}"; echo "\$LINECOUNT=${LINECOUNT}"; }
+    isDebugLocal && { echo "\$WHERE=${WHERE}"; echo "\$LINECOUNT=${LINECOUNT}"; }
     CMD="ls -l${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+1))"
-    isDebug && echo ${CMD}
+    isDebugLocal && echo ${CMD}
 
     eval ${CMD}
 
@@ -610,14 +633,15 @@ FileOrDirectory () {
      done
  }
 
-isFile () {
-    if [ -d "$1" ]
-    then
-        return 1
-    else
-        return 0
-    fi
-}
+# see $BIN/isFile -> better 4 performance
+#isFile () {
+#    if [ -d "$1" ]
+#    then
+#       return 1
+#    else
+#        return 0
+#    fi
+#}
 
  isDirectory () {
      if [ -d "$1" ]
@@ -629,7 +653,8 @@ isFile () {
  }
 
 isDir () {
-    return [ -d "$1" ]
+    [[ -d "$1" ]]
+    return $?
 }
 
 dckrh () {
@@ -637,7 +662,7 @@ dckrh () {
 	docker $COMMAND --help
 }
 
-listarray() { 
+listarray () { 
     # listarray "$ARRAY" ; Don't forget the double quotes like in the sample
     pARRAY="$1"; 
     IFS=$'\n'; 
@@ -645,12 +670,11 @@ listarray() {
 }
 
 
-listarray2() {
+listarray2 () {
     pARRAY="$1";
     IFS=$'\n';
     echo "${pARRAY[*]}"
 }
-wwhich() { ls -lahF `which "$1"`; }
 
 gituser () {
 	PATH2REPO='.'
@@ -752,22 +776,23 @@ _isTrue() {
     #echo "Param $1. Result $RESULT"
 }
 
-isDebug() {
-    if [ "$DEBUG" -eq $TRUE ] 2> /dev/null || [ "$DEBUG" = $TRUE ]; then
-        return 0
-    else
-        return 1
-    fi
-}
+#isDebug() {
+#    DEBUG=$(cat $DEBUG_STATE_FILE)
+#    if [ "$DEBUG" -eq $TRUE ] 2> /dev/null || [ "$DEBUG" = $TRUE ]; then
+#        return 0
+#    else
+#        return 1
+#    fi
+#}
 
 setDebug() {
 #    NEWSTATE=$(lowercase $1)
-    DEBUG=$TRUE
+    export DEBUG=$TRUE
 }
 
 unsetDebug() {
 #    NEWSTATE=$(lowercase $1)
-    DEBUG=$FALSE
+    export DEBUG=$FALSE
 }
 
 setProd() {
@@ -780,8 +805,9 @@ unsetProd() {
     DEBUG=$TRUE
 }
 
-lowercase() { echo "$1" | tr '[:upper:]' '[:lower:]'; }
-uppercase() { echo "$1" | tr '[:lower:]' '[:upper:]'; }
+##  functions converted to scripts in $HOME/bin folder 
+#lowercase() { echo "${1}" | tr '[:upper:]' '[:lower:]'; }
+#uppercase() { echo "${1}" | tr '[:lower:]' '[:upper:]'; }
 
 listGBElements() {
     DEPTH=1
@@ -837,36 +863,32 @@ searchreplace() {
     echo "$1" | perl -pe "s/$2{1,}/$REPLACER/g" 
 }
 
-addalias () {
-    if [[ $# -eq 0 ]]; then
-        echo "Usage: $(basename "$0") alias command"
-        return 1
-    fi
-    ALIASESFILE=$HOME/.bash_aliases
-    WC_ORIG=$(cat $ALIASESFILE | wc -l)
-    TMPFOLDER=$HOME/tmp/.bashstuff
-    mkdir -p $TMPFOLDER
-    TMPFILE=$TMPFOLDER/bash_aliases.prev
-    \cp -f $ALIASESFILE $TMPFILE
-
-    echo "alias $1='$2'" >> $ALIASESFILE
-
-    WC_NEW=$(cat $ALIASESFILE | wc -l)
-    if [[ $WC_NEW -lt $WC_ORIG ]]; then
-        echo "Error: New aliases-file didn't get extended"
-        echo "Number of lines of previous aliases-file $WC_ORIG"
-        echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
-        echo "Backing up new aliases-file $ALIASESFILE to ${TMPFILE}.backup\! for further analysis."
-        \cp -f $ALIASESFILE "${TMPFILE}.backup\!"
-        [[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
-        echo "Restoring previous aliases-file..."
-        \cp -f $TMPFILE $ALIASESFILE
-        [[ $? -eq 0 ]] && echo "...previous aliases-file $TMPFILE got restored to $ALIASESFILE" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
-    fi
-
-
-
-}
+#addalias () {
+#    if [[ $# -eq 0 ]]; then
+#        echo "Usage: $(basename "$0") alias command"
+#        return 1
+#    fi
+#    #ALIASESFILE=$HOME/.bash_aliases
+#    WC_ORIG=$(cat ${SHELL_ALIASES} | wc -l)
+#    TMPFOLDER=$HOME/tmp/.bashstuff
+#    mkdir -p $TMPFOLDER
+#    TMPFILE=$TMPFOLDER/shell_aliases.prev
+#    original cp -f ${SHELL_ALIASES} ${TMPFILE}
+#
+#    echo "alias $1='$2'" >> ${SHELL_ALIASES}
+#
+#    WC_NEW=$(cat ${SHELL_ALIASES} | wc -l)
+#    if [[ $WC_NEW -lt $WC_ORIG ]]; then
+#        echo "Error: New aliases-file didn't get extended"
+#        echo "Number of lines of previous aliases-file $WC_ORIG"
+#        echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
+#        echo "Backing up new aliases-file ${SHELL_ALIASES} to ${TMPFILE}.backup\! for further analysis."
+#        \cp -f ${SHELL_ALIASES} "${TMPFILE}.backup\!"
+#        [[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
+#        echo "Restoring previous aliases-file..."
+#        \cp -f ${TMPFILE} ${SHELL_ALIASES}
+#        [[ $? -eq 0 ]] && echo "...previous aliases-file ${TMPFILE} got restored to ${SHELL_ALIASES
+#}
 
 useOfTripple_Chevrons_LeftArrows() {
     CMD='ccat < $(echo $PWD)';
@@ -895,11 +917,21 @@ strip_protocol () {
 }
 
 string_contains() {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack contains needle" || return $?
 	if [[ $1 == *"$2"* ]] || [[ $2 == *"$1"* ]]; then
 		return 0; 
 	else 
 		return 1; 
 	fi 
+}
+
+string_contains_() {
+    #usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack contains needle" || return $?
+    if [[ $1 == *"$2"* ]] || [[ $2 == *"$1"* ]]; then
+        return 0;
+    else
+        return 1;
+    fi
 }
 
 get_subtitle_all () {
@@ -1049,15 +1081,21 @@ exists () {
 
 
 add-function () {
-	function_exists "$1" && { echo "$1 already exists."; which $1; return 1; }
+	[[ $# -eq 1 ]] && function_exists "$1" && { 
+        echo "$1 already exists."
+        type $1
+        builtin which $1
+        return 1
+    }
 	FUNCTIONS=$BIN/.functions
+    [[ -n "${2}" ]] && FUNCTIONS="${2}"
 	echo >> $FUNCTIONS
 	FUNCTION_NAME=$1
-	which $FUNCTION_NAME >> $FUNCTIONS
+	builtin which $FUNCTION_NAME >> $FUNCTIONS
 }
 
 isFunction1 () {
-	WHICHRESULT=$(which "$1")
+	WHICHRESULT=$(builtin which "$1")
     if isDebug; then
         echo "1: $1"
         echo "WHICHRESULT: \n$WHICHRESULT"
@@ -1072,7 +1110,7 @@ function_exists() {
     FUNC="$1"
     FUNC_HEAD1="${FUNC}()"
     FUNC_HEAD2="${FUNC} ()"
-    [[ $(cat $BIN/.functions | grep -E "^[ ]?$FUNC_HEAD2" | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions | grep -E "^[ ]?$FUNC_HEAD1" | wc -l) -eq 1 ]] && return 0 || return 1
+    [[ $(cat $BIN/.functions* | grep -E "^[ ]?$FUNC_HEAD2" | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions* | grep -E "^[ ]?$FUNC_HEAD1" | wc -l) -eq 1 ]] && return 0 || return 1
 }
 
 secho () {
@@ -1110,7 +1148,7 @@ ssh-proxy () {
 }
 
 _command_exists() {
-	WHICHRESULT=$(which "$1" | head -n 1)
+	WHICHRESULT=$(builtin which "$1" | head -n 1)
 	if string_contains $WHICHRESULT 'not found'
 	then
 		return 1
@@ -1168,9 +1206,9 @@ lsd () {
 		POPT+=${1/-/} 
 		PPATH=$2 
 	} || PPATH=$1 
-	isDebug && echo "PPATH=$PPATH"
-	isDebug && echo "POPT=$POPT"
-	for i in $(ls -l $POPT $PPATH | grep -oE "^d{1}.*")
+	isDebug && echo "PPATH=${PPATH}"
+	isDebug && echo "POPT=${POPT}"
+	for i in $(ls -l ${POPT} ${PPATH} | grep -oE "^d{1}.*")
 	do
 		[[ $# -gt 1 ]] && echo $i || {
 			echo $i | rev | cut -d " " -f1 | rev
@@ -1187,9 +1225,9 @@ lsd2 () {
 		POPT+=${1/-/} 
 		PPATH=$2 
 	} || PPATH=$1 
-	isDebug && echo "PPATH=$PPATH"
-	isDebug && echo "POPT=$POPT"
-	for i in $(ls -lt $POPT $PPATH  | grep -oE "^d{1}.*")
+	isDebug && echo "PPATH=${PPATH}"
+	isDebug && echo "POPT=${POPT}"
+	for i in $(ls -lt ${POPT} ${PPATH}  | grep -oE "^d{1}.*")
 	do
 		[[ $# -gt 1 ]] && echo $i || {
 			[[ $i =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]] && {
@@ -1211,8 +1249,8 @@ parrram () {
 		echo ">> $i"
 		[[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
 	done
-    echo $POPT $PPATH
-    ls $POPT $PPATH
+    echo ${POPT} ${PPATH}
+    ls ${POPT} ${PPATH}
 }
 
 lsd3 () {
@@ -1227,9 +1265,9 @@ lsd3 () {
         [[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
     done
 
-    isDebug && echo "PPATH=$PPATH #PPATH=${#PPATH}"
-    isDebug && echo "POPT=$POPT #POPT=${#POPT}"
-    for i in $(ls -lt $POPT $PPATH)
+    isDebug && echo "PPATH=${PPATH} #PPATH=${#PPATH}"
+    isDebug && echo "POPT=${POPT} #POPT=${#POPT}"
+    for i in $(ls -lt ${POPT} ${PPATH})
     do
         isDebug && echo "## $i ##"
         echo $i | grep -E "^\s*.*[/]{0,1}:$"
@@ -1261,12 +1299,12 @@ lsd4 () {
     [[ -d "$1" ]] && STARTIDX=1 || { STARTIDX=2; POPT+=${1/-/}; }
 
     # also possible but ugly result set
-    #CMD="ls $POPT $@[$STARTIDX,$#@]"
+    #CMD="ls ${POPT} $@[$STARTIDX,$#@]"
     #$(echo $CMD) | grep -E ".*/$"
     #return 0
     for x in $@[$STARTIDX,$#@]; do
         echo "$x:"
-        ls $POPT $x | grep -E ".*/$"  # Why haven't I came up with that idea in the first place? (calling ls -F and grepping the trailing slash '/')
+        ls ${POPT} $x | grep -E ".*/$"  # Why haven't I came up with that idea in the first place? (calling ls -F and grepping the trailing slash '/')
     done
     #resetIFS
 }
@@ -1318,7 +1356,7 @@ capitalcase () {
 source $BIN/.functions-color
 
 isFunction2 () {
-	local result=$(which "${1}" | grep -oE "^${1} \(\)") 
+	local result=$(builtin which "${1}" | grep -oE "^${1} \(\)") 
 	[[ -n $result ]] && return 0 || return 1
 }
 
@@ -1438,21 +1476,21 @@ get-content-of-script-starting-and-ending-with () {
     n=$(cat  "${1}" | wc -l)
     i="."
     TMPFILE=~/tmp/.get-content-of-script-starting-and-ending-with/$(filename "${1}")
-    #echo $TMPFILE
-    mkdir -p $(dirname $TMPFILE)
+    #echo ${TMPFILE}
+    mkdir -p $(dirname ${TMPFILE})
     [[ -n $3 ]] && i="${3}"
 #    tail -n $(($n - $i)) "${1}" | head -n $( get-line-starts-with '}' "${1}" ${2})
 	#echo "$(($n -$(get-line-starts-with  $i ${1} ${2}) ))"
 	#echo "$(get-line-starts-with  $i ${1} ${2})"
     #echo "$(get-line-starts-with '}' ${1} ${2})"
-	tail -n $(($n -$(get-line-starts-with  "$i" "${1}" ${2}) + 1)) "${1}" > $TMPFILE
-    cat "$TMPFILE" | head -n $(get-line-starts-with '}' "$TMPFILE" ${2})
+	tail -n $(($n -$(get-line-starts-with  "$i" "${1}" ${2}) + 1)) "${1}" > ${TMPFILE}
+    cat "${TMPFILE}" | head -n $(get-line-starts-with '}' "${TMPFILE}" ${2})
 }
 
 get-line-starts-with () {
 	CNT=1 
 	[[ -n $3 ]] && CNT=$3 
-	grep --color=auto -En '^'${1} "${2}" | head -n $CNT | tail -n 1 | cut -d ':' -f1
+	grep -En '^'${1} "${2}" | head -n $CNT | tail -n 1 | cut -d ':' -f1
 }
 
 lightcyan () {
@@ -1463,14 +1501,12 @@ cyan() {
 	echo "${COLOR_Cyan}${1}${W}"
 }
 
-
-
 foocyan () {
 	echo "${COLOR_Cyan}${1}${W}"
 }
 
 isFunctionDefined () {
-	[[ $(which ${1} | wc -l) -gt 1 ]] && return 0 || return 1
+	[[ $(builtin which ${1} | wc -l) -gt 1 ]] && return 0 || return 1
 }
 
 n-lines-from-m () {
@@ -1542,10 +1578,41 @@ add-moron () {
 	echo "${NAME};${SURNAME};${NAME} ${SURNAME};${RESIDENCE}" >> $JANUARY_6th_INSURRECTION
 }
 
+#path2string () {
+#	ARG_PATH="${1}" 
+#	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//-} || echo ${ARG_PATH//\//-}
+#}
+
 path2string () {
-	ARG_PATH="${1}" 
-	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//-} || echo ${ARG_PATH//\//-}
-}
+    SUBST=${SLASH_DIVISION}
+    SUBST_SPACE='_'
+
+    CNT=0
+ 
+    while getopts s:b: OPTION
+    do
+        case "$OPTION"     
+            in       
+            s)
+                 SUBST=$OPTARG
+                 ((CNT+=2))
+                 ;;
+            b)
+                 SUBST_SPACE=$OPTARG
+                 ((CNT+=2))
+                 ;;
+         esac
+    done
+
+    shift ${CNT}
+
+    ARG_PATH="${1}"
+    [[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]}
+    [[ $ARG_PATH[1] = '/' ]] &&
+        ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} ||
+        ARG_PATH=${ARG_PATH//\//${SUBST}}
+    echo ${ARG_PATH// /${SUBST_SPACE}}
+ }
 
 lnsa () {
 	CWD="${1}" 
@@ -1657,10 +1724,259 @@ jsonKV () {
                     #echo $json 
                     #echo $CODE_PY
     echo $ARR[1] | python3 -c $CODE_PY 2> $HOME/tmp/.error_jsonKV
-     if [[ $? -ne 0 ]]
-     then
+    if [[ $? -ne 0 ]]
+    then
         tail -n 1 $HOME/tmp/.error_jsonKV
         rm -f $HOME/tmp/.error_jsonKV
     fi
 
+}
+
+wwhich () {
+	CURRCMD=${1} 
+	[[ -f $(builtin which "$CURRCMD") ]] && ls -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
+}
+
+ytd-set-no-cert () {
+	alias ytd='youtube-dl $YOUTUBE_DL_OPTIONS_NO_CHECK_CERT'
+}
+
+ytd-unset-no-cert () {
+	alias ytd='youtube-dl'
+}
+wwhich () {
+	CURRCMD=${1} 
+	[[ -f $(builtin which "$CURRCMD") ]] && {
+		which -S "$CURRCMD" || ls -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
+	}
+}
+
+wwwhich () {
+	CURRCMD=${1} 
+	[[ -f $(builtin which "$CURRCMD") ]] && {
+		which -S "$CURRCMD" || ls -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
+	}
+}
+
+# see $BIN/og…better on disk than constantly in RAM
+#original () {
+#	CMD=$(which -a ${1} | tail -n 1) 
+#	shift 1
+#	CMD+=" ${@}" 
+#	$(echo $CMD)
+#}
+
+farbex () {
+	OPT='-n' 
+	[[ $3 == "n" ]] && OPT='' 
+	echo ${OPT} "$(eval echo\ \$COLOR_${1})${2}"
+}
+
+allcommands-pager () {
+    local COUNT=0
+	for i in $(list_path)
+	do
+		echo "PATH-Folder: $i"
+		for cmd in $(ls -1 $i)
+		do
+			if [[ -x "${i}/${cmd}" ]]
+            then
+                COUNT=$(($COUNT+1))
+                echo "----------${COUNT}-----------------------"
+                echo "$cmd"
+                which -a "$cmd"
+                echo '-------------------------------------'
+            fi
+		done
+	done | /usr/share/vim/vim81/macros/less.sh
+}
+
+
+ all-commands () {
+     local COUNT=0
+     for i in $(list_path)
+     do
+         farbex COLOR_LightRed "🤡➯➱⋙⫸PATH-Folder:"; farbex Yellow" $i"; farbex Green "࿕ ࿗ ࿖ ࿘"; farbex NC n;
+         for cmd in $(ls -1 $i)
+         do
+             if [[ -x "${i}/${cmd}" ]] && [[ -f "${i}/${cmd}" ]]
+             then
+                 COUNT=$(($COUNT+1))
+                 farbex Yellow  "☪️- ☪︎ ------- 🤜 ${COUNT} 🤛🏼 ⭐︎☽ -------------------" n
+                 farbex Red "$cmd" n
+                 WHICHRES=$(which -a "$cmd")
+                 farbex LightPurple $WHICHRES n
+                 echo '-------------------------------------'
+             fi
+         done
+     done
+     #| /usr/share/vim/vim81/macros/less.sh
+ }
+
+search-youtubedl-option () {
+	for opt in $YOUTUBE_DL_OPTIONS
+	do
+		string_contains_ $opt "${1}" && {
+			farbex Red $opt n
+			farbex NC
+		} || echo $opt
+	done
+}
+
+get-youtube-dl-options () {
+	export YOUTUBE_DL_OPTIONS=()
+	for opt in $(env | grep 'YOUTUBE_')
+    do
+        echo "$opt"
+        YOUTUBE_DL_OPTIONS+=$opt
+    done
+	
+}
+
+getlinks () {
+	for i in $LINKS/**/*.webloc
+	do
+		farbe Green "$i"
+		farbe NC "\n"
+		TMPLINK=$(getlink $i) 
+		string_contains $TMPLINK 'xmlversion' && farbe Yellow $(getlink-wl $i) || farbe Purple $TMPLINK
+		farbe NC "\n"
+	done
+}
+
+gittut () {
+	isNumeric ${1} && [[ ${1} -ge 1 ]] && [[ ${1} -le 8 ]] && man $GITTUTZ[${1}] || echo "Usage: $0 <Parameter between 1 and $#GITTUTZ>"
+}
+
+gittutz () {
+	for i in {1..$#GITTUTZ}
+	do
+		[[ $# -gt 0 ]] && echo -n "${i}. "
+		echo $GITTUTZ[$i]
+	done
+}
+
+startsWith_ () {
+	usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
+	[[ $#1 -gt $#2 ]] && {
+		HAYSSTACK="$1" 
+		NEEDLE="$2" 
+	} || {
+		HAYSSTACK="$2" 
+		NEEDLE="$1" 
+	}
+	isDebug && echo "HAYSSTACK = $HAYSSTACK"
+	isDebug && echo "NEEDLE = $NEEDLE"
+	[[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
+}
+
+show__ () {
+	echo foo > "$HOME/unutmalist/foo$1.tmp"
+	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
+	rm -i -i -i -f "$HOME/unutmalist/foo$1.tmp"
+	grep --color=auto --color=auto -irRIs "${1}" $unutmalist -A2 --exclude "$unutmalist/*${1}*"
+}
+
+rename-dir-content () {
+	COUNT=0 
+	for i in *
+	do
+		COUNT=$((COUNT+1)) 
+		echo "mv ${i} $(printf %02u $COUNT;e ${1}.png)"
+	done
+}
+
+#ekko () {
+#	PTEXT="${1}" 
+#	COLORBG=${2} 
+#	COLORFG=${3} 
+#	XX="$BG[$COLORBG]$FG[$COLORFG]${PTEXT}%{$reset_color%}"
+#	print -P $XX
+#}
+
+source-all.old () {
+	[[ -z $BASHDEBUGSTATE ]] && sourcee ~/.debug_state || echo "$BASHDEBUGSTATE already sourced"
+	[[ -z $BASHFUNCTIONS ]] && sourcee ~/bin/.functions || echo "$BASHFUNCTIONS already sourced"
+	[[ -z $BASHVARS ]] && sourcee ~/.bash_vars || echo "$BASHVARS already sourced"
+	[[ -z $BASHALIASES ]] && sourcee ~/.bash_aliases || echo "$BASHALIASES already sourced"
+	[[ -z $DEBUG ]] && echo "\$DEBUG zero" || echo "\$DEBUG is set"
+	isFunction3 isDebug && echo "isDebug()" && [[ "$?" -eq 0 ]] && echo "TRUE" || echo "FALSE"
+}
+
+source-all () {
+    [[ -z $SHELL_DEBUGSTATE ]] && sourcee ~/.debug_state || echo "$SHELL_DEBUGSTATE already sourced"
+    [[ -z $SHELL_FUNCTIONS ]] && sourcee ~/bin/.functions || echo "$SHELL_FUNCTIONS already sourced"
+    [[ -z $SHELL_VARS ]] && sourcee ~/.shell_vars || echo "$SHELL_VARS already sourced"
+    [[ -z $SHELL_ALIASES ]] && sourcee ~/.shell_aliases || echo "$SHELL_ALIASES already sourced"
+    [[ -z $DEBUG ]] && echo "\$DEBUG zero" || echo "\$DEBUG is set"
+    isFunction3 isDebug && echo "isDebug()" && [[ "$?" -eq 0 ]] && echo "TRUE" || echo "FALSE"
+}
+
+update-debug-state () {
+	sourcee $HOME/.debug_state
+}
+
+addLinkCat () {
+	add-link-category ${1} ${2}
+	source /Users/sedatkilinc/.shell_vars
+	source $HOME/.shell_aliases
+}
+
+showE () {
+	echo foo > "$HOME/unutmalist/foo$1.tmp"
+	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
+	rm -i -i -i -f "$HOME/unutmalist/foo$1.tmp"
+	[[ $# -gt 1 ]] && startsWithDash ${1} && {
+		OPT=${1}  && SEARCHTERM=${2} 
+	} || SEARCHTERM=${1} 
+	grep --color=auto -rRIsE ${OPT} "${SEARCHTERM}" "${unutmalist}" -A2
+}
+
+chhEE () {
+	local OPT
+	local SEARCHTERM
+	[[ $# -gt 1 ]] && startsWithDash ${1} && {
+		OPT=${1}  && SEARCHTERM=${2} 
+	} || SEARCHTERM=${1} 
+	CMD='history | grep '${OPT}' -E "[^a-zA-Z0-9_]{1}'${SEARCHTERM}'[^a-zA-Z0-9_]{1}"' 
+	echo $CMD
+	eval $CMD
+}
+
+alias-value () {
+	#local ALIAS_VAL=$(alias ${1} | cut -d '=' -f2) 
+	#ALIAS_VAL=$(e $ALIAS_VAL | sed -e "s/^[\'\"]//g" | sed -e "s/[\'\"]$//g")
+	#echo $ALIAS_VAL
+    alias "${1}" | cut -d "=" -f2 | sed -e "s/^['\"]//g" | sed -e "s/['\"]$//g"
+}
+
+dealias () {
+	local BACKUP_ALIAS_VAL=$(alias-value ${1}) 
+	builtin unalias ${1}
+	alias pre-${1}=$BACKUP_ALIAS_VAL
+}
+
+realias () {
+	local BACKUP_ALIAS_VAL=$(alias-value pre-${1}) 
+	builtin unalias pre-${1}
+	alias ${1}=$BACKUP_ALIAS_VAL
+}
+
+write-attribute-value-of-tag-to-file () {
+	URL="${1}" 
+	TAG="${2}" 
+	ATTR="${3}" 
+	TFILE="${4}" 
+	for i in $(get-tag-attr-value-of-url "${URL}" "${TAG}" "${ATTR}")
+	do
+		TMPPATH=${i//${ATTR}=\"/} 
+		echo $TMPPATH[0,$#TMPPATH-1] >> "${TFILE}"
+	done
+}
+
+
+_path2string () {
+	ARG_PATH="${1}" 
+	[[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]} 
+	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} || echo ${ARG_PATH//\//${SUBST}}
 }
