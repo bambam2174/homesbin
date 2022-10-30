@@ -1,0 +1,46 @@
+#!/bin/zsh
+	
+XTH=10
+
+		            # ecko "OUTSIDE FUNC \$@ = ${@}" 211 161
+	    	        # ecko ${@} 211 161
+_firstX () {
+            		# ecko "INSIDE FUNC \$@ = ${@}" 12 36
+        		    # ecko ${@} 12 36
+
+    OPTS='-GlhS'
+    while [[ ${#} -gt 0 ]]
+	do
+		        	# ecko $1 88 99
+		isNumeric ${1} && {
+            XTH=${1}
+            ((XTH++))
+					# ecko "->\$XTH=$XTH" 44 55
+			shift
+		}           # ||  ecko "${1} no es numerico" 22 44
+		startsWithDash ${1} && {
+			OPTS+=${1//-/}
+					# ecko "\$OPTS=$OPTS" 77 11
+			shift
+		}           # ||  ecko "${1} no commenca con dash" 99 65
+		[[ -e "${1}" ]] && {
+			CURR_PATH=${1}
+					# ecko "\$CURR_PATH=$CURR_PATH" 23 76
+			shift
+		}           # || ecko "${1} no exista" 45 22
+    				# ecko $@ 12 98
+    				# ecko $1 13 97
+	    			# ecko "\$#=$#" 14 96 
+	done
+
+    	    	# ecko "APRÈS SHIFT \$@ = ${@}" 121 116
+    		    # ecko ${@} 121 116
+        		# ecko "\$@XTH = ${XTH}" 3 29
+		        # ecko "\$CURR_PATH = ${CURR_PATH}" 4 13
+	CMD_FULL_OUTPUT="ls ${OPTS} "${CURR_PATH}" | head -n ${XTH}" 
+        		# ecko "${CMD_FULL_OUTPUT}" 22 8
+	CMD_PART_OUTPUT="${CMD_FULL_OUTPUT} | grep --color=auto -oE \"[0-9]+[BKMG]{1}.*\""
+		        # ecko "${CMD_PART_OUTPUT}" 23 9
+eval "${CMD_PART_OUTPUT}"
+}
+_firstX ${@}
