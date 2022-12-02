@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+SZ_HOSTNAME=''
+
+_download-page () {
+	SZURL=$(get-redirect-url "${1}") 
+    SZ_URL=${1} #${1[1,-2]}
+	SZ_HOSTNAME=$(gethost ${SZ_URL}) 
+    echo "curl ${SZ_URL} -o \"${SZ_HOSTNAME}.html\""
+    curl ${1} -o "${SZ_HOSTNAME}.html"
+    shift
+    _download-files ${@}
+}
+
+_download-files() {
+	RTDIR=$PWD 
+    for ext in ${@}
+    do
+        for i in $(cat-doc-links-to "${SZ_HOSTNAME}.html" ${ext})
+        do
+            startsWith "${i}" http && {
+                . mkcd http
+                curl_ -O ${i}
+            } || {	
+                . mkcd $(dirname ${i} | sed -E 's/^\///g')
+                curl_ -O "https://${SZ_HOSTNAME}${i}"
+            }
+            cd $RTDIR
+	    done
+    done
+}
+_download-page ${@}

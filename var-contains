@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_var-contains () {
+	LCOUNT=$(echo "${1}" | grep "${2}" | wc -c) 
+	[[ $LCOUNT -eq "0" ]] && return 1 || return 0
+}
+_var-contains ${@}

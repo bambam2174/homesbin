@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_show-difff () {
+	A_B=${1}
+    ALL=false
+
+    [[ ${1[1]} = '-' && ${1//-/} =~ '(^a$|^all$)' ]] && ALL=true && A_B=${2}
+	[[ ${A_B} != 'A' && ${A_B} != 'B' ]] && {
+		echo "Either A or B, lan"
+		return 1
+	}
+
+    $ALL && cat ${OUTPUT_DIFFF}/${A_B} ||  cat ${OUTPUT_DIFFF}/${A_B} | tail -n $(($(cat ${OUTPUT_DIFFF}/${A_B} | wc -l)-1))
+}
+_show-difff ${@}

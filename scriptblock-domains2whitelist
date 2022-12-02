@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_copy-scriptblock-urls-new () {
+
+    CSV_DOMAINS="${SCRIPTBLOCK_CSV_MERGER}"
+    [[ -r ${CSV_DOMAINS}  ]] && noduplicate ${CSV_DOMAINS} > ${OUTPUT}/noduplicate_domains-csv.txt
+   
+    sort ${SCRIPTBLOCK_CSV_WHITELIST} -o ${SCRIPTBLOCK_CSV_WHITELIST}
+    
+    scriptblock-whitelist2cb
+	
+    rm -f ${CSV_DOMAINS}
+}
+_copy-scriptblock-urls-new ${@}

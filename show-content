@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_show-content () {
+	ls -G -1AF -lhG ${TREES}/*"$(path2string ${1})"*
+}
+_show-content ${@}

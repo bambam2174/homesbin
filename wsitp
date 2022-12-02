@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+#cd "${1}"
+#http-server --cors .
+#cd $OLDPWD
+
+http-server -U --log-ip --no-dotfiles -o --cors node --trace-deprecation -c-1 "${1}"

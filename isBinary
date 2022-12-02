@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_isBinary () {
+	RESULT=$(file "${1}") 
+	return $(contains ${RESULT} 'Mach-O 64-bit executable x86_64')
+}
+_isBinary ${@}

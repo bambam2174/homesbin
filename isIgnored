@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isIgnored () {
+	cat .gitignore | grep --color=auto ${@}
+}
+_isIgnored ${@}

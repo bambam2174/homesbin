@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+_whoiss () {
+	mkdir -p $OUTPUT_WHOIS
+	whois "${1}" | tee "$OUTPUT_WHOIS/${1}_$(date +%s).txt"
+}
+
+_whoiss "${1}"

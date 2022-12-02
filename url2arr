@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+export ARR_URL=()
+
+check-shlvl $SHLVL $0 $@
+
+_url2arr() {
+    source split2arr / ${@} > /dev/null
+
+    ARR_URL=( ${ARR_SPLIT} )
+
+    echo '${#ARR_URL}='${#ARR_URL}
+}
+_url2arr ${@}

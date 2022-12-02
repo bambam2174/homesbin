@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+#
+# php -S localhost:8000 -t
+#
+# php -S 0.0.0.0:8888
+#
+# http://php.net/manual/en/features.commandline.webserver.php
+
+ROOTPATH="${PWD}"
+PORT=8080
+HOST=localhost
+
+[[ ${#} -eq 1 ]] && 
+    [[ ${1} = '-h' ]] && 
+    echo "Usage: $(basename "$0") [--host|-h host] [--port|-p port] [--dir|--docroot|-d path]\nphp -S ${HOST}:${PORT} -t ${ROOTPATH}" && 
+    { [[ ${SHLVL} -eq 1 ]] && return 1 || exit 1 }
+
+while [[ $# -gt 0  ]]
+do
+    case "${1}" in
+        --port|-p)
+            PORT=${2}
+            ;;
+        --host|-h)
+            HOST="${2}"
+            ;;
+        --dir|--docroot|-d)
+            ROOTPATH="${2}"
+            ;;
+    esac
+    shift 2
+done
+
+
+CMD="php -S ${HOST}:${PORT} -t ${ROOTPATH}"
+
+#echo "${CMD}"
+eval "${CMD}"

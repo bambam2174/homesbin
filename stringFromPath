@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+CURR_PATH="${1}"
+
+SEPARATOR=''
+
+[[ -n "${2}" ]] && SEPARATOR="${2}"
+
+[[ ${CURR_PATH[1]} = '/' ]] && echo ${CURR_PATH[2,${#CURR_PATH}]//\//${SEPARATOR}} || echo ${CURR_PATH//[\/\ \\]/${SEPARATOR}}
+

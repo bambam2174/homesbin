@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+rsvg-convert "${1}" | imgcat
