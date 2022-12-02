@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/bin/zsh
 #echo "$@"
 #echo "$2"
 #echo "end"
+
+#source ~/bin/.functions
+source $HOME/.debug_state
+source $BIN/.functions
+
 
 INDEX=0
 if [ -n "$2" ];then
@@ -13,14 +18,14 @@ SEARCHTERM=${1// /%20}
 if [ $# -gt 2 ];then
     echo "$SEARCHTERM"
 fi
-curl -s http://api.urbandictionary.com/v0/define?term="$SEARCHTERM" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
-
+#curl -s http://api.urbandictionary.com/v0/define?term="$SEARCHTERM" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
+get-content-url "http://api.urbandictionary.com/v0/define?term=\"$SEARCHTERM\"&sedat=foo" |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$INDEX']["definition"])' 2> /dev/null
 ERRORR="$?"
 
-if [ "$ERRORR" -gt 0 ] && [ -n "$2" ] && [ "$2" -gt 0 ]; then
+if isDebug && [[ "$ERRORR" -gt 0 ]] && [[ -n "$2" ]] && [[ "$2" -gt 0 ]]; then
     echo "out of range";
     echo "error = $ERRORR"
-elif [ "$ERRORR" -gt 0 ]; then
+elif isDebug && [[ "$ERRORR" -gt 0 ]]; then
     echo "error = $ERRORR"
     echo "no definition";
 fi

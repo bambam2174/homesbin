@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_save-lingua () {
+	mv -i "$(path-latest-screenshot)" "${SCREENSHOTS_LINGUA}/${1}.png"
+}
+_save-lingua ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_save-pics-cat () {
+	cs save-${2:-science} | sed -E "s/${2:-science}/${1}/g" | sed -E "s/$(uppercase ${2:-science})/$(uppercase ${1})/g" > $BIN/save-${1}
+	chmod +x $BIN/save-${1}
+    [[ $(($(vars PICTURES_$(uppercase ${1}) | wc -l))) -gt 0 ]] || addvar PICTURES_$(uppercase ${1}) "\"\${PICTURESe}/$(capitalcase ${1})\""
+	mkdir -p ${PICTURESe}/$(capitalcase ${1})
+}
+_save-pics-cat ${@}

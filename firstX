@@ -40,7 +40,7 @@ _firstX () {
 	CMD_FULL_OUTPUT="ls ${OPTS} "${CURR_PATH}" | head -n ${XTH}" 
         		# ecko "${CMD_FULL_OUTPUT}" 22 8
 	CMD_PART_OUTPUT="${CMD_FULL_OUTPUT} | grep --color=auto -oE \"[0-9]+[BKMG]{1}.*\""
-		        # ecko "${CMD_PART_OUTPUT}" 23 9
+		         ecko "${CMD_PART_OUTPUT}" 23 9
 eval "${CMD_PART_OUTPUT}"
 }
 _firstX ${@}

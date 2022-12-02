@@ -1,8 +1,9 @@
-#!/bin/zsh#
+#!/bin/zsh
 
 source ~/.debug_state
 source ~/.bash_aliases
 
+[[ -z $BROWSER ]] && BROWSER=chrome
 isDebug && echo $#
 
 if [ -n "$1" ]; then
@@ -18,4 +19,4 @@ SEARCH_URL="${URL}${SEARCH}"
 
 isDebug && echo $SEARCH_URL
 
-chrome "$SEARCH_URL"
+$BROWSER "$SEARCH_URL"

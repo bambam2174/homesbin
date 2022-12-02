@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIGITS=4
-FORMAT="X"
+FORMAT="x"
 
 if [ -n "$2" ]; then
     DIGITS="$2"
@@ -9,5 +9,6 @@ fi
 if [ -n "$3" ]; then
     export FORMAT="$3"
 fi 
-echo -n "0x"
+#[ ${FORMAT} = 'x' -o ${FORMAT} = 'X' ] && echo -n "0x"
+ecko -n "0${FORMAT}" 1
 printf %0${DIGITS}${FORMAT} $1

@@ -16,7 +16,7 @@ elif [ -n "$2" ]; then
     LLINK="$2.url"
 fi
 
-echo "[InternetShortcut]"
+echo "[InternetShortcut]" > $LLINK
 echo $LLINK
 
 PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
@@ -30,7 +30,7 @@ fi
 #    cd "$2"
 #fi
 
-echo URL=${PROTOCOL}${1} > $LLINK
+echo URL=${PROTOCOL}${1} >> $LLINK
 
 #if [ -d "$2" ]; then
 #    cd "$OLDPWD"

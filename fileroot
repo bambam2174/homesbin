@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 #echo $1 | rev  | cut -d '.' -f2  | rev # didn't work with filename with dots in it
 

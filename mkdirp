@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+#if [[ ${#} -eq 0 ]]
+#then
+
+
+DATETIME_FORMAT='+%s'
+
+startsWith "${1}" + && DATETIME_FORMAT="${1}" && shift
+
+TIMESTAMP="$(date ${DATETIME_FORMAT})"
+
+NEWFOLDER="$(filename ${1})"
+
+#NEWFOLDER="${NEWFOLDER/\[TS\]/${TIMESTAMP}}"
+
+case ${2} in
+    'tb')
+        TSB=${TIMESTAMP}
+        ;;
+    'te')
+        TSE=${TIMESTAMP}
+        ;;
+    *)
+        NEWFOLDER="${NEWFOLDER/\[TS\]/${TIMESTAMP}}"
+        ;;
+esac
+
+#[[ -n "${2}" ]] && 
+#    {
+#        [[ "${2}" = "tb" ]] && TSB=${TIMESTAMP}  || 
+#            {
+#                [[ "${2}" = "te" ]] && TSE=${TIMESTAMP}
+#            }
+#    }
+
+PATH2NEWFOLDER="$(dirname ${1})/${TSB}${NEWFOLDER}${TSE}"
+
+mkdir -p "${PATH2NEWFOLDER}" #&& cd "$_"
+
+echo "$PATH2NEWFOLDER"
+
+#cd $PATH2NEWFOLDER
+
+#mkdir -p "${1}" && cd "$_"

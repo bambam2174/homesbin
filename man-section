@@ -1,0 +1,47 @@
+#!/bin/zsh
+
+LOG=false
+
+[[ ${1[1]} = '-' ]] && [ ${1//-/} = 'l' -o ${1//-/} = 'log' ] && LOG=true && shift
+source $HOME/.debug_state
+#[[ ${PARAM_SECTION} = "-d" ]] && echo "${PARAM_SECTION} - ${#}" && shift && echo "${PARAM_SECTION} - ${#}"
+[[ ${PARAM_SECTION} = "-d"  ]] && shift && source ~/bin/.functions && DEBUG=$TRUE && alias isDebug=isDebugLocal && which -a isDebug
+
+#PARAM_SECTION=$(echo "${1}" | tr '[:lower:]' '[:upper:]')
+PARAM_SECTION="${1}"
+
+#SECTION='^'"${PARAM_SECTION[1]}"'+.+'"${PARAM_SECTION[2]}"'+'"${PARAM_SECTION[3]}"'.+.*'
+SECTION='^'$(man-get-section-string ${PARAM_SECTION})
+
+[[ $(man "${2}" | grep -E "${SECTION}") = "" ]] && echo "No such section as ${PARAM_SECTION} " && exit 1
+
+_section() {
+    [[ $# -gt 1 ]] &&  [[ "$2" -eq "$2" ]] && LINES=$2
+    man "${1}" | grep -E "${SECTION}" -A $LINES
+}
+
+_isFinished() {
+    [[ ${#} -gt 1  ]] &&  [[ "${2}" -eq "${2}" ]] && LINES=${2}
+    man "${1}" | grep -E "${SECTION}" -A ${LINES} | tail -n 1 | grep -E '^\S+'
+}
+
+CURRENT_CONTENT=""
+i=1
+while [[ $(_isFinished ${2} ${i}) = "" ]]
+do
+    isDebug && echo "\$i = ${i}"
+    CURRENT_CONTENT=$(_section ${2} $i)
+    isDebug &&echo "\$CURRENT_CONTENT = $CURRENT_CONTENT"
+    
+    i=$((${i}+1))
+    isDebug && echo "\$i = ${i}"
+done
+
+if $LOG
+then
+    echo "${CURRENT_CONTENT}" | tee "${OUTPUT_MAN}/_man_${2}_section_${PARAM_SECTION}.txt"
+    echo "LOG $LOG \n${OUTPUT_MAN}/_man_${2}_section_${PARAM_SECTION}.txt"
+else
+    echo ${CURRENT_CONTENT}
+fi
+

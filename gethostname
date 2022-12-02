@@ -1,10 +1,9 @@
 #!/usr/bin/env php
-
 <?php
 if (count($argv) > 1) {
     $url=$argv[1];
 //var_dump(parse_url($url, PHP_URL_HOST));
-    echo parse_url($url, PHP_URL_HOST)."\n";
+    echo trim(parse_url($url, PHP_URL_HOST))."\n";
     //echo "hallo";
 }
 

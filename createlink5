@@ -1,29 +1,31 @@
 #!/bin/zsh
-LLINK=$(basename $1).webloc
+LLINK=$(basename ${1}).webloc
 
-if [ -n "$2" ]; then
-    IFS='/' read -r -A array <<< "$2"
-    if [ ${#array[@]} -gt 2 ] && ! [ -d "$(dirname $2)" ]; then
-        mkdir -p "$(dirname $2)"
+if [ -n "${2}" ]; then
+    LLINK="${2}.webloc"
+    
+    IFS='/' read -r -A array <<< "${2}"
+    if [ ${#array[@]} -gt 2 ] && ! [ -d "$(dirname ${2})" ]
+    then
+        mkdir -p "$(dirname ${2})"
+    fi
+
+    if [[ -d "${2}" ]]
+    then
+        LLINK="${2}/$(basename ${1}).webloc"
     fi
 fi
 
-if [ -n "$2" ] && [ -d "$2" ]; then
-    LLINK="$2/$LLINK"
-elif [ -n "$2" ]; then
-    LLINK="$2.webloc"
-fi
-
 echo "[InternetShortcut]"
-echo $LLINK
-PROTOCOL=$(grep -o 'https://\|http://' <<< $1)
-                                #echo "Protocol PRE : "$PROTOCOL
-if [ -z "$PROTOCOL" ]; then
+echo ${LLINK}
+PROTOCOL=$(grep -o 'https://\|http://\|file://' <<< ${1})
+                                #echo "Protocol PRE : "${PROTOCOL}
+if [ -z "${PROTOCOL}" ]; then
 	PROTOCOL=http://
 else
 	PROTOCOL=''
 fi
-                                #echo "Protocol POST : "$PROTOCOL
+                                #echo "Protocol POST : "${PROTOCOL}
 read -d '' WEBLOC <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -42,6 +44,12 @@ read -d '' WEBLOC <<EOF
 </plist>
 
 EOF
-echo "$LLINK"
-echo ${WEBLOC/\[URL\]/$PROTOCOL$1} > "$LLINK"
+# OneDrive doesn't allow characters ':' in folder & file names 
+# replacing it with a unicode character saved in variable COLON_SMALL, see : echo ${COLON_SMALL} (ad echo ${COLON_FULLWIDTH})
+LLINK=${LLINK//:/${COLON_SMALL}}
+LLINK=${LLINK//\?/﹖}
+LLINK=${LLINK//\|/•}
+URL_HTML_ENTITIED=${1//&/&amp;}
+echo "${LLINK}"
+echo ${WEBLOC/\[URL\]/${PROTOCOL}${URL_HTML_ENTITIED}} > "${LLINK}"
 

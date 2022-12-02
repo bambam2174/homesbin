@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_save-select-all-images-with () {
+	mv -i "$(path-latest-screenshot)" "${PICTURES_SELECT_ALL_IMAGES_WITH}/Select All Images With•${1}.png"
+}
+_save-select-all-images-with ${@}

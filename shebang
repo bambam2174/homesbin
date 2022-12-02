@@ -1,12 +1,34 @@
 #!/bin/zsh
 
+isFilemodeValid() {
+    ONLY=$(echo ${1} | grep -oE '[ugo]*(\+|\-)[rwx]+[,]?' | tr -cd "[:print:]")
+    [[ $#ONLY -eq $#1 ]] && return 0 || return 1
+}
+
+isDebug && echo "paramcount: ${#@} \$@=${@}"
+
 SHEBANG="#!$SHELL"
+FILE_MODE='+x'
+
+([[ ${1} = '--file-mode' ]] || [[ ${1} = '-f' ]]) && { 
+    isFilemodeValid "${2}" && 
+    { 
+        FILE_MODE="${2}"
+        shift 2 
+    } || { 
+        shift 
+    }
+}
+
 #![[  -n "$BASH" ]] && SHEBANG=$BASH || SHEBANG=$SHELL
 if [ $# -gt 1 ];then
     SHEBANG="#!/usr/bin/env $2";
 fi
 
-echo  $SHEBANG > $1
-echo  "" >> $1
-chmod +x $1
+target-path "${1}"
+
+echo  $SHEBANG > "${1}"
+echo  "\n" >> "${1}"
+
+[[ -z ${FILE_MODE} ]] || chmod "${FILE_MODE}" "${1}"
 

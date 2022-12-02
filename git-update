@@ -1,9 +1,14 @@
 #!/bin/bash
 echo $1;
-for i in `ls`; do 
-    echo "-> $i"
-	cd $i; 
-	git branch; 
-	git pull; 
-	cd ../;
+for i in `ls -1`; do 
+    echo -n  "-> $i"
+    [[ -d "$i" ]] && [[ -d "$i/.git" ]] && echo || { 
+        echo " not a repo "
+            continue
+        }
+	cd $i
+    echo -n "   branch"
+	git branch | cat 
+	git pull
+	cd ../
 done;

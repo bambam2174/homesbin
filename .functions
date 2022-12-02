@@ -37,6 +37,7 @@ scpup2 ()
 
 # FileSearch
 f () {
+    mkdir -p "/var/log/find"
     touch "/var/log/find/$1.log"
     if [ $# -eq 1 ]; then
         find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
@@ -84,6 +85,7 @@ fpx() {
 }
 
 fp() {
+    mkdir -p "/var/log/find"
     SP='./'
     if isDebug; then
         echo "Parameters: ${#} arguments";
@@ -275,11 +277,11 @@ show2() {
 tail -n 1  ~/unutmalist/*$1*;
 }
 
-show () {
-	echo foo > "$HOME/unutmalist/foo$1.tmp"
-	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
-	rm -f "$HOME/unutmalist/foo$1.tmp"
-}
+#show () {
+#	echo foo > "$HOME/unutmalist/foo$1.tmp"
+#	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
+#	rm -f "$HOME/unutmalist/foo$1.tmp"
+#}
 
 cheat() { 
     open http://borkware.com/quickies/one?topic=$1; 
@@ -503,32 +505,32 @@ fatal() {
     exit 1 ; 
 }
 
-isNumber() {
-     #re='^[0-9]+$'
-     #return  [[ $1 =~ $re ]]
-     if ! [[ $1 =~ $REGEX_IS_NUMERIC ]] ; then
-         return 1
-     else
-         return 0
-     fi
- }
+#isNumber() {
+#     #re='^[0-9]+$'
+#     #return  [[ $1 =~ $re ]]
+#    if ! [[ $1 =~ $REGEX_IS_NUMERIC ]] ; then
+#         return 1
+#     else
+#         return 0
+#     fi
+# }
 
- isNumeric () {
-     #if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
-     if [ "$1" -eq "$1" ] 2> /dev/null; then
-         return 0
-     else
-         return 1
-     fi
- }
+# isNumeric () {
+#     #if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+#     if [ "$1" -eq "$1" ] 2> /dev/null; then
+#         return 0
+#     else
+#         return 1
+#     fi
+# }
 
- isNaN () {
-      if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
-          return 1
-      else
-          return 0
-      fi
-  }
+# isNaN () {
+#      if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+#          return 1
+#      else
+#          return 0
+#      fi
+#  }
 
 exx () {
         eval "export $1=$2"
@@ -540,45 +542,47 @@ lsns () {
     find "$SP" -maxdepth 1 ! -type l | grep -e "$EXT$" 
 }
 
-first () { 
-    LINECOUNT=5
-    WHERE=$PWD
-    H=''
 
-    if [ -n "$1" ]; then
-        PARAM1="$1";
-        startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
-        #LINECOUNT=$1
-    fi
-
-    if [ -n "$2" ]; then
-        PARAM2="$2";
-        startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
-        #WHERE="$2"
-    fi
-
-    if [ -n "$2" ]; then
-        PARAM3="$3";
-        startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
-    fi
-
-    if isDebugLocal; then    
-        echo $LINECOUNT
-        echo $WHERE
-    fi
-
-    [[ -L $WHERE ]] && 
-    ! endsWith $WHERE '/' && 
-    WHERE="${WHERE}/"
-
-    isDebugLocal && { echo "\$WHERE=${WHERE}"; echo "\$LINECOUNT=${LINECOUNT}"; }
-    CMD="ls -l${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+1))"
-    isDebugLocal && echo ${CMD}
-
-    eval ${CMD}
-
-    #$(echo "${CMD[@]}")
-}
+#first () { 
+#    LINECOUNT=5
+#    WHERE=$PWD
+#    H=''
+#
+#    if [ -n "$1" ]; then
+#        PARAM1="$1";
+#        startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
+#        #LINECOUNT=$1
+#    fi
+#
+#    if [ -n "$2" ]; then
+#        PARAM2="$2";
+#        startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
+#        #WHERE="$2"
+#    fi
+#
+#    if [ -n "$2" ]; then
+#        PARAM3="$3";
+#        startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
+#    fi
+#
+#    if isDebugLocal
+#    then
+#        echo $LINECOUNT
+#        echo $WHERE
+#    fi
+#
+#    [[ -L $WHERE ]] && 
+#    ! endsWith $WHERE '/' && 
+#    WHERE="${WHERE}/"
+#
+#    isDebugLocal && { echo "\$WHERE=${WHERE}"; echo "\$LINECOUNT=${LINECOUNT}"; }
+#    CMD="ls -l${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+1))"
+#    isDebugLocal && echo ${CMD}
+#
+#    eval ${CMD}
+#
+#    #$(echo "${CMD[@]}")
+#}
 
 ffirst() {
     [ -n "$2" ] && H="h" || H=''
