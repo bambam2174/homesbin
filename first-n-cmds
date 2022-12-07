@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_first-n-cmds () {
+	ls -G -1AF -ct | grep --color=auto -E '^[^.].*\*$' | sed -E 's/\*//g' | head -n ${1:-10}
+}
+_first-n-cmds ${@}

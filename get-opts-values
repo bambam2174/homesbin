@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_get-opts-values () {
+	ARROPT=() 
+	for o in {1..$#@}
+	do
+		[[ ${#@[${o}]} -gt 1 ]] && startsWithDash ${@[${o}]} && ARROPT+="${@[${o}]}"  && ARROPT+="${@[$((${o}+1))]}"  || continue
+	done
+	echo ${ARROPT}
+}
+_get-opts-values ${@}
