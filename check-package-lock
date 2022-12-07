@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_check-package-lock () {
+	cat "${1:-.}/package-lock.json" | grep --color=auto -oE 'registry\.npmjs\.org.*' | sed -E 's/\.tgz\"\,$//g' | sed -E 's/registry.*\/-\///g'
+}
+_check-package-lock ${@}

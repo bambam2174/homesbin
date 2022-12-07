@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+[[ ${SHLVL} -gt 1 ]] && { 
+    . ${SHELL_VARS}
+    ecko "create alias by executing" 16 2
+    ecko "$(. index-finger 2) alias $(filename ${0})='. $(filename ${0})'" 2 16
+    ecko "and/or add alias commad to ~/.${SHELLNAME}rc" 16 2
+    ecko "in order to export the result array" 3 17 
+    ecko "in the own shell process level enabling access to it" 4 18
+#    ecko "or execute " 19 5
+#    ecko "e.g.  ARR=(\$($(filename ${0}) \$SZ))" 5 19
+    . retexit 
+}
+
+_sz2arr () {
+	SEP=${2:-,} 
+	export SZ2ARR=($(listit ${1} "${SEP}")) 
+	echo ${SZ2ARR}
+}
+_sz2arr ${@}

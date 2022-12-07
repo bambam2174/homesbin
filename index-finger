@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_index-finger () {
+	echo $EMO_INDEX_FINGER[${1:-1}]
+}
+_index-finger ${@}
