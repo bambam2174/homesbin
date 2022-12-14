@@ -2,10 +2,11 @@
 
 local SUBST=${SLASH_DIVISION}
 local SUBST_SPACE='-'
+local NO_LEADING_SLASH=true
 
 CNT=0
 
-while getopts s:b: OPTION
+while getopts s:b:n: OPTION
 do
     case "$OPTION"  
     in             
@@ -16,7 +17,10 @@ do
         b)
             SUBST_SPACE=$OPTARG
             ((CNT+=2))
-            ;;                      
+            ;;
+        n)
+            NO_LEADING_SLASH=false
+            ((CNT++))
     esac        
 done
 
@@ -25,7 +29,7 @@ shift ${CNT}
 _path2string () {
 	local ARG_PATH="${1}"
     [[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]}
-	[[ $ARG_PATH[1] = '/' ]] && 
+	[[ $ARG_PATH[1] = '/' ]] && ${NO_LEADING_SLASH} &&
         ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} || 
         ARG_PATH=${ARG_PATH//\//${SUBST}}
     echo ${ARG_PATH// /${SUBST_SPACE}}
