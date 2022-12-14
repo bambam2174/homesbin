@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_getTimeFromSeconds () {
+	UNIT_SEC=${1} 
+	TINEPART_MIN=$((UNIT_SEC/60)) 
+	TINEPART_SEC=$((UNIT_SEC%60)) 
+	echo "${TINEPART_MIN}:${TINEPART_SEC}"
+}
+_getTimeFromSeconds ${@}

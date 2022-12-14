@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+([[ ${1} = '-h' ]] || [[ ${1} = '--help' ]]) && { 
+    echo "$(filename $0) [-c|-l] <path> [<start>][<stop>] [c|l]\nc=chars, l=lines" && . retexit 2174 
+}
+usage "${0}" "$#" 1 '[-c|-l] <path> [<start>][<stop>] [c|l]\nc=chars, l=lines' "read ASCII into clipboard" || { 
+     . retexit 2174 
+}
+#if [[ $# -gt 1 ]]
+#then
+#    cat "${1}" 2> /dev/null | head -c ${2} | pbcopy
+#else
+#    cat "${1}" 2> /dev/null | pbcopy
+#fi
+
+
+
+case $# in
+    1)
+        cat "${1}" 2> /dev/null | pbcopy
+        ;;
+    2)
+        cat "${1}" 2> /dev/null | head -c ${2} | pbcopy
+        ;;
+    3||4)
+        UNIT_COUNT_WC=${4:-c}
+        UNIT_COUNT_HEAD_TAIL=${4:-c}
+        [[ ${UNIT_COUNT_WC} = 'l' ]] && UNIT_COUNT_HEAD_TAIL='n'
+        CHAR_COUNT=$(cat "${1}" 2> /dev/null | wc -${UNIT_COUNT_WC})
+        START=${2}
+        STOP=${3}
+        cat "${1}" 2> /dev/null | tail -${UNIT_COUNT_HEAD_TAIL} $((${CHAR_COUNT}-${START})) | head -${UNIT_COUNT_HEAD_TAIL} ${STOP} | pbcopy
+        ;;
+esac

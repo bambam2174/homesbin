@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+#([[ ${#} -eq 2 ]] && [[ ${1} = *"-a"* ]]) && 
+#    { 
+#        pbpaste >> ${2}; 
+#        echo >> ${2}; 
+#    } || 
+#        { 
+#            pbpaste > ${1};  
+#            echo >> ${1}; 
+#       }
+
+
+case "${#}"
+    in
+    2)
+        pbpaste >> ${2};     
+        echo >> ${2};
+        ;;
+    1)
+        pbpaste > ${1};
+        echo >> ${1};
+        ;;
+    *)
+        pbpaste > /dev/stdout
+        ;;
+esac

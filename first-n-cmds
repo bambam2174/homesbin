@@ -2,6 +2,6 @@
 
 
 _first-n-cmds () {
-	ls -G -1AF -ct | grep --color=auto -E '^[^.].*\*$' | sed -E 's/\*//g' | head -n ${1:-10}
+	ls -G -1AF -ct ${2:-.} | grep --color=auto -E '^[^.].*\*$' | sed -E 's/\*//g' | head -n ${1:-10}
 }
 _first-n-cmds ${@}

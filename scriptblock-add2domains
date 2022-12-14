@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+_setup-latest-state() {
+    [[ -f ${SCRIPTBLOCK_CSV_MERGER} ]] || cp "${SCRIPTBLOCK_CSV_WHITELIST}" "${SCRIPTBLOCK_CSV_MERGER}"
+}
+
+_scriptblock-add2domains () {
+	{
+		pbpaste
+		echo
+	} >> ${SCRIPTBLOCK_CSV_MERGER}
+    sort ${SCRIPTBLOCK_CSV_MERGER} -o ${SCRIPTBLOCK_CSV_MERGER}
+}
+_setup-latest-state
+_scriptblock-add2domains ${@}

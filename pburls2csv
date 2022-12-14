@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_pburls2csv () {
+	FILE_NAME_ROOT="${1//csv/}" 
+	pbwrite "${FILE_NAME_ROOT}.csv" && cat "${FILE_NAME_ROOT}.csv" | sed -E 's/.*http/http/g' | tee "${FILE_NAME_ROOT}.csv"
+}
+_pburls2csv ${@}

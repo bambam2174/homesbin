@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+source ~/.debug_state
+
+TARGET_PATH="${1}"
+
+TARGET_DIR=$(dirname "${TARGET_PATH}")
+
+isDebug && echo  "TARGET_PATH = ${TARGET_PATH}"
+isDebug && echo  "TARGET_DIR  = ${TARGET_DIR}"
+
+mkdir -p "${TARGET_DIR}"
+

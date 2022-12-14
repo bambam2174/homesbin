@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+BOLD=''
+NL=$'\n'
+
+[[ ${1[1]} = '-' ]] && ([[ ${1//-/} = "bold" ]] || [[ ${1//-/} = "b" ]]) && BOLD='%B' && shift
+
+[[ ${1[1]} = '-' ]] && ([[ ${1//-/} = "newline" ]] || [[ ${1//-/} = "n" ]]) && NL='' && shift
+
+# with only 2 possible OPTS we don't need any while-loop with getopts 
+# this works for both ordering: ecko -n -b … and ecko -b -n …
+[[ ${1[1]} = '-' ]] && ([[ ${1//-/} = "bold" ]] || [[ ${1//-/} = "b" ]]) && BOLD='%B' && shift
+
+FGC=''
+
+BGC=''
+
+TEXT="${1}"
+
+KF='%k%f'
+
+[[ -n ${2} ]] && isNumeric ${2} && FGC="%F{${2}}"
+[[ -n ${3} ]] && isNumeric ${3} && BGC="%K{${3}}"
+[[ -n ${4} ]] && isNumeric ${4} && KF=''
+
+print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL}
