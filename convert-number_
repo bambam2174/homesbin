@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_convert-number () {
+	local VALUE="${@}", NF=x
+    VALUE="${VALUE// /}"
+    echo ${VALUE}
+
+	[[ ${#} -gt 1 ]] && [[ ${1[1]} != 0 ]] && { 
+        NF=${1} && shift
+        VALUE="${@}"
+        VALUE="${VALUE// /}"
+        echo ${VALUE}
+    }
+    [[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}"
+	perl -e "printf \"${PREFIX}%${NF}\n\", $VALUE"
+}
+_convert-number ${@}

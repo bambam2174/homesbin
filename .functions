@@ -268,19 +268,19 @@ lns() {
 #}
 #############################
 show_() { 
-    #cat ~/unutmalist/*$1*;
-    tail -n +1  ~/unutmalist/**/*$1*;
+    #cat ${UNUTMALIST}/*$1*;
+    tail -n +1  ${UNUTMALIST}/**/*$1*;
 }
 
 show2() {
-    #cat ~/unutmalist/*$1*;
-tail -n 1  ~/unutmalist/*$1*;
+    #cat ${UNUTMALIST}/*$1*;
+tail -n 1  ${UNUTMALIST}/*$1*;
 }
 
 #show () {
-#	echo foo > "$HOME/unutmalist/foo$1.tmp"
-#	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
-#	rm -f "$HOME/unutmalist/foo$1.tmp"
+#	echo foo > "${UNUTMALIST}/foo$1.tmp"
+#	tail -n +1 ${UNUTMALIST}/**/*$1* | sed '/foo/d'
+#	rm -f "${UNUTMALIST}/foo$1.tmp"
 #}
 
 cheat() { 
@@ -1587,36 +1587,35 @@ add-moron () {
 #	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//-} || echo ${ARG_PATH//\//-}
 #}
 
-path2string () {
-    SUBST=${SLASH_DIVISION}
-    SUBST_SPACE='_'
+#path2string () {
+#    SUBST=${SLASH_DIVISION}
+#    SUBST_SPACE='_'
 
-    CNT=0
+#    CNT=0
  
-    while getopts s:b: OPTION
-    do
-        case "$OPTION"     
-            in       
-            s)
-                 SUBST=$OPTARG
-                 ((CNT+=2))
-                 ;;
-            b)
-                 SUBST_SPACE=$OPTARG
-                 ((CNT+=2))
-                 ;;
-         esac
-    done
+#    while getopts s:b: OPTION
+#    do
+#        case "$OPTION" in       
+#            s)
+##                 SUBST=$OPTARG
+#                 ((CNT+=2))
+#                 ;;
+#            b)
+#                 SUBST_SPACE=$OPTARG
+#                 ((CNT+=2))
+#                 ;;
+#         esac
+#    done
+#
+#    shift ${CNT}
 
-    shift ${CNT}
-
-    ARG_PATH="${1}"
-    [[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]}
-    [[ $ARG_PATH[1] = '/' ]] &&
-        ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} ||
-        ARG_PATH=${ARG_PATH//\//${SUBST}}
-    echo ${ARG_PATH// /${SUBST_SPACE}}
- }
+#    ARG_PATH="${1}"
+#    [[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]}
+#    [[ $ARG_PATH[1] = '/' ]] &&
+#        ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} ||
+#        ARG_PATH=${ARG_PATH//\//${SUBST}}
+#    echo ${ARG_PATH// /${SUBST_SPACE}}
+# }
 
 lnsa () {
 	CWD="${1}" 
@@ -1874,12 +1873,12 @@ startsWith_ () {
 	[[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
 }
 
-show__ () {
-	echo foo > "$HOME/unutmalist/foo$1.tmp"
-	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
-	rm -i -i -i -f "$HOME/unutmalist/foo$1.tmp"
-	grep --color=auto --color=auto -irRIs "${1}" $unutmalist -A2 --exclude "$unutmalist/*${1}*"
-}
+#show__ () {
+#	echo foo > "${UNUTMALIST}/foo$1.tmp"
+#	tail -n +1 ${UNUTMALIST}/**/*$1* | sed '/foo/d'
+#	rm -i -i -i -f "${UNUTMALIST}/foo$1.tmp"
+#	grep --color=auto --color=auto -irRIs "${1}" $unutmalist -A2 --exclude "$unutmalist/*${1}*"
+#}
 
 rename-dir-content () {
 	COUNT=0 
@@ -1927,9 +1926,9 @@ addLinkCat () {
 }
 
 showE () {
-	echo foo > "$HOME/unutmalist/foo$1.tmp"
-	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
-	rm -i -i -i -f "$HOME/unutmalist/foo$1.tmp"
+	echo foo > "${UNUTMALIST}/foo$1.tmp"
+	tail -n +1 ${UNUTMALIST}/**/*$1* | sed '/foo/d'
+	rm -f "${UNUTMALIST}/foo$1.tmp"
 	[[ $# -gt 1 ]] && startsWithDash ${1} && {
 		OPT=${1}  && SEARCHTERM=${2} 
 	} || SEARCHTERM=${1} 

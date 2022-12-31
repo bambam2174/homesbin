@@ -1,0 +1,48 @@
+#!/bin/zsh
+
+TO=0
+
+startsWithDash ${1} || { 
+    SZ="${1}"
+    TO=$(($#SZ))
+    shift 
+}
+
+FROM=0
+CNT=0
+while getopts f:from:t:to:s:string OPTION
+do
+    ((CNT++))
+    case "$OPTION"
+    in
+        f | from)
+            FROM=$OPTARG
+#            shift 2
+            ;;
+        t | to)
+            TO=$OPTARG
+#            shift 2
+            ;;
+        s | string)
+            SZ=$OPTARG
+            [[ ${TO} -eq 0 ]] && TO=$(($#SZ))
+#           shift 2
+            ;;
+        *)
+            echo "Wildcard option $OPTARG"
+            echo "\$@="${@}
+            #SZ=$OPTARG
+            ;;
+    esac
+done
+
+#echo "\$#=${#} —> \$@="${@}
+CNT2SHIFT=$(($CNT*2))
+shift ${CNT2SHIFT}
+[[ -z ${SZ} ]] && SZ="${1}"
+#echo "\$CNT2SHIFT=${CNT2SHIFT}"
+#echo "\$CNT=${CNT}"
+#echo "\$#=${#} —> \$@="${@}
+#echo "\$#SZ=$#SZ SZ=$SZ FROM=$FROM TO=$TO"
+#echo "\${SZ:\$FROM:\$TO}=${SZ:$FROM:$TO}"
+echo "${SZ:$FROM:$TO}"

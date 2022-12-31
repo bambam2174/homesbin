@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_isOnDiskOS () {
+    FULLPATH="${1}"
+    startsWithSlash "${1}" && FULLPATH="${1}" || FULLPATH="${PWD}/${1}"
+	FOLDER_ROOT_BASE=$(echo ${FULLPATH} | cut -d '/' -f2) 
+    echo $FULLPATH
+    echo $FOLDER_ROOT_BASE
+	[[ ${FOLDER_ROOT_BASE} != "Volumes" ]] && true || false
+}
+_isOnDiskOS ${@}

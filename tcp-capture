@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+#
+# https://confluence.atlassian.com/kb/how-to-capture-http-traffic-using-wireshark-fiddler-or-tcpdump-779164332.html
+#
+
+INTERFACE=en0
+TIME_PERIOD=3600
+X_TIMES=2
+
+# SNAPLEN=0 -> no truncation of captured packets
+# -> 262144 bytes
+SNAPLEN=96
+# Filtering
+# EXPR='host 192.168.0.100 and ( port 80 or port 443 )'
+EXPR=''
+sudo tcpdump -i ${INTERFACE} -G ${TIME_PERIOD} -W ${X_TIMES} -w "${OUTPUT}/"Data-%Y-%m-%d_%H.%M.%S.pcap -s ${SNAPLEN} "${EXPR}"
+

@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+QTS="\""
+startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
+
 [[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
 
 SCRIPTNAME="$(basename $0)"
@@ -29,7 +32,7 @@ _addvar() {
 
     [[ "$LASTCHAR" = "+" ]] && SZ_EXPORT=''
 
-    echo "${SZ_EXPORT}${PNAME}=${PVALUE} " >> $CURR_SHELL_VARS
+    echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
     source $CURR_SHELL_VARS
 }
 

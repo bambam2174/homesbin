@@ -2,7 +2,7 @@
 
 source ${SHELL_DEBUGSTATE}
 
-usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || { [[ $SHLVL -gt 1 ]] &&  exit $? || return $? }
+usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || . retexit $?
 
 BEFORE=0
 AFTER=0

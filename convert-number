@@ -2,9 +2,12 @@
 
 
 _convert-number () {
-	local VALUE=${1}, NF=x 
-	[[ ${#} -gt 1 ]] && NF=${1}  && VALUE=${2} 
-    [[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}"
-	perl -e "printf \"${PREFIX}%${NF}\n\", $VALUE"
+	startsWithDash ${1} && NF=${1//-/}  && shift || NF=x 
+	for VALUE in ${@}
+	do
+		[[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}" 
+		perl -e "printf \"${PREFIX}%${NF}
+\", $VALUE"
+	done
 }
 _convert-number ${@}
