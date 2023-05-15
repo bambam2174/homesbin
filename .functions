@@ -1812,3 +1812,14 @@ _path2string () {
 	[[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]} 
 	[[ $ARG_PATH[1] = '/' ]] && echo ${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} || echo ${ARG_PATH//\//${SUBST}}
 }
+savelink() { createlink "$1" ~/Desktop/LINKS; }
+
+savelink2() {
+    TARGET="$HOME/Desktop/LINKS/";
+    if [ -n "$2" ]; then
+        TARGET="$2"
+    fi
+    echo "$TARGET"
+    createlink "$1" "$TARGET";
+}
+countchar() { echo "$1" | wc -c; }

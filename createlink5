@@ -53,3 +53,4 @@ URL_HTML_ENTITIED=${1//&/&amp;}
 echo "${LLINK}"
 echo ${WEBLOC/\[URL\]/${PROTOCOL}${URL_HTML_ENTITIED}} > "${LLINK}"
 
+
