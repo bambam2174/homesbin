@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_save-other () {
+	mv -i "$(path-latest-screenshot)" "${SCREENSHOTS_OTHER}/Other-${1}.png"
+}
+_save-other ${@}

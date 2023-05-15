@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+MSG=${1:-"msg"}
+
+pbwrite "${OUTPUT_VSCODE}/${MSG}_$(date +%s).txt"

@@ -1,2 +1,20 @@
-#!/bin/bash
-echo $1 | rev  | cut -d '.' -f2  | rev
+#!/bin/zsh
+
+#echo $1 | rev  | cut -d '.' -f2  | rev # didn't work with filename with dots in it
+
+source ~/bin/.functions
+
+if [[ ${#} -gt 0 ]]
+then
+    FILENAME="$1"
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && FILENAME="${INPUT_PIPE}"
+fi
+FILEEXT=$(fileext "$FILENAME")
+isDebug && echo "FILENAME = $FILENAME"
+isDebug && echo "FILEEXT = $FILEEXT"
+
+FILEROOT=${FILENAME//.$FILEEXT/}
+echo $FILEROOT
+

@@ -5,5 +5,11 @@ if [ -z $1  ];then
     echo "Usage: $(basename $0) <youtubeID> ";
     exit 1;
 fi
+CLIP="https://www.youtube.com/watch?v=$1"
+if [ "$2" == "d" ];then
+    youtube-dl $CLIP
+else
+    echo $CLIP
+    echo -n $CLIP | tee $(pbcopy)
+fi
 
-youtube-dl https://www.youtube.com/watch?v=$1

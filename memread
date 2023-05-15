@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_memread () {
+	pbpaste -pboard font | pbcopy
+}
+_memread ${@}

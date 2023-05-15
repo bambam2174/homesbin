@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+source ~/bin/.functions
+
+_usage() {
+	if isFunction "$1"; then
+		CMD="$1"
+	else
+		CMD=$(basename "$1")
+	fi
+
+	ARG_CNT=$2
+	ARG_CNT_MIN=$3
+	PARAM="$4"
+	USAGE="$5"
+	
+	if isDebug; then
+		echo "0:function $0\n1:CMD $1\n2:ARG_CNT $2\n3:ARG_CNT_MIN $3\n4:PARAM $4\n5:USAGE $5"
+		echo "0:function $0\n1:CMD $CMD\n2:ARG_CNT $ARG_CNT\n3:ARG_CNT_MIN $ARG_CNT_MIN\n4:PARAM $PARAM\n5:USAGE $USAGE"
+	fi
+	
+	if [[ $ARG_CNT -lt $ARG_CNT_MIN ]]; then
+
+		echo "Usage: $CMD $PARAM"
+		echo
+		echo "$USAGE"
+		exit 1
+	fi
+}
+
+_usage "$0" "$#" 5 '$0 $# <ARG CONT MIN> <PARAMS> <Description>' "checks parameters and prints help if necessary"
+
+if isDebug; then
+	echo "0:script $0\n1:CMD $1\n2:ARG_CNT $2\n3:ARG_CNT_MIN $3\n4:PARAM $4\n5:USAGE $5"
+	echo "[[ \$# -lt \$3 ]] -> $# < $3 = " && [[ $# -lt $3 ]] && echo "is true" || echo "is false"
+fi
+
+#if [[ $# -lt 5 ]]; then
+#	_usage "$0" "$#" 5 '$0 $# <ARG CONT MIN> <PARAMS> <Description>' "checks parameters and prints help if necessary"
+#else
+	_usage "$1" "$2" "$3" "$4" "$5" #'$0 $# <ARG CONT MIN> <PARAMS> <Description>' "checks parameters and prints help if necessary"
+#fi
+
+

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_convert-number () {
+	startsWithDash ${1} && NF=${1//-/}  && shift || NF=x 
+	for VALUE in ${@}
+	do
+		[[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}" 
+		perl -e "printf \"${PREFIX}%${NF}
+\", $VALUE"
+	done
+}
+_convert-number ${@}

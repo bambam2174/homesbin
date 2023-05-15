@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_hexarrayFromTo () {
+	export ARRHEX=() 
+	for i in {${1}..${2}}
+	do
+		ARRHEX+=$(convert-number -x ${i};) 
+	done
+}
+_hexarrayFromTo ${@}

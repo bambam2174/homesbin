@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+if startsWithDash ${1} && 
+    [ ${1//-/} = 'b' -o ${1//-/} = 'browser' ] && 
+    [[ -d "${APPLICATIONS}/$(capitalcase ${2}).app" ]]
+then 
+    CURR_BROWSER="$(capitalcase ${2})"
+    shift 2
+fi
+
+open -a "/Applications/${CURR_BROWSER:-Google Chrome}.app" "${1:-$(pbpaste)}"
+

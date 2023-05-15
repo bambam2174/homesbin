@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_scriptblock-whitelist2cb () {
+	cat ${SCRIPTBLOCK_CSV_WHITELIST} | pbcopy
+}
+_scriptblock-whitelist2cb ${@}

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_git-add-latest-cmds () {
+	ARRCMD=() 
+	for cmd in $(first-n-cmds ${1:-15})
+	do
+		CMD2ADD="$(git status | grep -oE "\s${cmd}")" 
+		ARRCMD+=${CMD2ADD} 
+		[[ -n $CMD2ADD ]] && git add $(echo ${CMD2ADD} | grep -oE '[-_a-zA-Z0-9]+')
+	done
+	echo "${ARRCMD} added for commit"
+}
+_git-add-latest-cmds ${@}

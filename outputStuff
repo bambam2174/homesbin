@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+
+_outputStuff () {
+	read STUFFA
+	read STUFFB
+	read STUFFC
+	BLANK='-' 
+	for i in {1..7}
+	do
+		ecko "\t\t\t${BLANK}\t\t\t\t\t" $((245+$i)) $((255-$i))
+		BLANK+='-' 
+	done
+	ecko "\t\t\t\t\t\t\t\t" 1 247
+	ecko "\t\t\t${STUFFA}\t\t\t\t" 235 246
+	[[ -n ${STUFFB} ]] && ecko "\t\t${STUFFB}\t\t\t" 235 246
+	[[ -n ${STUFFC} ]] && ecko "\t\t\t${STUFFC}\t\t\t\t" 235 246
+	ecko "\t\t\t\t\t\t\t\t" 1 247
+	for i in {7..1}
+	do
+		ecko "\t\t\t${BLANK[1,${i}]}\t\t\t\t\t" $((245+$i)) $((255-$i))
+	done
+}
+_outputStuff ${@}

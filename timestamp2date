@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+[[ ${#@} -gt 0 ]] && TS="${1}" || TS="$(pbpaste)"
+
+isNumber ${TS} &&  date -r ${TS}

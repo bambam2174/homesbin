@@ -1,4 +1,11 @@
-#!/bin/bash
+#!/bin/zsh
 
-mv "$@" ~/.Trash
+CURR_TRASH=${TRASH}
+
+echo \$@=$@
+
+echo \$PWD=$PWD
+
+isOnDiskOS $(realpath "${1}") || CURR_TRASH=${TRASHe} 
+mv "${@}" "${CURR_TRASH}"
 

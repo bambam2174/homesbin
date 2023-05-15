@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_pbless () {
+	pbwrite $TMP/check-cb-content.txt
+	less $TMP/check-cb-content.txt
+}
+_pbless ${@}

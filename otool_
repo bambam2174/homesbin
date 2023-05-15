@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+FILE_OTOOL_ENV_VARS="${HOME}/.shell_vars_otool"
+SHELLRC="${HOME}/${SHELL//\/bin\//.}rc"
+
+[[ -z ${OUTPUT} ]] && OUTPUT=${HOME}/tmp/output && echo 'OUTPUT=${HOME}/tmp/output' >> ${FILE_OTOOL_ENV_VARS}
+
+[[ -z ${OTOOL_OUTPUT_DIR} ]] && OTOOL_OUTPUT_DIR=${OUTPUT}/otool
+
+VARINIT='OTOOL_OUTPUT_DIR=${OUTPUT}/otool'
+! contains "${FILE_OTOOL_ENV_VARS}" "${VARINIT}" && echo "${VARINIT}" >> ${FILE_OTOOL_ENV_VARS}
+
+SOURCECMD='source "${HOME}/.shell_vars_otool"'
+! contains "${SHELLRC}" "${SOURCECMD}" &&  echo 'source "${HOME}/.shell_vars_otool"' >> "${SHELLRC}"
+source ${FILE_OTOOL_ENV_VARS}
+
+mkdir -p ${OTOOL_OUTPUT_DIR}
+[[ $# -gt 1 ]] && OPT="_${@[-2]}"
+OTOOL_OUTPUT_FILE="$(filename ${@[-1]})${OPT}_$(date +%s)"
+
+OTOOL_OUTPUT_PATH=${OTOOL_OUTPUT_DIR}/${OTOOL_OUTPUT_FILE}
+
+original otool ${@} | tee -a ${OTOOL_OUTPUT_PATH}
+

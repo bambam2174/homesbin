@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+GITREPODIR=$GITHUB
+GITCMD='status'
+for i in $(ls -1 $GITREPODIR); do 
+    echo -n "\n########################################\n$i ===> "; 
+    git -C "$GITHUB/$i" $GITCMD; 
+done

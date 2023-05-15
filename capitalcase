@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+#${XX//[^a-z]/ }
+
+if [[ ${#} -gt 0 ]]
+then
+    SZ_INPUT="${1}"
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && SZ_INPUT="${INPUT_PIPE}"
+fi
+
+ARRINPUT=($(echo ${SZ_INPUT//[^a-z]/ }))
+ARRSEP=($(echo ${SZ_INPUT} | grep -oE '[^a-z]'))
+
+SZ_OUTPUT=""
+
+_capitalcase () {
+	echo -n $(uppercase ${1[1]})
+	lowercase "${1[2,-1]}"
+}
+CNT=1
+for EL in ${ARRINPUT}
+do
+    SZ_OUTPUT+=$(_capitalcase ${EL})
+    [[ ${CNT} -lt ${#ARRINPUT} ]] && SZ_OUTPUT+=${ARRSEP[${CNT}]:- }
+    ((CNT++))
+done
+
+echo ${SZ_OUTPUT}

@@ -1,14 +1,15 @@
 #!/bin/bash
 
 sha1_prod() {
-    for f in "$(ls -d $1/*)"; 
+    for f in "$(ls -d $1/*)"
     do 
-        if [ -f "$f" ]; then 
-            shasum $f 2> /dev/null;
+        if [ -f "$f" ]
+        then 
+            shasum $f 2> /dev/null
         else 
-            shasum $f/* 2> /dev/null;
+            shasum $f/* 2> /dev/null
         fi 
-    done; 
+    done 
 }
 
 sha1_test() {
@@ -26,7 +27,7 @@ sha1_test() {
 
 OPERATIONPATH='.'
 
-if [ -n "$1" ]; 
+if [ -n "$1" ]
 then
     OPERATIONPATH="$1"
 else

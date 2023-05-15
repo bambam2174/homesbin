@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+list-link-categories  | grep --color=auto -E ".*${1}.*" | sed -E "s/\=$(echo ${1//\//\\/}).*//g"

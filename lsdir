@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+source ${DEBUG_STATE_FILE//_value/}
+SCRIPTNAME=$(filename "${0}")
+
+FILETYPE=d
+
+_lsd () {
+    [[ ${1[1]} = '-' ]] && [[ ${1//-/} = 'help' ]] && echo "${SCRIPTNAME} [-d] [<path>] [<filetype> { l || c || d || b || - }] \ne.g. ${SCRIPTNAME} -d ~/ l " && source retexit 0
+    (isDebugLocal || isDebugGlobal) && echo "$#@ $@"
+	IFS=${DELIMITER_ENDL}
+	(isDebugLocal || isDebugGlobal) && echo "Number of Parameters $#"
+	POPT='-lAF'
+	[[ -n "${1}" ]] && [[ ${1[1]} = '-' ]] && POPT+=${1//-/}  && shift
+	[[ -n "${1}" ]] && [[ -e "${1}" ]] && PPATH="${1}" && shift || PPATH="."
+	(isDebugLocal || isDebugGlobal) && echo "PPATH=${PPATH}\nPOPT=${POPT}"
+    (isDebugLocal || isDebugGlobal) && echo $@
+    [[ -n "${1}" ]] && FILETYPE=${1}
+    ([[ ${FILETYPE} = 'c' ]] || [[ ${FILETYPE} = 'b' ]]) && LAST_COL=9 || LAST_COL=8
+    HIDECOL=''
+    for i in {1..${LAST_COL}}
+    do 
+        HIDECOL+=\$${i}=
+    done
+    if string_contains ${POPT} 'd'
+    then
+        ls ${POPT} "${PPATH}"/*  | grep -E "^${FILETYPE}" | awk '{'${HIDECOL}'""; print $0}' | sed -E 's/^ +//g'
+    else
+        ls ${POPT} "${PPATH}" | grep -E "^${FILETYPE}" | awk '{'${HIDECOL}'""; print $0}' | sed -E 's/^ +//g'
+    fi
+}
+
+_lsd ${@}

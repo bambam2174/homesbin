@@ -17,5 +17,6 @@ done
 
 if [[ -d $OBJ1 ]];then DIROPT=' -d '; fi;
 if [[ -z $OBJ2 ]];then OBJ2=$OBJ1; fi;
-CMD="git difftool $DIROPT --tool=$TOOL $BRANCH1:$OBJ1 $BRANCH2:$OBJ2 ";
+CMD="git difftool $DIROPT --tool=$TOOL -y $BRANCH1:$OBJ1 $BRANCH2:$OBJ2 ";
+isDebug && echo ${CMD}
 $($CMD);

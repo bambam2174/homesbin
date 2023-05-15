@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_str () {
+	SZ=${1} 
+	IDX_B=${2} 
+	IDX_E=-1 
+    [[ -n ${3} ]] && IDX_E=${3}
+	echo "\$SZ[${IDX_B},${IDX_E}]"
+	echo $SZ[${IDX_B},${IDX_E}]
+}
+_str ${@}

@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_path2string-range () {
+    get-opts-values ${@}
+    OPTS=($(get-opts-values ${@}))
+	echo "${OPTS} ${#OPTS}"
+    shift ${#OPTS}
+    echo "${OPTS} ${1} ${2}"
+    path2string ${OPTS} "$(echo "${1}" | rev | cut -d '/' -f"${2}" | rev)"
+}
+_path2string-range ${@}

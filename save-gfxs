@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+_save-gfxs  () {
+    IFS=${DELIMITER_ENDL}
+    PATHS=($(path-latest-screenshot ${2}))
+    CC=1
+    for p in ${PATHS}
+    do
+        DESTINATION_FILE="${1}.png"
+        [[ $#PATHS -gt 1 ]] && DESTINATION_FILE="${1}_${CC}.png"
+        mv "${p}" "${PICTURES_GFXS}/${DESTINATION_FILE}"
+    done
+}
+_save-gfxs  ${@}

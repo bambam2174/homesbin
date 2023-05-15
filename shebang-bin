@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+#[[ - ]]
+
+shebang "$BIN/${1}" ${2}
+
+update-bin > /dev/null

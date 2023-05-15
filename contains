@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+CONTAINS=false
+
+_contains () {
+    if [[ -f "${1}" ]]
+    then
+        LCOUNT=$(cat "${1}" | grep "${2}" | wc -l) 
+        [[ $LCOUNT -eq "0" ]] || CONTAINS=true
+    else
+        #echo "${1}"
+        #[[ -n "${1}" ]] && echo "$_TU1" || echo "$_TD1"
+        [[ -n "${1}" ]] && [[ -n "${2}" ]] && [[ "${1}" = *"${2}"* ]] && CONTAINS=true
+    fi
+    ${CONTAINS} && return 0 || return 1
+}
+_contains ${@}

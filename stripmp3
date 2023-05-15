@@ -1,3 +1,4 @@
 #!/bin/bash
 
+NO_CERT='--no-check-certificate'
 youtube-dl -x --audio-format mp3 --audio-quality 0 "$1"

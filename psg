@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_psg () {
+    LAST_ARG=${@[-1]}
+	ps -ef | head -n 1
+	ps -ef | grep --color=auto ${@} | tee -a "${OUTPUT_PROCESS_STATUS}/${LAST_ARG//\//_}.txt"
+}
+_psg ${@}

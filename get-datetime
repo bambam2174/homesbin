@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+STOP=false
+
+ulan() {
+    sleep 2
+    echo "…ulan";
+    STOP=true
+}
+EASTEREGG=false
+startsWithDash ${1} && [[ ${1//-/} = 'funny' ]] && EASTEREGG=true && shift
+startsWithDash ${1} && OPTS="${1//-/}" && shift
+
+[[ -e "${1}" ]] || { 
+    echo "${1} doesn't exist…"
+    ${EASTEREGG} && ulan &
+    while !${STOP}
+    do
+        echo -n "…"
+    done
+    . retexit 1; }
+
+_get-datetime () {
+    
+	ls -Glct${OPTS} "${1}" | grep --color=auto -oE "${REGEX_LISTLONG_DD_MNT_HH_MM}"
+}
+_get-datetime ${@}

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+env | grep -E "^FOLDERNAME(_[0-9A-Z]*)*" -$(echo ${@} | sed -e 's/[- ]*//g')

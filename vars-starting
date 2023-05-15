@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vars-starting () {
+	set | grep --color=auto -oE "^${1}[_0-9A-Z]*"
+}
+_vars-starting ${@}

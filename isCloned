@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+for i in $(ls -1 $GITHUB); do [ -d "$GITHUB/$i" ] && echo "is Directory"; done

@@ -1,5 +1,10 @@
 #!/bin/bash
 
-DIR=$(ls -lahFG `which $1`)
-echo $DIR
+IFS=$DELIMITER_ENDL
+
+PATH2CMD=$(ls -lahFG `which -a ${1}`)
+for CURRENT_CMD in $PATH2CMD
+do
+    echo $CURRENT_CMD
+done
 

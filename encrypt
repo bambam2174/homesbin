@@ -1,4 +1,0 @@
-#!/bin/bash
-gpg -c --cipher-algo AES256 $1
-mv $1.gpg $1
-

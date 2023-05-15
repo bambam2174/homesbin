@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+SCRIPTNAME="$(basename $0)"
+CURR_SHELL_VARS="${SHELL_VARS}"
+startsWithDash ${1} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_VARS="${2}" && shift 2
+CURR_SHELL_VARS_FILENAME="$(filename ${CURR_SHELL_VARS})"
+TMPFILE="${TMPDIR}/${CURR_SHELL_VARS_FILENAME//\./}"
+_setvar () {
+    VAL=${2//\$/\\$}
+    VAL=${VAL//[\/]/\\/}
+
+	cat ${CURR_SHELL_VARS} | sed -E "s/export ${1}=.*/export ${1}=\"${VAL}\"/g" > ${TMPFILE}
+	cp "${CURR_SHELL_VARS}" "${TMPFILE}~bkp"
+	cat "${TMPFILE}" > "${CURR_SHELL_VARS}"
+}
+_setvar ${@}

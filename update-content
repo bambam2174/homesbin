@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+OPT='a'${2}
+tree -${OPT} "${1}" | tee $TREES/tree-${OPT}-$(path2string ${1}).txt

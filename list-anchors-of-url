@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+PARAM=${1}
+PHOST=$(startsWith $PARAM http && echo $PARAM | cut -d "/" -f3 || echo $PARAM | cut -d "/" -f1)
+#PHOST=$(echo $PARAM | cut -d "/" -f3)
+URLPATH=$(echo $PARAM | sed "s/http.*$PHOST//")
+
+get-tag-attr-value-of-url ${PARAM} a href | sed "s/href=//" | sed "s/[\"]*//g" | sed "s/^\/\//https:\/\//g" | sed "s/^\//${URL}\//" | sed "s/^#/https:\/\/${URL}#/"

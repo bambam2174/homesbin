@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_show-nth-screenshot () {
+    ic2 "$(path-nth-screenshot ${1})"
+}
+_show-nth-screenshot ${@}

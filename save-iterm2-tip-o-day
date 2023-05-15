@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_save-iterm2-tip-o-day () {
+    TARGETFILE=tip-${RANDOM}
+    [[ -n ${1} ]] && TARGETFILE="${1}"
+	mv -i "$(path-latest-screenshot)" ${ITERM2_TIP_OF_THE_DAY}/${TARGETFILE}.png
+}
+_save-iterm2-tip-o-day ${@}

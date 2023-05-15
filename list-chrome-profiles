@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+
+OUTPUTLS=$({ls $LIBRARY_APPLICATION_SUPPORT_USER_CHROME} | grep -E "(Default|Profile)")
+
+IFS=$DELIMITER_ENDL
+
+ARR_CD=( $(echo $OUTPUTLS) )
+
+SZ_OUTPUTLS=''
+for i in $ARR_CD
+do
+    #echo -n "\"${i})\""
+    SZ_OUTPUTLS="${SZ_OUTPUTLS}\"${i}\" "
+    #SZ_OUTPUTLS="${SZ_OUTPUTLS}\"$(echo -n ${i})\";"
+done
+echo "ARR_CD=( ${SZ_OUTPUTLS} )" > /dev/stdin
+echo "( ${SZ_OUTPUTLS} )" > /dev/stdout
+ARR_CD=( $(echo $OUTPUTLS) )
+echo "\$#ARR_CD=$#ARR_CD" > /dev/stdin

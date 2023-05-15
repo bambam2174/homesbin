@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+CURRCMD=${1}
+
+[[ -f $(builtin which "$CURRCMD") ]] && ls -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD

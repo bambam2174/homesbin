@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vars () {
+	cat ${SHELL_VARS} | grep --color=auto $@
+}
+_vars ${@}

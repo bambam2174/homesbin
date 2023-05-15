@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+startsWithDash ${1} && OPTS="${1//-/}" && shift
+
+_show-nth-output-brew () {
+
+    if isNumeric ${1}
+    then
+        ls -G1AFUt${OPTS} $OUTPUT_BREW/*${2}* | head -n ${1} | tail -n 1
+    else
+        ls -G1AFUt${OPTS} $OUTPUT_BREW/*${1}*
+    fi
+}
+_show-nth-output-brew ${@}

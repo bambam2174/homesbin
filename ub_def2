@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+r=0
+i=0
+JSON=$(ub_def_tmp "$1")
+mkdir -p ~/tmp/urban_dictionary/
+echo $JSON | tee "$HOME/tmp/urban_dictionary/$1.json"
+while [ $r -eq 0 ]; do 
+    echo $JSON  |  python3 -c 'import json,sys;obj=json.load(sys.stdin);print (obj["list"]['$i']["definition"])' # 2> /dev/null
+    #ub_def "$1" $i
+    r=$?
+    i=$((i+1))
+    echo ""
+done
+

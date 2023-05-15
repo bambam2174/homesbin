@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_last-gitignore () {
+	cat .gitignore | tail -n ${1:-10}
+}
+_last-gitignore ${@}

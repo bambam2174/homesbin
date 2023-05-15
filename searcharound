@@ -1,36 +1,47 @@
-#!/bin/bash
+#!/bin/zsh
 
-echo "Number of parameters: $# also in curly braces ${s#}. \nPATH with \$-sign inside the curly braces and also outside of them   ";
-BOTTOM=0
-TOP=0
+source ${SHELL_DEBUGSTATE}
+
+usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || . retexit $?
+
+
+BEFORE=0
+AFTER=0
 CAT=cat
-
-if  [ -n "`which ccat`" ]; then 
-    echo `which ccat`;
+if  [[ -n "`which ccat`" ]]; then 
     CAT=ccat
 fi
-
-if [ -z $3 ]
+(isDebugLocal || isDebug) && echo "1. \${@} = ${@}"
+if startsWith ${1} "-"
 then
-    echo "You can set how many lines after the search word get displayed with a 3rd integer argument"
-else
-    TOP=$3
+    GREP_OPTIONS="${1}"
+    shift
 fi
 
-if [ -z $4 ];
+(isDebugLocal || isDebug) && printf "2. \${@} = ${@} \n $GREP_OPTIONS\n"
+
+LOG="${TMP}/srcha/search_${1//\//•}.txt"
+mkdir -p $(dirname ${LOG})
+
+if isNumber ${3} || [[  ${3} -gt 0 ]]
 then
-    echo "You can set how many lines before the search word get displayed with a 4th integer argument"
-else
-     BOTTOM=$4
+    AFTER="-A ${3}"
 fi
 
-echo
-if [ -f "$2" ]; then
-    echo "$CAT $2 | grep -i -B $BOTTOM -A $TOP $1 "
-    echo "-------------------------------------------"
-    $CAT "$2" | grep -i -B $BOTTOM -A $TOP "$1" 2> /dev/null
-elif [ -d "$2" ]; then
-    echo "grep -iRIs \"$1\" \"$2\" -B $BOTTOM -A $TOP"
-    echo "-------------------------------------------"
-    grep -iRIs "$1" "$2" -B $BOTTOM -A $TOP --exclude-dir .git 2> /dev/null
+if [[ ${4} -gt 0 ]]
+then
+     BEFORE="-B ${4}"
+fi
+
+
+LOG_OUTPUT="${OUTPUT_SRCHA}/srcha•${1//\//${SLASH_DIVISION}}_${2//\//${SLASH_DIVISION}}_${BEFORE}_${AFTER}•$(date +'%s').txt"
+
+if [[ -f "${2}" ]]
+then
+    (isDebugLocal || isDebug) && echo "${CAT} ${2} | grep -n ${GREP_OPTIONS} ${BEFORE} ${AFTER} ${1} "
+    ${CAT} "${2}" | grep -n $GREP_OPTIONS "${1}" $BEFORE $AFTER 2> /dev/null | tee -a ${LOG_OUTPUT}
+elif [[ -d "${2}" ]]
+then
+    (isDebugLocal || isDebug) && echo "grep -nRIs ${GREP_OPTIONS} \"${1}\" \"${2}\" ${BEFORE} ${AFTER}"
+    grep -nRIs ${GREP_OPTIONS} "${1}" "${2}" ${BEFORE} ${AFTER} --exclude-dir .git 2> /dev/null | tee -a ${LOG_OUTPUT}
 fi

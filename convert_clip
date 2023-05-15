@@ -1,10 +1,11 @@
 #!/bin/bash
 
+FROM=$(fileext $1)
 TO=mp4
 if [ $# -gt 1 ]; then
     TO="$2"
 fi
 
 #ffmpeg -fflags +genpts -i "$1" -r 24 $(filename "$(fileroot "$1").mp4")
-TARGET=${1/webm/$TO}
+TARGET=${1/$FROM/$TO}
 ffmpeg -fflags +genpts -i "$1" -r 24 "$TARGET"

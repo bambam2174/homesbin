@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+tree "${LINKS}" | tee "${TREES}/tree-links.txt"

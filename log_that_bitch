@@ -2,7 +2,8 @@
 
 while true;
 do 
-    clear;
-    tail -45 $1;
-    sleep 1;
+    clear
+    tail -45 $1
+    echo "\$\$=$$"
+    sleep 1
 done

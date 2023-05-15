@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_whichl () {
+	CNT=1 
+	IFS=$DELIMITER_ENDL 
+	for l in $(which -a ${@})
+	do
+		echo "$((CNT++)) $l"
+	done
+}
+_whichl ${@}

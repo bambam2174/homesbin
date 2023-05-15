@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_man-sections () {
+	IFS=${DELIMITER_ENDL} 
+	SECTIONS=($(man "${1}" | grep -E '^[^ ][ a-zA-Z0-9]*')) 
+	for l in ${SECTIONS[2,-2]}
+	do
+		echo $l
+	done
+}
+
+#[[ ${#} -eq 1 ]] && echo "\$#=${#} \n\$1=${1} \n\$@=( $@ )" || echo "\$#=${#} \n\$1=${1} \n\$2=\"${2}\" \n\$@=( $@ )"; . retexit
+[[ ${#} -eq 1 ]] && _man-sections ${1} || man-section "${2}" "${1}"

@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+which -a "${1}" | tail -n 1

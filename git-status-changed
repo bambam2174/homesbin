@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+QRY="${1:-geändert}"
+
+_git-status-changed () {
+    IFS=$DELIMITER_ENDL
+	for i in $(git status | grep -E "${QRY}" | cut -d ':' -f2)
+	do
+		echo ${i}
+	done
+}
+_git-status-changed ${@}

@@ -1,2 +1,11 @@
-#!/bin/bash
-echo $1 | rev  | cut -d '.' -f1  | rev
+#!/bin/zsh
+
+isDebug && echo ${@}
+CNT=0
+for TMP_PATH in "${@}"
+do
+    isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
+    TMP_RESULT=$(echo ${TMP_PATH} | rev  | cut -d '.' -f1  | rev)
+    ! (isFile ${TMP_RESULT} || isDir ${TMP_RESULT}) && echo ${TMP_RESULT}
+done
+

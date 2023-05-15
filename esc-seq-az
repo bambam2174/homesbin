@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_esc-seq-az () {
+	echo "abc\\${ESC}xyz"
+	for char in {a..z}
+	do
+		echo "\t  \\ \b${char}\t :\tabc\\${char}xyz"
+		echo "\t	  —————————————————"
+		echo "\t2${SIGN_MULTIPLICTATION_BS}\\ \b${char}\t :\tabc\\${char}\\${char}xyz"
+		echo '———————————————————————————————————'
+	done
+}
+_esc-seq-az ${@}

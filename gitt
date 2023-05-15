@@ -1,6 +1,12 @@
 #!/bin/zsh
 
-CMD="$1"; 
-cd ~/bin;
-$CMD; 
-cd $OLDPWD;
+[[ -d "${HOME}/.gdrive-excludes/$(path2string -b '[SPACE]' ${PWD})" ]] || { echo "Kein Git-Repo, amigo"; exit 1;  }
+# echo "ln -s \"${HOME}/.gdrive-excludes/$(path2string -b '[SPACE]' ${PWD})\" .git"
+ln -s "${HOME}/.gdrive-excludes/$(path2string -b '[SPACE]' ${PWD})" .git
+
+_gitt () {
+    #echo "ln -s \"${HOME}/.gdrive-excludes/$(path2string -b '[SPACE]' ${PWD})\" .git"
+    git ${@}
+    rm -f .git
+}
+_gitt ${@}

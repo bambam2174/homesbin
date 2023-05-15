@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+tree $BIN | tee $TREES/tree-homebin.txt

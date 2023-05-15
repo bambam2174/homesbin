@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+_save-lovoo  () {
+    IFS=${DELIMITER_ENDL}
+    PATHS=($(path-latest-screenshot ${2}))
+    CC=1
+    for p in ${PATHS}
+    do
+        DESTINATION_FILE="${1}.png"
+        [[ $#PATHS -gt 1 ]] && DESTINATION_FILE="${1}_${CC}.png"
+        mv "${p}" "${PICTURES_LOVOO}/${DESTINATION_FILE}"
+        ((CC++))
+    done
+}
+_save-lovoo  ${@}

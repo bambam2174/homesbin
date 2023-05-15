@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vars-containing () {
+	set | grep --color=auto -oE "[_0-9A-Z]*${1}[_0-9A-Z]*"
+}
+_vars-containing ${@}

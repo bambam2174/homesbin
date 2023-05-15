@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+_lowercase() {
+	echo "${1}" | tr '[:upper:]' '[:lower:]'
+}
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_SZ in "${@}"
+    do
+        isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_SZ}"
+        _lowercase "${TMP_SZ}"
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && _lowercase "${INPUT_PIPE}"
+fi
+

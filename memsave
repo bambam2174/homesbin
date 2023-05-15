@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+SCRIPTNAME="$(filename ${0})"
+
+usage() {
+    ecko "${SCRIPTNAME} [ -p|--pboard  { (1|ruler) | (2|find) | (3|font) } ] " 254 1 && . retexit ${$}
+}
+
+# [[ ${#} -eq 0 ]] && usage
+
+PBBOARD=font
+
+startsWithDash ${1} && [ ${1/-/} = 'h' -o ${1/-/} = '-help' ] && shift 1 && usage
+startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-pboard' ] && PBBOARD="${2}" && shift 2
+
+[[ ${PBBOARD} = "general" ]] && { ecko -n "Don't use the PBoard" 132 123; ecko -n  " \"general\" " 123 132; ecko " in order not to overwrite standard clipboard " 132 123  > /dev/stderr && usage }
+
+if isNumeric ${PBBOARD} 
+then
+    case ${PBBOARD} in
+        1)
+            PBBOARD='ruler'
+            ;;
+        2)
+            PBBOARD='find'
+            ;;
+        3)
+            PBBOARD='font'
+            ;;
+        *)
+            PBBOARD='font'
+            ;;
+    esac
+
+fi
+
+_memsave () {
+	read ${@} A
+	echo -n "${A}" | pbcopy -pboard ${PBBOARD}
+}
+_memsave ${@}

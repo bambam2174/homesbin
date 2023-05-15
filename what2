@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+CCMD="$1"
+echo "$1"
+what "$(which $CCMD)"

@@ -1,7 +1,16 @@
 #!/bin/zsh
 
-INPUT="$1"
+ISDEBUG=$(which isDebug | wc -l)
 
+NUMBERALIASES=$(alias | wc -l)
+
+[[ $ISDEBUG -eq 1  ]] && source $BASHDEBUGSTATE
+[[ ${NUMBERALIASES} -lt 3  ]] && [[ -n ${SHELL_ALIASES} ]]  && [[ -r ${SHELL_ALIASES} ]] && source ${SHELL_ALIASES}
+NUMBERALIASES=$(alias | wc -l)
+[[ ${NUMBERALIASES} -lt 3  ]] && [[ -r ~/.shell_aliases ]] && source ~/.shell_aliases
+
+INPUT="$1"
+IFS_ORIG=${IFS}
 IFS=$','
 
 if [ -n "$2" ]; then
@@ -11,5 +20,6 @@ fi
 for i in $(echo $INPUT); do 
     echo $i; 
 done 
-IFS=""
-unset IFS
+#unset IFS
+resetIFS
+IFS=${IFS_ORIG}

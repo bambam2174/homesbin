@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_trying () {
+	"$@" || (
+		[ $0 == "-bash" ] || dying "cannot $*"
+	)
+}
+_trying ${@}

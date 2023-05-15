@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+var szJoin = ','
+var base = 10
+var withPrefix = false
+var prefix = ''
+
+var processor = process.argv.shift()
+
+var path2script = process.argv.shift()
+
+var allParams = process.argv.join(' ')
+
+if (process.argv[0].startsWith('-') && (process.argv[0].replace(/-/g, '') === 'h' || process.argv[0].replace(/-/g, '') === 'help')) {
+    console.log('usage : ' + path2script.split(/\//).pop() + '[-p|--prefix] [-x|-d|-o|-b|--hex|--dec|--oct|--bin] [-j|--join <separator>] <string>')
+    console.log("example : " + path2script.split(/\//).pop() + " -p -b -j ' ' $USER")
+    console.log("example : " + path2script.split(/\//).pop() + " --prefix --hex --join '•' $USER")
+    console.log("example : " + path2script.split(/\//).pop() + " $USER")
+    return 0
+}
+
+if (process.argv[0].startsWith('-') && (process.argv[0].replace(/-/g, '') === 'p' || process.argv[0].replace(/-/g, '') === 'prefix')) {
+    withPrefix = true
+    process.argv.shift()
+}
+
+if (process.argv[0].startsWith('-') && !!process.argv[0].replace(/-/g, '').match(/\b(x|d|o|b|hex|dec|oct|bin)\b/g)) {
+    switch(process.argv[0]) {
+        case '-x':
+        case '--hex':
+            base = 16
+            prefix = withPrefix ? '0x' : ''
+            break
+        case '-b':
+        case '--bin':
+            base = 2
+            prefix = withPrefix ? '0b' : ''
+            break
+        case '-o':
+        case '--oct':
+            base = 8
+            prefix = withPrefix ? '0o' : ''
+            break
+        case '-d':
+        case '-dec':
+            base = 10
+            break
+    }
+    process.argv.shift()
+}
+
+if (process.argv[0].startsWith('-') && (process.argv[0].replace(/-/g, '') === 'j' || process.argv[0].replace(/-/g, '') === 'join')) {
+    szJoin = process.argv[1]
+    process.argv.shift()
+    process.argv.shift()
+}
+var SZPARAM0 = process.argv[0]
+//console.log(process.argv)
+
+var arrCharCode = []
+
+for (let idx = 0; idx < SZPARAM0.length; idx++) {
+    arrCharCode.push(prefix + SZPARAM0.charCodeAt(idx).toString(base))
+}
+
+console.log(arrCharCode.join(szJoin))

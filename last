@@ -1,5 +1,5 @@
 #!/bin/bash
-COUNT=4
+COUNT=5
 ISNUMBER='^[0-9]+$'
 
 if [ $# -gt 1 ]; then

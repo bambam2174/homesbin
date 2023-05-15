@@ -4,3 +4,7 @@ if [ $# -gt 1 ]; then
 fi
 
 ls $(echo "*$(echo $1 | cut -d= -f 2)*") 2> /dev/null
+if [ $? -eq 1 ]; then 
+     ls $(echo "*$(echo $1 | rev | cut -d - -f 1 | rev)*") 2> /dev/null
+fi
+

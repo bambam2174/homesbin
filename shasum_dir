@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+[[ -d "${1}" ]] || { 
+    echo "${1} is not a directory" 
+    exit $? 
+}
+SHASUM_DIR=$HOME/tmp/.shasum_dir
+SHASUM_TEMPFILE="$SHASUM_DIR/$(filename ${1})"
+
+mkdir -p $SHASUM_DIR
+
+tar -czvf "${SHASUM_TEMPFILE}" "${1}" > /dev/null 2>&1
+
+shasum -a 256 "${SHASUM_TEMPFILE}"  | cut -d ' ' -f1
+

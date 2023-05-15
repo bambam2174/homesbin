@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+. $BIN/.functions
+
+SOURCEFILE="$1"
+STARTTIME="$2"
+STOPTIME="$3"
+TARGETFILE="$4"
+
+if [ $# -eq 0 ] ||  [ $# -lt 4 ]; then
+    echo "$# is $((4-$#)) too few"
+    echo "Usage: $(basename $0) source.clip starttime endtime destination.clip"
+    echo "Time expressed in hh:mm:ss format"
+    exit 1
+fi
+isDebug && LOGLEVEL='-loglevel repeat+level+verbose' || LOGLEVEL=''
+
+CMD="ffmpeg $LOGLEVEL -i \"${SOURCEFILE}\" -ss ${STARTTIME} -to ${STOPTIME} -async 1 \"${TARGETFILE}\""
+
+isDebug && echo $CMD
+
+$(echo $CMD)

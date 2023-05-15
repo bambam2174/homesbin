@@ -1,16 +1,39 @@
 #!/bin/bash
 
-THAT=$1
-WITH=$2
-IN=$3
+usage() {
+    echo "${CMD} strReplace strWithi path2file";
+}
+CMD="$(filename ${0})"
 
-echo "" > $IN".tmp"
+[[ ${#} -lt 3 ]] && { 
+    usage
+    . retexit 1 
+}
+
+[[ -d "${3}" ]] && { 
+    echo "Target is a directory"
+    usage
+    . retexit 2 
+}
+
+[[ -w "${3}" ]] || { 
+    echo "File is not writable"
+    usage
+    . retexit 4 
+}
+
+
+THAT=${1}
+WITH=${2}
+IN=${3}
+
+touch "${IN}.tmp"
 while read line
 do
-    echo $line
-    NEW=${line/"$THAT"/"$WITH"}
-    echo $NEW >> $IN".tmp"
-done < $IN
-cp $IN".tmp" $IN
-rm $IN".tmp"
+    echo ${line}
+    NEW=${line/"${THAT}"/"${WITH}"}
+    echo ${NEW} >> "${IN}.tmp"
+done < "${IN}"
+cp "${IN}.tmp" "${IN}"
+rm "${IN}.tmp"
 

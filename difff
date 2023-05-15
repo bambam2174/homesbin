@@ -1,13 +1,55 @@
-#!/bin/bash
+#!/bin/zsh
 
-mkdir -p ~/tmp/.difff/
-rm ~/tmp/.difff/A
-rm ~/tmp/.difff/B
+OPTS=()
 
-echo "$@" >> ~/tmp/.difff/A
-echo "$@" >> ~/tmp/.difff/B
+_diff3 () {
+	ARRPARAM=()
+	KDIFF3=false
+	#echo "Paramcount ${#@}"
+	#echo "Params ${@}"
+	for tmp_param in ${@}
+	do
+		[[ "${tmp_param}" = '--kdiff3' ]] && KDIFF3=true && continue
+		startsWithDash "${tmp_param}" && 
+            OPTS+="${tmp_param}" || 
+            ARRPARAM+="${tmp_param}"
+	done
+	#echo ${KDIFF3}
+    
+    _difff ${ARRPARAM}
+	
+    [[ ${KDIFF3} = true ]] && {
+		#kdiff3 ${ARRPARAM}
+		kdiff3 ${OUTPUT_DIFFF}/A ${OUTPUT_DIFFF}/B
+    }
+}
 
-diff ~/tmp/.difff/A ~/tmp/.difff/B
+_difff() {
+    [[ -z ${OUTPUT_DIFFF} ]] && OUTPUT_DIFFF="${HOME}/output/diff"
+    [[ -n ${CHAR_ARROW_LEFT_TRIPLE} ]] && 
+        VS="${CHAR_ARROW_LEFT_TRIPLE}${CHAR_ARROW_RIGHT_TRIPLE}" || 
+        VS="⇚⇛" 
+    mkdir -p ${OUTPUT_DIFFF}
 
+    echo "${1}" > ${OUTPUT_DIFFF}/A
+    echo "${2}" > ${OUTPUT_DIFFF}/B
+    
+    echo "------------------" >> ${OUTPUT_DIFFF}/A
+    echo "------------------" >> ${OUTPUT_DIFFF}/B
+    eval "${1}" >> ${OUTPUT_DIFFF}/A
+    eval "${2}" >> ${OUTPUT_DIFFF}/B
 
+    #diff ${OUTPUT_DIFFF}/A ${OUTPUT_DIFFF}/B
+
+    A=$(path2string "$1")
+    B=$(path2string "$2")
+    A=${A// /}
+    B=${B// /}
+    
+    diff ${OPTS} ${OUTPUT_DIFFF}/A ${OUTPUT_DIFFF}/B | tee "${OUTPUT_DIFFF}/diff${OPTS}•${A}${VS}${B}"
+
+    #[[ $# -gt 2 ]] && { cp ${OUTPUT_DIFFF}/A_${ARR_CMBND[1]}; rm -f ${OUTPUT_DIFFF}/B; }
+}
+
+_diff3 ${@}
 

@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+if [ -z $state ]; then
+    export state=0
+fi
+
+CPATH="$1"
+CAPP="$0"
+DO="$2"
+
+#echo "$CAPP on $CPATH"
+#echo "state $state"
+
+if [ $state -eq 0 ]; then
+    cd "$CPATH"
+    state=1
+    echo "##### changed to $CPATH\nstate set to $state"
+fi
+
+echo "current \"$PWD\""
+if [ -n $DO ]; then
+    eval $DO
+fi
+
+cd ..
+
+
+if [ $PWD = "/" ]; then
+    exit 0
+fi
+
+echo "\n######################################################\n$(basename $CAPP) '$PWD' '$DO'\n##################"
+
+$CAPP $PWD $DO
+
+

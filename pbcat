@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbcat () {
+	cat "${1}" | tee >(pbcopy)
+}
+_pbcat ${@}

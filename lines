@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_lines () {
+	echo $(($(cat "${1}" | wc -l)))
+}
+_lines ${@}

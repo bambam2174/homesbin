@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+#echo "\$@ = ${@}"
+
+RETURN_CODE="${1:-74}"
+
+#echo "\$RETURN_CODE = ${RETURN_CODE}"
+
+[[ $SHLVL -gt 1 ]] && exit ${RETURN_CODE} || return ${RETURN_CODE}

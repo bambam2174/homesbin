@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+CURRENTLINK=$(getlink "${1}")
+
+FILENAME="title-$(filename ${CURRENTLINK}.txt)"
+PATH2FILE="$TMP/youtube-dl/${FILENAME//watch?v/id}"
+
+mkdir -p $(filedir "${PATH2FILE}")
+
+[[ -f "${PATH2FILE}"  ]] && cat "${PATH2FILE}" || youtube-dl ${YOUTUBE_DL_OPTIONS_NO_MARK_WATCHED} ${YOUTUBE_DL_OPTIONS_NO_CHECK_CERT} ${YOUTUBE_DL_OPTIONS_GET_TITLE} ${CURRENTLINK} | tee "${PATH2FILE}"
+

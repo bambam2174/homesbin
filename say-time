@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_say-time () {
+	say -v $(say-voice4lang ${1[1,2]} ${2:-1}) $(telltime)
+}
+_say-time ${@}

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_psga () {
+    LAST_ARG=${@[-1]}
+    OUTPUT_FILE="${OUTPUT_PROCESS_STATUS}/${LAST_ARG//\//_}_ts•$(date +%s).txt"
+    ps aux | head -n 1
+    CURREN_OUTPUT=$(ps aux | grep --color=auto ${@}) 
+    echo "${CURREN_OUTPUT}" | sed -E "s/${REGEX_PSG}//g" | tee -a "${OUTPUT_FILE}"
+}
+_psga ${@}

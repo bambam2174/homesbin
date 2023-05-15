@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_first-n-files () {
+	ls -G -1AF -ct ${2:-.} | grep --color=auto -E '^[^.].*[^/]$' | sed -E 's/\*//g' | head -n ${1:-10}
+}
+_first-n-files ${@}

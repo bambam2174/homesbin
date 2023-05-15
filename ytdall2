@@ -9,4 +9,4 @@ if [ $# -gt 0 ]; then
     cd $(dirname $TO_DOWNLOAD_FILE)
 fi
 #cat .2download >>  ~/.ytdall/downloaded
-handlefile3 .2download 'youtube-dl [URL]' ~/.ytdall/downloaded
+handlefile3 .2download 'youtube-dl  --no-check-certificate [URL]' ~/.ytdall/downloaded

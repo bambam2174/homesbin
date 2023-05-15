@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+RGX="^LINKS_[-_0-9A-Z]*"
+
+[[ -n ${1} ]] && { RGX=".*${1}.*"; shift }
+CURR_LINKS=$(env | grep "${RGX}")
+[[ -n ${1} ]] &&[[ ${1} =~ 'name$'  ]] && echo ${CURR_LINKS} ||  echo ${CURR_LINKS} | sed -e "s/=.*//g"
+
+
+#env | grep "${RGX}" | sed -e "s/=.*//g"

@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+_save-politics  () {
+    IFS=${DELIMITER_ENDL}
+
+    PATHS=($(path-latest-screenshot))
+    
+    if [[ ${#} -gt 1 ]]
+    then
+        [[ ${2[-1]} = '.' ]] &&  PATHS=($(path-nth-screenshot ${2})) || PATHS=($(path-latest-screenshot ${2}))
+    fi
+    CC=1
+    for p in ${PATHS}
+    do
+        DESTINATION_FILE="${1}.png"
+        [[ $#PATHS -gt 1 ]] && DESTINATION_FILE="${1}_${CC}.png"
+        mv "${p}" "${PICTURES_POLITICS}/${DESTINATION_FILE}"
+        ((CC++))
+    done
+}
+_save-politics  ${@}
