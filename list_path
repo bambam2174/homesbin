@@ -1,7 +1,1 @@
-#!/bin/zsh
-
-
-_list_path () {
-	listit $PATH :
-}
-_list_path ${@}
+list-path

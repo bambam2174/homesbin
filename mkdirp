@@ -2,7 +2,8 @@
 
 #if [[ ${#} -eq 0 ]]
 #then
-
+TSB=''
+TSE=''
 
 DATETIME_FORMAT='+%s'
 
@@ -22,7 +23,7 @@ case ${2} in
         TSE=${TIMESTAMP}
         ;;
     *)
-        NEWFOLDER="${NEWFOLDER/\[TS\]/${TIMESTAMP}}"
+        NEWFOLDER="${NEWFOLDER/\%TS\%/${TIMESTAMP}}"
         ;;
 esac
 
@@ -36,7 +37,7 @@ esac
 
 PATH2NEWFOLDER="$(dirname ${1})/${TSB}${NEWFOLDER}${TSE}"
 
-mkdir -p "${PATH2NEWFOLDER}" #&& cd "$_"
+mkdir -p "${PATH2NEWFOLDER}" && cd "$_"
 
 echo "$PATH2NEWFOLDER"
 

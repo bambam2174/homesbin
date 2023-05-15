@@ -1,13 +1,16 @@
 #!/bin/zsh
 
 QTS="\""
+KEEP=false
 startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
+startsWithDash "${1}" && [[ ${1//-/} = 'a' ]] && QTS="" && shift
+startsWithDash "${1}" && [[ ${1//-/} = 'k' ]] && KEEP=true && shift
 
 [[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
 
 SCRIPTNAME="$(basename $0)"
-
-CURR_SHELL_VARS=${${3}:-${SHELL_VARS}}
+CURR_SHELL_VARS="${SHELL_VARS}"
+startsWithDash ${1} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_VARS="${2}" && source ${CURR_SHELL_VARS} && shift 2
 # add alias like
 # alias addvar='source addvar'
 
@@ -16,15 +19,17 @@ CURR_SHELL_VARS=${${3}:-${SHELL_VARS}}
 _addvar() {
     SZ_EXPORT='export '
 
-    if [ $# -eq 0 ] ||  [ $# -lt 2 ]; then
+    if [ $# -eq 0 ] # ||  [ $# -lt 2 ]
+    then
         echo "$# is $((2-$#)) too few"
-        echo "Usage: ${SCRIPTNAME} name value"
+        echo "Usage: ${SCRIPTNAME} name [value]"
         echo "addalias ${SCRIPTNAME} 'source ${SCRIPTNAME}'"
         return 1
     else
         PNAME="${1//-/_}"
         PNAME=$(uppercase ${PNAME})
-        PVALUE="${2}"
+        PVALUE="${2:-$(pbpaste)}"
+        [[ $# -eq 1 ]] && startsWith $PVALUE '"' && endsWith $PVALUE '"' && PVALUE=${PVALUE[2,-2]} 
         ! string_contains $PVALUE "(" && ! startsWith $PVALUE '"' && ! endsWith $PVALUE '"' && PVALUE=${PVALUE// /\\ }
     fi
 
@@ -32,7 +37,12 @@ _addvar() {
 
     [[ "$LASTCHAR" = "+" ]] && SZ_EXPORT=''
 
-    echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
+    if ${KEEP}
+    then
+        echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE}${QTS}" >> $CURR_SHELL_VARS
+    else
+        echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
+    fi
     source $CURR_SHELL_VARS
 }
 

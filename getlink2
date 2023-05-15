@@ -29,6 +29,10 @@ do
     echo "COLOR_STEP = $COLOR_STEP"
 done
 
+CLIPBOARD="$(pbpaste)"
+CLIPBOARD=${CLIPBOARD//\"/}
+[[ ${#} -eq 0 ]] && [[ -f "${CLIPBOARD}" ]] && 1="${CLIPBOARD}"
+
 [[ $COLOR_START -lt 0 ]] && SIGN=- && ((COLOR_START*=-1))
 
 usage "$0" "$#" 1 '[---at-once] [--color-start=<1-255>]  [-ABCFGHLOPRSTUW@abcdefghiklmnopqrstuwx1%] <WEBLOC> [<WEBLOC> …]' "• Displays URLs that the webloc files point to. \n• \"--at-once\" makes all URLs render in background and appear at once" || source retexit 69
@@ -41,7 +45,7 @@ _extract-value() {
 }
 _getlink() {
 
-    BOOKMARK_FILE="$1"
+    BOOKMARK_FILE="${1}"
 
 
     EXT=$(fileext $BOOKMARK_FILE)

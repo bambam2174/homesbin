@@ -15,12 +15,18 @@ FGC=''
 
 BGC=''
 
-TEXT="${1}"
+if isNumeric ${1}
+then
+	TEXT="$(cat < /dev/stdin)"
+else
+	TEXT="${1}"
+	shift
+fi
 
 KF='%k%f'
 
-[[ -n ${2} ]] && isNumeric ${2} && FGC="%F{${2}}"
-[[ -n ${3} ]] && isNumeric ${3} && BGC="%K{${3}}"
-[[ -n ${4} ]] && isNumeric ${4} && KF=''
+[[ -n ${1} ]] && isNumeric ${1} && FGC="%F{${1}}"
+[[ -n ${2} ]] && isNumeric ${2} && BGC="%K{${2}}"
+[[ -n ${3} ]] && isNumeric ${3} && KF=''
 
 print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL}

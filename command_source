@@ -1,12 +1,27 @@
 #!/bin/bash
 
 CAT=ccat
+[[ -e "$(which ccat)" ]] || CAT=cat
+startsWithDash ${1} && [ ${1/-/} = 'n' -o ${1/-/} = '-number' ] && CAT='cat -n' && shift
 
-PATH_COMMAND=$(which -a "${1}")
+read -d '' QRYTERM <<EOF
+script
+text
+text
+EOF
 
-#if ![ -e "$(which ccat)" ]; then
-if [ -z $(which ccat) ] || [ ${#} -gt 1 ]; then
-    CAT="cat -n"
-fi
+_cs_() {
 
-${CAT} ${PATH_COMMAND}
+
+    for cmd in ${@}
+    do
+
+        PATH_COMMAND=$(which -a "${cmd}")
+        [[ ${#} -gt 1 ]] && ecko ${PATH_COMMAND} 100 199
+        # [[ -x "${PATH_COMMAND}" ]] && RESULT=$(file ${PATH_COMMAND} | grep -oE "(script|text)")
+        # [[ ${RESULT} = ${QRYTERM} ]] && ${CAT} ${PATH_COMMAND}
+        isShellScript "${PATH_COMMAND}" && ${CAT} ${PATH_COMMAND}
+    done
+}
+
+_cs_ ${@}

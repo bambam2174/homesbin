@@ -1,10 +1,21 @@
 #!/bin/zsh
 
+_filename() {
+    echo "${1}" | rev  | cut -d '/' -f1  | rev
+}
 isDebug && echo ${@}
-CNT=0
-for TMP_PATH in "${@}"
-do
-    isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
-    echo ${TMP_PATH} | rev  | cut -d '/' -f1  | rev
-done
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_PATH in "${@}"
+    do
+        isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
+        _filename "${TMP_PATH}"
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && _filename "${INPUT_PIPE}"
+fi
+
 

@@ -4,7 +4,13 @@
 
 source ~/bin/.functions
 
-FILENAME="$1"
+if [[ ${#} -gt 0 ]]
+then
+    FILENAME="$1"
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && FILENAME="${INPUT_PIPE}"
+fi
 FILEEXT=$(fileext "$FILENAME")
 isDebug && echo "FILENAME = $FILENAME"
 isDebug && echo "FILEEXT = $FILEEXT"

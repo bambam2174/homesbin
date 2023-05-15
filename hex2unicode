@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_hex2unicode () {
+	echo \\u${1//0x/}
+}
+_hex2unicode ${@}

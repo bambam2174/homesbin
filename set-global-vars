@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+CMD_NAME=$(filename ${0})
+
+touch "${GLOBAL_VARS_CSV}"
+
+export GLOBAL_VARS_CONTENT=$(cat ${GLOBAL_VARS_CSV})
+. "${GLOBAL_VARS_CSV}"
+QUIET=false
+
+_set-global-vars () {
+    [[ ${#} -eq 0 ]] && . retexit 0
+    if startsWithDash "${1}" 
+    then
+        [ ${1//-/} = 'q' -o ${1//-/} = 'quiet' ] && QUIET=true && shift
+        [ ${1//-/} = 'h' -o ${1//-/} = 'help'  ] && { echo "usage: $CMD_NAME VARNAME VALUE"; source retexit 0; return 0 }
+    fi
+
+    VAR_EXISTS=$(cat ${GLOBAL_VARS_CSV} | grep -E "^${1}.*")
+    ${QUIET} || echo $VAR_EXISTS
+    [[ -n "${VAR_EXISTS}" ]] && 
+        cat ${GLOBAL_VARS_CSV} | sed -E "s/${1}.*/${1}=\"${2//\//\\\/}\"/g" > "${GLOBAL_VARS_CSV}~temp" && mv -f "${GLOBAL_VARS_CSV}~temp" "${GLOBAL_VARS_CSV}" || 
+        echo "${1}=\"${2}\"" >> "${GLOBAL_VARS_CSV}"
+
+    . "${GLOBAL_VARS_CSV}"
+}
+_set-global-vars ${@}

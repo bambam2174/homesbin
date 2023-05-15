@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+REGEX_OUTPUT='.*'
+startsWithDash ${1} && [ ${1/-/} = 't' -o ${1/-/} = '-trim' ] && REGEX_OUTPUT='\S.*' && shift
+
+#if [[ ${#} -gt 2 ]]
+if ! isNumeric "${1}" && [[ -r "${1}" ]]
+then
+    SZ_LISTE="$(cat "${1}")"
+    COL=${2}
+    FS=${3:- }
+else
+    COL=${1}
+    FS=${2:- }
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && SZ_LISTE="${INPUT_PIPE}"
+fi
+
+if [[ ${COL} -lt 0 ]]
+then
+    ((COL*=-1))
+    echo "${SZ_LISTE}" |rev | awk -F "${FS}"  ''' {print $'''''${COL:-1}'''''} ''' | rev | grep -oE "${REGEX_OUTPUT}"
+else
+    echo "${SZ_LISTE}" | awk -F "${FS}"  ''' {print $'''''${COL:-1}'''''} ''' | grep -oE "${REGEX_OUTPUT}"
+fi
+

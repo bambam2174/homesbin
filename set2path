@@ -2,7 +2,7 @@
 
 
 _set2path () {
-    local TMP_PATH=${1}
+    local TMP_PATH=${1:-${PWD}}
     [[ "${TMP_PATH[-1]}" = '/' ]] && TMP_PATH=${TMP_PATH[1,-2]}
     [[ -d "${TMP_PATH}" ]] && PATH=${TMP_PATH}:${PATH} || { 
         echo "Path should be a folder."

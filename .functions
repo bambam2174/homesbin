@@ -15,8 +15,8 @@ BINFUNCTIONS=$SHELL_FUNCTIONS
 SCRIPTNAME="$0"
 export CLICOLOR=1
 
-[[ -z "$ALIASES_SET" ]] && source ~/.shell_aliases
-[[ -z "$SHELL_VARS" ]] && source ~/.shell_vars
+[[ -z "$ALIASES_SET" ]] && [[ -r ~/.shell_aliases ]] && source ~/.shell_aliases
+[[ -z "$SHELL_VARS" ]]  && [[ -r ~/.shell_vars ]] && source ~/.shell_vars
 
 source $BIN/.functions-broot.sh
 
@@ -36,53 +36,6 @@ scpup2 ()
 }
 
 # FileSearch
-f () {
-    mkdir -p "/var/log/find"
-    touch "/var/log/find/$1.log"
-    if [ $# -eq 1 ]; then
-        find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
-    fi
-
-    #find $SEARCHPATH -iname "*$1*" ${@:2}
-    
-    PARAM=$1
-    f_it() {
-        touch "/var/log/find/$PARAM.log"
-        find "$@" -iname "*$PARAM*"  | tee -a "/var/log/find/$PARAM.log"
-    }
-
-    shift
-    for fname in "$@"; do
-        f_it "$fname"
-    done
-
-
-}
-fpx() {
-    SP='./'
-    echo "$1"
-    echo "$2"
-    if [[ -z $1 ]]; then
-        echo "-z $1 true"
-    else
-        echo "-z $1 false"
-    fi
-    if [[ -z $2 ]]; then
-        echo "-z $2 true"
-    else
-        echo "-z $2 false"
-    fi
-    if [[ -n $1 ]]; then
-        echo "-n $1 true"
-    else
-        echo "-n $1 false"
-    fi
-    if [[ -n $2 ]]; then
-        echo "-n $2 true"
-    else
-        echo "-n $2 false"
-    fi
-}
 
 fp() {
     mkdir -p "/var/log/find"
@@ -125,26 +78,19 @@ param() {
 	echo "$1" ${@:2} -R . 
 }
 
-r_() {
-#    grep "$1" ${@:2} -R . 
-    PARAM=$1
-    r_it() {
-        grep -irl $PARAM "$@"
-    }
-
-    shift
-    for fname in "$@";
-    do
-        r_it "$fname"
-    done
-
-
-}
-
-# mkdir -p and cd
-mkcd() { 
-    mkdirp "$@" && cd "$_"
-}
+#r_() {
+##    grep "$1" ${@:2} -R . 
+#    PARAM=$1
+#    shift
+#    r_it() {
+#        grep -irl $PARAM "$@"
+#    }
+#
+#    for fname in "$@";
+#    do
+#        r_it "$fname"
+#    done
+#}
 
 opex() {
     xdg-open $1 &
@@ -152,7 +98,7 @@ opex() {
 
 alldoc() { 
     fmp_helperx() { 
-        echo "$@"; 
+        eval "$@"; 
     }
 
     for fname in "$@"; do 
@@ -378,17 +324,17 @@ man2type() {
     original cp -f ${1}.${OUTPUT_TYPE} $HOME/tmp/man2type/
 }
 
-giturlp() {
-    PATH2REPO='.'
-    if [ $# -gt 0 ]; then
-        PATH2REPO="$@"
-    fi
-
-    for folder in ${PATH2REPO}
-    do
-        cat ${folder}/.git/config | grep -i url | cut -d'=' -f 2
-    done
-}
+#giturlp() {
+#    PATH2REPO='.'
+#    if [ $# -gt 0 ]; then
+#        PATH2REPO="$@"
+#    fi
+#
+#    for folder in ${PATH2REPO}
+#    do
+#        cat ${folder}/.git/config | grep -i url | cut -d'=' -f 2
+#    done
+#}
 
 androiddoc () { 
     open "http://android-docs.local/$1"; 
@@ -1202,47 +1148,6 @@ isText () {
 	string_contains "$(file $1)" ASCII && return 0 || return 1
 }
 
-lsd () {
-    setIFS
-	isDebug && echo "Number of Parameters $#"
-    POPT='-F'
-	[[ $# -gt 1 ]] && {
-		POPT+=${1/-/} 
-		PPATH=$2 
-	} || PPATH=$1 
-	isDebug && echo "PPATH=${PPATH}"
-	isDebug && echo "POPT=${POPT}"
-	for i in $(ls -l ${POPT} ${PPATH} | grep -oE "^d{1}.*")
-	do
-		[[ $# -gt 1 ]] && echo $i || {
-			echo $i | rev | cut -d " " -f1 | rev
-		}
-	done
-    resetIFS
-}
-
-lsd2 () {
-    setIFS
-	isDebug && echo "Number of Parameters $#"
-    POPT='-F'
-	[[ $# -gt 1 ]] && {
-		POPT+=${1/-/} 
-		PPATH=$2 
-	} || PPATH=$1 
-	isDebug && echo "PPATH=${PPATH}"
-	isDebug && echo "POPT=${POPT}"
-	for i in $(ls -lt ${POPT} ${PPATH}  | grep -oE "^d{1}.*")
-	do
-		[[ $# -gt 1 ]] && echo $i || {
-			[[ $i =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]] && {
-				isDebug && echo "# of matches $#match\n $match"
-				echo $match[2]
-			}
-		}
-	done
-    resetIFS
-}
-
 
 parrram () {
 	isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
@@ -1255,62 +1160,6 @@ parrram () {
 	done
     echo ${POPT} ${PPATH}
     ls ${POPT} ${PPATH}
-}
-
-lsd3 () {
-    setIFS
-    isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
-    POPT=() 
-    PPATH=() 
-    
-    for i in $@
-    do
-        isDebug && echo ">> $i"
-        [[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
-    done
-
-    isDebug && echo "PPATH=${PPATH} #PPATH=${#PPATH}"
-    isDebug && echo "POPT=${POPT} #POPT=${#POPT}"
-    for i in $(ls -lt ${POPT} ${PPATH})
-    do
-        isDebug && echo "## $i ##"
-        echo $i | grep -E "^\s*.*[/]{0,1}:$"
-        CURRENT_FOLDER=$(echo $i | grep -E "^d{1}.*")
-        isDebug && echo "CURRENT_FOLDER=$CURRENT_FOLDER"
-        if [[ -z $CURRENT_FOLDER ]]; then 
-            isDebug && echo "CURRENT_FOLDER empty"
-            continue
-        fi
-        if [[ $#POPT -gt 0 ]]; then 
-            echo $i | grep -E "^d{1}.*";
-        else
-            if [[ $CURRENT_FOLDER =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]]; then
-                isDebug && echo "# of matches $#match\n $match"
-                echo $match[2]
-            fi
-        fi
-        
-    done
-    resetIFS
-}
-
-lsd4 () {
-    #setIFS
-    isDebug && echo "Number of Parameters $# PARAMS $@"
-    POPT='-F'
-    PPATH='.'
-
-    [[ -d "$1" ]] && STARTIDX=1 || { STARTIDX=2; POPT+=${1/-/}; }
-
-    # also possible but ugly result set
-    #CMD="ls ${POPT} $@[$STARTIDX,$#@]"
-    #$(echo $CMD) | grep -E ".*/$"
-    #return 0
-    for x in $@[$STARTIDX,$#@]; do
-        echo "$x:"
-        ls ${POPT} $x | grep -E ".*/$"  # Why haven't I came up with that idea in the first place? (calling ls -F and grepping the trailing slash '/')
-    done
-    #resetIFS
 }
 
 setPromptTime () {
@@ -1350,11 +1199,6 @@ scriptStartsWith () {
 
 farbe () {
 	echo "$(eval echo\  \$COLOR_${1})${2}"
-}
-
-capitalcase () {
-	echo -n $(uppercase ${1[1]})
-	lowercase "${1[2,$#1]}"
 }
 
 source $BIN/.functions-color
@@ -1644,11 +1488,6 @@ lnsa2 () {
 	done
 }
 
-
-lsdir2 () {
-	ls -G -l ${1} | grep --color=auto -oE "^d.*" | rev | cut -d ' ' -f1 | rev
-}
-
 getInode () {
 	CURRENT_INODE=$( ls -di "${1}" | cut -d ' ' -f1) 
 	echo $CURRENT_INODE
@@ -1735,11 +1574,6 @@ jsonKV () {
 
 }
 
-wwhich () {
-	CURRCMD=${1} 
-	[[ -f $(builtin which "$CURRCMD") ]] && ls -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
-}
-
 ytd-set-no-cert () {
 	alias ytd='youtube-dl $YOUTUBE_DL_OPTIONS_NO_CHECK_CERT'
 }
@@ -1748,18 +1582,13 @@ ytd-unset-no-cert () {
 	alias ytd='youtube-dl'
 }
 wwhich () {
+    startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-all' ] && OPTS="${1//-/}" && shift
 	CURRCMD=${1} 
 	[[ -f $(builtin which "$CURRCMD") ]] && {
-		which -S "$CURRCMD" || ls -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
+		which -${OPTS}S "$CURRCMD" || ls -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
 	}
 }
 
-wwwhich () {
-	CURRCMD=${1} 
-	[[ -f $(builtin which "$CURRCMD") ]] && {
-		which -S "$CURRCMD" || ls -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
-	}
-}
 
 # see $BIN/og…better on disk than constantly in RAM
 #original () {

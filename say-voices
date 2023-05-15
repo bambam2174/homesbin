@@ -2,6 +2,6 @@
 
 
 _say-voices () {
-	say -v "?" | grep --color=auto --color=auto -E "(${1[1,2]}_|_${1[1,2]})"
+	say -v "?" | grep --color=auto -E "(${1[1,2]}_|_${1[1,2]})"
 }
 _say-voices ${@}

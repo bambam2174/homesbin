@@ -1,27 +1,19 @@
 #!/bin/zsh
 
-#([[ ${#} -eq 2 ]] && [[ ${1} = *"-a"* ]]) && 
-#    { 
-#        pbpaste >> ${2}; 
-#        echo >> ${2}; 
-#    } || 
-#        { 
-#            pbpaste > ${1};  
-#            echo >> ${1}; 
-#       }
+ADD=false
 
+startsWithDash ${1} && [ ${1//-/} = 'a' -o ${1//-/} = 'add' ] && ADD=true && shift
+startsWithDash ${1} && [ ${1//-/} = 'm' -o ${1//-/} = 'mkdir' ] && mkdir -p "$(dirname ${2})" && shift
 
-case "${#}"
+case "${ADD}"
     in
-    2)
-        pbpaste >> ${2};     
-        echo >> ${2};
-        ;;
-    1)
-        pbpaste > ${1};
+    true)
+        pbpaste >> ${1};     
         echo >> ${1};
         ;;
     *)
-        pbpaste > /dev/stdout
+        mkdir -p "$(dirname ${1})"
+        pbpaste > ${1};
+        echo >> ${1};
         ;;
 esac

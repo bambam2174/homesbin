@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+read -d '' QRYTERM <<EOF
+script
+text
+text
+EOF
+
+_isShellScript () {
+    [[ -x "${1}" ]] && RESULT=$(file ${1} | grep -oE "(script|text)")
+	[[ ${RESULT} = ${QRYTERM} ]] && true || false
+}
+_isShellScript ${@}

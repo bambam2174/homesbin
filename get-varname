@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+LEFT_OF_EQ_SIGN=$(env | grep -E "=${1}$" | head -n 1 | cut -d '=' -f1)
+
+VARNAME=${LEFT_OF_EQ_SIGN//export /}
+
+echo ${VARNAME}
+

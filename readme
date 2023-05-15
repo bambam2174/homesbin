@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_readme () {
+	browser "${1:-.}"/README(|.md|.txt)
+}
+_readme ${@}

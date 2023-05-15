@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+source $SHELL_DEBUGSTATE
+
+_startsWith () {
+	usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
+		
+    SZ_COND='('
+    HAYSSTACK="$1" 
+	shift
+
+    while [[ ${#} -gt 0 ]]
+    do
+        SZ_COND+="${1}|"
+        shift
+    done
+    SZ_COND="${SZ_COND[1,-2]})$"
+    isDebug && echo "SZ_COND=$SZ_COND"
+
+    [[ ${HAYSSTACK} =~ "${SZ_COND}" ]] && return 0 || return 1
+}
+_startsWith ${@}

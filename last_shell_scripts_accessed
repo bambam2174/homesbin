@@ -1,8 +1,1 @@
-#!/bin/zsh
-
-OPTS="1"
-[[ ${1[1]} = '-' ]] && OPTS+=${1//-/} && shift
-
-[[ -n ${1} ]] && COUNT_ENTRIES="-n ${1}"
-
-ls -${OPTS}utA ${BIN} | head ${COUNT_ENTRIES}
+last-shell-scripts-accessed

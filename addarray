@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+SCRIPTNAME="$(basename $0)"
+
+# add alias like
+# alias addarray='source addarray'
+#[[ ${SHLVL} -eq 1   ]] && [[  -z $(alias ${SCRIPTNAME})  ]] && addalias ${SCRIPTNAME} "source ${SCRIPTNAME}" && update_aliases && echo "alias added" && alias  ${SCRIPTNAME} || ( echo "canceled because of missing alias to be run by calling it with source"; echo "run again with \"source ${SCRIPTNAME} ${@}\" after updating aliases-source ${SHELL_ALIASES}"  )
+
+_addarray() {
+
+    if [ $# -eq 0  ] ||  [ $# -lt 1  ]; then
+        echo "$# is $((1-$#)) too few"
+        echo "Usage: ${SCRIPTNAME} name \"[[value] .. ]\""
+        echo "addalias ${SCRIPTNAME} 'source ${SCRIPTNAME}'"
+        [[ ${SHLVL} -gt 1 ]] && exit 1 || return 1
+    fi
+
+    CURR_SHELL_VARS="${SHELL_VARS}"
+    [[ -w "${1}" ]] && CURR_SHELL_VARS="${1}" && shift
+    ARRNAME=${1}
+    shift
+    CMD="echo \$${ARRNAME}"
+    echo $CMD
+    eval $CMD
+
+    SZ_ELEMENTS=''
+    if [[ -n ${@} ]]
+    then
+        for el in ${@}
+        do
+            SZ_ELEMENT+="'${el}' " #  && ARRNAME="${ARRNAME}+"
+        done
+    fi
+    WCL=$(cat ${CURR_SHELL_VARS} | grep "${ARRNAME}=" | wc -l)
+    INTWCL=$(($WCL))
+    [[ ${INTWCL} -gt 0 ]] && ARRNAME="${ARRNAME}+" || ARRNAME="${ARRNAME//+/}"
+
+    ARRNAME=${ARRNAME/++/+}
+
+    addvar -a -t ${CURR_SHELL_VARS} ${ARRNAME} "( ${SZ_ELEMENT} )"
+
+}
+echo "\$?=$?"
+_addarray ${@}
+
