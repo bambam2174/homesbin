@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_yt-subscribe () {
+	URL2CHANNEL="${1:-$(pbpaste)}" 
+	CHANNEL_NAME="$(echo $URL2CHANNEL | sed -E 's/^https?\:\/\/.*youtube\.(com|[a-z]{2})\///g')" 
+	browser "https://youtube.com/${CHANNEL_NAME}?sub_confirmation=1"
+}
+_yt-subscribe ${@}

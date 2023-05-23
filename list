@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_list () {
+	LIST_CMD_PATHS=() 
+	LIST_CMD=($(ls -1 "${1}" 2> /dev/null | grep --color=auto -E "^${2}")) 
+	for cmd in ${LIST_CMD[@]}
+	do
+		echo "${1}/${cmd}"
+	done
+}
+_list ${@}

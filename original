@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+_original () {
+	CMD=$(which -a ${1} | tail -n 1) 
+	shift 1
+	CMD+=" ${@}" 
+	$(echo $CMD)
+}
+_original ${@}

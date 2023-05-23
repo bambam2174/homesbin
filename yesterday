@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+date -r $(($(date +%s)-24*60*60)) | sed -E 's/[ ]+/ /g' | cut -d' ' -f2,3
