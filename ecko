@@ -29,4 +29,4 @@ KF='%k%f'
 [[ -n ${2} ]] && isNumeric ${2} && BGC="%K{${2}}"
 [[ -n ${3} ]] && isNumeric ${3} && KF=''
 
-print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL}
+print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL} > /dev/stdin

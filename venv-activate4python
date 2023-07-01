@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_venv-activate4python () {
+	source ${HOME}/.venv/$(venv-name4python ${1})/bin/activate
+}
+_venv-activate4python ${@}

@@ -1,19 +1,23 @@
 #!/bin/zsh
 
 ADD=false
-
+IS_FIRST=false
+IS_LAST=true
 startsWithDash ${1} && [ ${1//-/} = 'a' -o ${1//-/} = 'add' ] && ADD=true && shift
 startsWithDash ${1} && [ ${1//-/} = 'm' -o ${1//-/} = 'mkdir' ] && mkdir -p "$(dirname ${2})" && shift
+startsWithDash ${1} && [ ${1//-/} = 'f' -o ${1/-/} = '-first' ] && IS_FIRST=true && shift
+startsWithDash ${1} && [ ${1//-/} = 'n' -o ${1/-/} = '-not-last' ] && IS_LAST=false && shift
 
 case "${ADD}"
     in
     true)
+        ${IS_FIRST} && echo >> ${1};
         pbpaste >> ${1};     
-        echo >> ${1};
+        ${IS_LAST} && echo >> ${1};
         ;;
     *)
         mkdir -p "$(dirname ${1})"
         pbpaste > ${1};
-        echo >> ${1};
+        ${IS_LAST} && echo >> ${1};
         ;;
 esac

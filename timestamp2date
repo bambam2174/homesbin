@@ -1,5 +1,19 @@
 #!/bin/zsh
 
-[[ ${#@} -gt 0 ]] && TS="${1}" || TS="$(pbpaste)"
+get-stdin() {
+	INPUT_PIPE="$(cat < /dev/stdin)"
 
-isNumber ${TS} &&  date -r ${TS}
+    [[ -n ${INPUT_PIPE} ]] && echo "${INPUT_PIPE}"
+}
+
+INPUT_STDIN=$(get-stdin &)
+if [[ -n ${INPUT_STDIN} ]]
+then
+    date -r ${INPUT_STDIN}
+else
+
+    [[ ${#@} -gt 0 ]] && TS="${1}" || TS="$(pbpaste)"
+
+    isNumber ${TS} && [[ ${#TS} -ge 10 ]] &&  date -r ${TS}
+fi
+

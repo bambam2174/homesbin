@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_gst-new () {
+	git status | grep --color=auto --color=auto 'neue Datei' | list-col -1
+}
+_gst-new ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_ga-changed () {
+	for f in $(gst-changed)
+	do
+		git add $f
+	done
+}
+_ga-changed ${@}

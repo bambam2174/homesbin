@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_add-venv4python () {
+	${1} -m venv ${HOME}/.venv/$(venv-name4python ${1})
+}
+_add-venv4python ${@}

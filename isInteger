@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isInteger () {
+	[[ ${1} =~ $REGEX_INTEGER ]] && return 0 || return 1
+}
+_isInteger ${@}

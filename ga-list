@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+handleIFS
+
+_ga-changed () {
+	for f in ${@}
+	do
+        git add "$(trim ${f})"
+		# echo "File $f"
+    done
+}
+_ga-changed ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+_ga-bin () {
+    cd ${BIN}
+    git add "${1}"
+}
+_ga-bin ${@}

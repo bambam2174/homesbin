@@ -1,17 +1,29 @@
 #!/bin/zsh
 
-local SUBST=${SLASH_DIVISION}
-local SUBST_SPACE='-'
+# ${SLASH_DIVISION} for /
+local SUBST_SLASH=${SLASH_DIVISION}
+
+# ${UC_BOXDRAWINGS_DIAGONAL_TL2BR} for \
+local SUBST_BACKSLASH="${UC_BOXDRAWINGS_DIAGONAL_TL2BR}[SEDAT]"
+
+# '_' for ' '
+local SUBST_SPACE='_'
+
+# true for removing leading slash in path strings. false for replacing leading slash with ${SUBST_SLASH}
 local NO_LEADING_SLASH=true
 
 CNT=0
 
-while getopts s:b:n: OPTION
+while getopts s:x:b:n: OPTION
 do
     case "$OPTION"  
     in             
         s)          
-            SUBST=$OPTARG
+            SUBST_SLASH=$OPTARG
+            ((CNT+=2))
+            ;;
+        x)          
+            SUBST_BACKSLASH="${OPTARG}[SEDAT]"
             ((CNT+=2))
             ;;
         b)
@@ -30,9 +42,11 @@ _path2string () {
 	local ARG_PATH="${1}"
     [[ "${ARG_PATH[-1]}" = '/' ]] && ARG_PATH=${ARG_PATH[1,-2]}
 	[[ $ARG_PATH[1] = '/' ]] && ${NO_LEADING_SLASH} &&
-        ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST}} || 
-        ARG_PATH=${ARG_PATH//\//${SUBST}}
-    echo ${ARG_PATH// /${SUBST_SPACE}}
+        ARG_PATH=${ARG_PATH[2,$#ARG_PATH]//\//${SUBST_SLASH}} || 
+        ARG_PATH=${ARG_PATH//\//${SUBST_SLASH}}
+        
+    ARG_PATH=${ARG_PATH//\\/${SUBST_BACKSLASH}}
+    echo ${ARG_PATH// /${SUBST_SPACE}} | sed -E 's/\[SEDAT\]//g'
     #echo $ARG_PATH 
 }
 _path2string ${@}

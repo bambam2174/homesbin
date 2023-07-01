@@ -2,6 +2,6 @@
 
 
 _list_path () {
-	listit $PATH :
+	listit "${1:-${PATH}}" :
 }
 _list_path ${@}

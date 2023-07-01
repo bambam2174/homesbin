@@ -3,5 +3,15 @@
 
 _say-voices () {
 	say -v "?" | grep --color=auto -E "(${1[1,2]}_|_${1[1,2]})"
+
+    if [[ ${#} -eq 0 ]]
+    then
+        ecko " Use language code and or coutry code as parameter,… " 9 97 > /dev/stdin
+    
+        echo > /dev/stdin
+        ecko -n " e.g. " 197 99 > /dev/stdin; ecko -n " en " 99 197 > /dev/stdin; ecko -n " or " 197 99 > /dev/stdin; ecko -n " GB " 99 197 > /dev/stdin; ecko  " for a country " 197 99 > /dev/stdin
+        echo > /dev/stdin
+        ecko -n " e.g. " 1 19 > /dev/stdin; ecko -n " en_US " 19 1 > /dev/stdin; ecko  " for a country's language " 1 19 > /dev/stdin
+    fi
 }
 _say-voices ${@}
