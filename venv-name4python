@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_venv-name4python () {
+	echo "venv-$(${1} -V | sed -E 's/ /_/g')"
+}
+_venv-name4python ${@}

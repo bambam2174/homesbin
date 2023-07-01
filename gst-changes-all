@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_gst-changes-all () {
+	FILES_ONLY=false 
+    NO_DELETED=false
+
+	startsWithDash ${1} && [ ${1/-/} = 'f' -o ${1/-/} = '-files-only' ] && FILES_ONLY=true  && shift
+	startsWithDash ${1} && [ ${1/-/} = 'd' -o ${1/-/} = '-no-deleted' ] && NO_DELETED=true  && shift
+	
+    CHANGELIST=$(git status | grep -v $(${NO_DELETED} && echo 'gelöscht' || echo 'gibtsnet') | grep --color=auto -E "[ äöüa-zA-Z]+:\s+.*") 
+	${FILES_ONLY} && echo ${CHANGELIST} | list-col -1 || echo ${CHANGELIST}
+}
+_gst-changes-all ${@}

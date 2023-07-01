@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_git-ls-file4branch () {
+	git ls-tree -r ${1:-master} --name-only
+}
+_git-ls-file4branch ${@}

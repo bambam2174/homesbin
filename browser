@@ -8,5 +8,15 @@ then
     shift 2
 fi
 
-open -a "/Applications/${CURR_BROWSER:-Google Chrome}.app" "${1:-$(pbpaste)}"
+PIPE_INPUT=$(get-stdin &)
+
+[[ -z ${PIPE_INPUT} ]] && URL="${1:-$(pbpaste)}"
+
+#if [[ -z $URL ]] || (! startsWith ${URL} 'http' && ! startsWith ${URL} 'file')
+#then
+#    INPUT_PIPE="$(cat < /dev/stdin)"
+#    [[ -n ${INPUT_PIPE} ]] && URL="${INPUT_PIPE}"
+#fi
+
+open -a "/Applications/${CURR_BROWSER:-Google Chrome}.app" "${URL}"
 

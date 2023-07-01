@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+COUNT=0
+TARGET_PATH="${PWD}"
+
+_new-yesterday () {
+
+    for param in ${@}
+    do
+        handleParam "${param}"
+    done
+
+    OUTPUT_FILES=$(ls -1AlhGUt "${TARGET_PATH}" | grep --color=auto -oE "$(yesterday) [0-2][0-9]:[0-5][0-9].*" | sed -E "s/$(yesterday) [0-2][0-9]:[0-5][0-9]//g")
+    [[ ${COUNT} -gt 0 ]] && echo ${OUTPUT_FILES} | head -n ${COUNT}  || echo ${OUTPUT_FILES}
+}
+
+handleParam() {
+    [[ -e "${1}" ]] && TARGET_PATH="${1}"
+    isInteger ${1} && COUNT=${1}
+}
+_new-yesterday ${@}

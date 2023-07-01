@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+OUTPUT_LOG=$TMPDIR/which_${1}_paths
+
+_waswo () {
+	rm -i -f $TMPDIR/whichpaths
+	ARRPATH=($(list_path)) 
+    ARR_CMDS=()
+	for p in $ARRPATH
+	do
+#		ls -GAFlhGa@ $p/${1}* 2> /dev/null  | sed -E "s/${REGEX_LISTLONG} //g"  2> /dev/null | sed -E 's/\*//g' 2> /dev/null | tee -a $TMPDIR/whichpaths
+        list "${p}" ${1} # | tee -a $TMPDIR/which_${1}_paths
+	done
+    ecko "  Output again here…… " 122 207 > /dev/stdin
+    echo "\${TMPDIR}/which_${1}_paths" > /dev/stdin
+}
+_waswo ${@}  | tee $TMPDIR/which_${1}_paths

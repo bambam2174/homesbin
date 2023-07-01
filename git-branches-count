@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_git-branches-count () {
+	COUNT_GB=$(($(git branch | wc -l))) 
+	echo ${COUNT_GB}
+}
+_git-branches-count ${@}

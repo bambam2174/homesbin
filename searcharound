@@ -43,5 +43,5 @@ then
 elif [[ -d "${2}" ]]
 then
     (isDebugLocal || isDebug) && echo "grep -nRIs ${GREP_OPTIONS} \"${1}\" \"${2}\" ${BEFORE} ${AFTER}"
-    grep -nRIs ${GREP_OPTIONS} "${1}" "${2}" ${BEFORE} ${AFTER} --exclude-dir .git 2> /dev/null | tee -a ${LOG_OUTPUT}
+    grep -nRIs ${GREP_OPTIONS} "${1}" "${2}" ${BEFORE} ${AFTER} --exclude-dir .git --exclude-dir node_modules 2> /dev/null | tee -a ${LOG_OUTPUT}
 fi

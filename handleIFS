@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_handleIFS () {
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+}
+_handleIFS ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_list-repos () {
+	ls -G -1AF -lhG -d "${1:-${PWD}}"/*/.git | sed -E "s/\/\.git\///g"
+}
+_list-repos ${@}

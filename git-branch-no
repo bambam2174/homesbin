@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_git-branch-no () {
+	[[ ${1} -gt $(git-branches-count) ]] && echo "There are only $(git-branches-count) branches" && return
+	git branch | head -n ${1:-1} | tail -n 1 | grep --color=auto -oE '[a-zA-Z]+'
+}
+_git-branch-no ${@}

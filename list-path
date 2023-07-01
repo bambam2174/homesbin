@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_list_path () {
+	listit "${1:-${PATH}}" :
+}
+_list_path ${@}
