@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_replace-commas () {
+TARGET_PATH="${TMPDIR}/#$(timestamp)_$(filename ${1})"
+	cat "${1}" | sed -E "s/,/${COMMA_LOW_NINE}/g" > "${TARGET_PATH}"
+	echo "${TARGET_PATH}"
+}
+_replace-commas ${@}

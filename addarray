@@ -15,6 +15,11 @@ _addarray() {
         [[ ${SHLVL} -gt 1 ]] && exit 1 || return 1
     fi
 
+    OPTS=()
+    for param in ${@}
+    do
+        startsWithDash ${1} && OPTS+=${param} || break;
+    done
     CURR_SHELL_VARS="${SHELL_VARS}"
     [[ -w "${1}" ]] && CURR_SHELL_VARS="${1}" && shift
     ARRNAME=${1}
@@ -37,9 +42,9 @@ _addarray() {
 
     ARRNAME=${ARRNAME/++/+}
 
-    addvar -a -t ${CURR_SHELL_VARS} ${ARRNAME} "( ${SZ_ELEMENT} )"
+    addvar ${OPTS} -a -t ${CURR_SHELL_VARS} ${ARRNAME} "( ${SZ_ELEMENT} )"
 
 }
-echo "\$?=$?"
 _addarray ${@}
+echo "\$?=$?"
 
