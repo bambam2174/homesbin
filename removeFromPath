@@ -3,7 +3,7 @@
 
 _removeFromPath () {
 	[[ -d "${1}" ]] && PATH=${PATH//${1}:/} || {
-		echo Path\ should\ be\ a\ folder.\nIf\ its\ part\ of\ the\ PATH\ variable\ remove\ it\ from\ the\ startup-sequence\ script\ where\ it\ gets\ set.
+		echo Path\ should\ be\ a\ folder.\\nIf\ its\ part\ of\ the\ PATH\ variable\ remove\ it\ from\ the\ startup-sequence\ script\ where\ it\ gets\ set. > /dev/stderr
 		retexit 1
 	}
 }

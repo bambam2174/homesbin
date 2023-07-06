@@ -2,6 +2,7 @@
 
 source $SHELL_DEBUGSTATE
 
+EXT=''
 FOLDER='./'
 COUNT=1
 FULLPATH='false'
@@ -14,10 +15,11 @@ IFS=$DELIMITER_ENDL
 
 while [[ $# -gt 0 ]]
 do
+    SHIFT=1
     # isDir
     [[ -d "${1}" ]] && FOLDER="${1}" # && echo "FOLDER = ${FOLDER}"
     # ls
-    [[ "${1[1]}" = '-'  ]] && [[ "${1[2]}" != 'f'  ]] && OPTS+="${1[2,-1]}" # && echo "OPTS = ${OPTS}"
+    startsWithDash ${1} && [[ "${1[2]}" != 'f'  ]] && [ ${1/-/} != "e" -a ${1/-/} != "-ext" ] && OPTS+="${1[2,-1]}" # && echo "OPTS = ${OPTS}"
     isNumeric "${1}" && COUNT="${1}" # && echo "isNumber COUNT = ${COUNT}"
     if [[ "${1}" = "--fullpath" ]] || [[ "${1}" = "-f" ]]
     then
@@ -25,29 +27,29 @@ do
         #echo "FULLPATH = ${FULLPATH}"
     fi
 
-    if [[ "${1}" = "--folders" ]] || [[ "${1//-/}" = *"F"* ]]
+    if [[ "${1}" = "--folders" ]] || (startsWithDash ${1} && [[ "${1//-/}" = *"F"* ]])
     then
         WILDCARD='*'
         OPTS+=d
         COL=2
         #echo "--folder or -F VWILDCARD, OPTS=${OPTS} COL=2"
     fi
-
-    shift
+    startsWithDash ${1} && [ ${1/-/} = "e" -o ${1/-/} = "-ext" ] && EXT=".${2}" && SHIFT=2
+    shift ${SHIFT}
 done
 
 OPTS="t${OPTS}"
 #FOLDER_ESC=${FOLDER//\//\\\/}\\/
 if ${FULLPATH}
 then
-    CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT}"
+    CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD}${EXT} | head -n ${COUNT}"
 else
     CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT} | sed -E \"s/${IFOLDER_ESC}//g\" " #rev | cut -d '/' -f${COL} | rev"
 fi
 
-CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT}"
+# CURRCMD="ls -${OPTS} \"${FOLDER}/\"${WILDCARD} | head -n ${COUNT}"
 #isDebug && echo "${CURRCMD}"
-eval "${CURRCMD}"
+eval "${CURRCMD}" 2> /dev/null
 
 #TMP_OUTPUT=$(eval "${CURRCMD}")
 ##echo ${TMP_OUTPUT}

@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+
+_command-matching-regex () {
+    echo "Commands and Scripts of the PATH variable matching ${1}" > /dev/stdin
+	for p in $(list-path)
+	do
+		list $p "${1}"
+	done
+
+    echo "Aliases matching ${1}" > /dev/stdin
+    
+    echo "\$SHLVL=${SHLVL}\nNumber of aliases when SHLVL is ${SHLVL} before sourcing $(alias | wc -l)" > /dev/stdin
+    
+    [[ ${SHLVL} -eq 2 ]] && source ${SHELL_ALIASES}
+    echo "Number of aliases when SHLVL is ${SHLVL} after sourcing $(alias | wc -l)" > /dev/stdin
+
+    alias | grep --color=auto -E "${1}"
+}
+_command-matching-regex ${@}
