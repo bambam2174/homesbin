@@ -2,13 +2,24 @@
 
 QTS="\""
 KEEP=false
-startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
-startsWithDash "${1}" && [[ ${1//-/} = 'a' ]] && QTS="" && shift
-startsWithDash "${1}" && [[ ${1//-/} = 'k' ]] && KEEP=true && shift
+#startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
+#startsWithDash "${1}" && [[ ${1//-/} = 'a' ]] && QTS="" && shift
+#startsWithDash "${1}" && [[ ${1//-/} = 'k' ]] && KEEP=true && shift
+
+CNTR=0
+for param in ${@}
+do
+    startsWithDash "${param}" && [[ ${param//-/} = 's' ]] && QTS="'" && ((CNTR++))
+    startsWithDash "${param}" && [[ ${param//-/} = 'a' ]] && QTS="" && ((CNTR++))
+    startsWithDash "${param}" && [[ ${param//-/} = 'k' ]] && KEEP=true && ((CNTR++))
+    startsWithDash "${param}" || break
+    ecko "Initial option paramter input finished" 100 200
+done
+shift ${CNTR}
 
 [[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
 
-SCRIPTNAME="$(basename $0)"
+SCRIPTNAME="$(filename $0)"
 CURR_SHELL_VARS="${SHELL_VARS}"
 startsWithDash ${1} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_VARS="${2}" && source ${CURR_SHELL_VARS} && shift 2
 # add alias like
