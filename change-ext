@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+VERBOSE=false
+
+_verbose-output() {
+ecko -n "$(fileroot $(filename ${PATH2FILE}))." 150 160
+    ecko -n -b "$(fileext ${PATH2FILE}) " 151 161
+    ecko -n "  ${ARROWR[2]}   " 160 150
+    ecko -n "$(fileroot $(filename ${PATH2FILE_NEW}))." 150 160
+    ecko -b "$(fileext ${PATH2FILE_NEW}) " 151 161
+}
+
+_change_ext() {
+
+    PATH2FILE="${1}"
+    EXT_NEW="${2}"
+    EXT_OLD=$(fileext $PATH2FILE) ; 
+    PATH2FILE_NEW=${PATH2FILE/\.${EXT_OLD}/\.${EXT_NEW}}
+    mv "${PATH2FILE}" "${PATH2FILE_NEW}"
+    [[ $? -eq 0 ]] && ${VERBOSE} && _verbose-output
+}
+
+
+startsWithDash ${1} && ([[ ${1/-/} = 'v' ]] || [[ ${1/-/} = '-verbose' ]]) && VERBOSE=true && shift
+for param in ${@[1,-2]}
+do
+    _change_ext ${param} ${@[-1]}
+    #echo ${param} ${@[-1]}
+done
+
+# mv "${PATH2FILE}" "$(dirname ${PATH2FILE})/${NEWFILENAME}"
+
+

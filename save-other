@@ -1,7 +1,15 @@
 #!/bin/zsh
 
-
-_save-other () {
-	mv -i "$(path-latest-screenshot)" "${SCREENSHOTS_OTHER}/Other-${1}.png"
+_save-other  () {
+    IFS=${DELIMITER_ENDL}
+    PATHS=($(path-latest-screenshot ${2}))
+    CC=1
+    for p in ${PATHS}
+    do
+        DESTINATION_FILE="${1}.png"
+        [[ $#PATHS -gt 1 ]] && DESTINATION_FILE="${1}_${CC}.png"
+        mv "${p}" "${SCREENSHOTS_OTHER}/${DESTINATION_FILE}"
+        ((CC++))
+    done
 }
-_save-other ${@}
+_save-other  ${@}
