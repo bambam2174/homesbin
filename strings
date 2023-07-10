@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_strings () {
+    TARGETFILE=${OUTPUT_STRINGS}/strings_$(path2string ${@[-1]:-${PWD}})_$(date +%s).txt
+    echo "# strings ${@}" > ${TARGETFILE}
+	original strings ${@} | tee -a ${TARGETFILE} # ${OUTPUT_STRINGS}/strings_$(path2string ${@[-1]:-${PWD}})_$(date +%s).txt
+}
+_strings ${@}

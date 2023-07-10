@@ -1,5 +1,10 @@
 #!/bin/zsh
 
+[[ -z ${IFS_PREV} ]] && IFS_PREV=()
+IFS_PREV+=${IFS}
+IFS=${DELIMITER_ENDL}
+INPUT_STDIN=($(get-stdin &))
+
 _ecko() {
 
     BOLD='%b'
@@ -9,30 +14,46 @@ _ecko() {
     CNTR=0
     for param in ${@}
     do
-        startsWithDash ${param} && ([[ ${param/-/} = "-bold" ]] || [[ ${param/-/} = "b" ]]) && BOLD='%B' && ((CNTR++))
-        startsWithDash ${param} && ([[ ${param/-/} = "-newline" ]] || [[ ${param/-/} = "n" ]]) && NL='' && ((CNTR++))
+        #echo "Begin param:${param}: CNTR: ${CNTR}"
+        startsWithDash ${param} && ([[ ${param/-/} = "-bold" ]] || [[ ${param/-/} = "b" ]]) && BOLD='%B' && ((CNTR++)) #&& echo bold
+        startsWithDash ${param} && ([[ ${param/-/} = "-newline" ]] || [[ ${param/-/} = "n" ]]) && NL='' && ((CNTR++)) #&& echo newline
+        ([[ CNTR -eq 0 ]] || [[ CNTR -eq 1 ]] || [[ CNTR -eq 2 ]]) && [[ -z "${TEXT}" ]] && ! startsWithDash ${param} && TEXT="${param}"  && ((CNTR++)) #&& echo text
+        #echo "end param:${param}: CNTR: ${CNTR}"
     done
-
+#echo "All:${@}"
+#echo "BOLD:${BOLD}"
+#echo "NL:${NL}"
+#echo "TEXT:${TEXT}"
     shift ${CNTR}
+#echo "All after shift:${@}"
 
     FGC=''
     BGC=''
 
-    if isNumeric ${1}
-    then
-	    TEXT="$(cat < /dev/stdin)"
-    else
-	    TEXT="${1}"
-    	shift
-    fi
+    #if isNumeric ${1}
+    #then
+	#    TEXT="$(cat < /dev/stdin)"
+    #else
+#	    TEXT="${1}"
+#    	shift
+    #fi
 
 
     [[ -n ${1} ]] && isNumeric ${1} && FGC="%F{${1}}"
     [[ -n ${2} ]] && isNumeric ${2} && BGC="%K{${2}}"
     [[ -n ${3} ]] && isNumeric ${3} && KF=''
 
-    print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL} > /dev/stdin
+    print -Pn "${FGC}${BGC}${BOLD}${TEXT}${KF}" ${NL} #  > /dev/stdin
 }
 
-_ecko ${@}
+if [[ -n ${INPUT_STDIN} ]]
+then
+    for line in ${INPUT_STDIN}
+    do
+        _ecko ${line} ${@}
+    done
+else
+    _ecko ${@}
+fi
+
 

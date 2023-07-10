@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_transcript2csv2 () {
+    EXT=$(fileext ${1})
+
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	ARR_CTIME=($(cat "${1}" | grep -E '^[:0-9]{4,5}')) 
+	ARR_CLINE=($(cat "${1}" | grep -vE '^[:0-9]{4,5}')) 
+	for i in {1..${#ARR_CTIME}}
+	do
+		echo "${ARR_CTIME[${i}]}, ${ARR_CLINE[${i}]}" | tee -a "${2:-${1/${EXT}/formatted.${EXT}}}"
+	done
+}
+_transcript2csv2 ${@}

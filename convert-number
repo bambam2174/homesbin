@@ -2,12 +2,13 @@
 
 
 _convert-number () {
+    NL='\n'
+    startsWithDash ${1} && [[ ${1/-/} = 'n' ]] && NL='' && shift
 	startsWithDash ${1} && NF=${1//-/}  && shift || NF=x 
 	for VALUE in ${@}
 	do
 		[[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}" 
-		perl -e "printf \"${PREFIX}%${NF}
-\", $VALUE"
+		perl -e "printf \"${PREFIX}%${NF}${NL}\", $VALUE"
 	done
 }
 _convert-number ${@}

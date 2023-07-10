@@ -3,27 +3,32 @@
 ADD=false
 IS_FIRST=false
 IS_LAST=true
-startsWithDash ${1} && [ ${1//-/} = 'a' -o ${1//-/} = 'add' ] && ADD=true && shift
-startsWithDash ${1} && [ ${1//-/} = 'm' -o ${1//-/} = 'mkdir' ] && mkdir -p "$(dirname ${2})" && shift
-startsWithDash ${1} && [ ${1//-/} = 'f' -o ${1/-/} = '-first' ] && IS_FIRST=true && shift
-startsWithDash ${1} && [ ${1//-/} = 'n' -o ${1/-/} = '-not-last' ] && IS_LAST=false && shift
-
+SHIFT=0
+for param in ${@}
+do
+    startsWithDash ${param} && [ ${param//-/} = 'a' -o ${param//-/} = 'add' ] && ADD=true && ((SHIFT++))
+    startsWithDash ${param} && [ ${param//-/} = 'm' -o ${param//-/} = 'mkdir' ] && mkdir -p "$(dirname ${2})" && ((SHIFT++))
+    startsWithDash ${param} && [ ${param//-/} = 'f' -o ${param/-/} = '-first' ] && IS_FIRST=true && ((SHIFT++))
+    startsWithDash ${param} && [ ${param//-/} = 'n' -o ${param/-/} = '-not-last' ] && IS_LAST=false && ((SHIFT++))
+    ecko "SHIFT=${SHIFT}"
+done
+shift ${SHIFT}
 TARGET_FILE="${1}"
 
 EXT=$(fileext ${TARGET_FILE})
-echo EXT=$EXT;
+echo "EXT=${EXT} • TARGET_FILE =${TARGET_FILE} • ADD=${ADD} • IS_FIRST=${IS_FIRST} • IS_LAST=${IS_LAST}";
 case "${ADD}"
     in
     true)
         ${IS_FIRST} && echo >> ${TARGET_FILE};
         pbpaste >> ${TARGET_FILE};     
-        ${IS_LAST} && echo >> ${TARGET_FILE};
+        ${IS_LAST} && echo >> ${TARGET_FILE} || echo -n ','  >> ${TARGET_FILE};
         echo "add";
         ;;
     *)
         mkdir -p "$(dirname ${TARGET_FILE})"
         pbpaste > ${TARGET_FILE};
-        ${IS_LAST} && echo >> ${TARGET_FILE};
+        ${IS_LAST} && echo >> ${TARGET_FILE} || echo -n ','  >> ${TARGET_FILE};
         echo "else";
         ;;
 esac
