@@ -12,12 +12,17 @@ _ecko() {
     KF='%k%f'
 
     CNTR=0
+
     for param in ${@}
     do
         #echo "Begin param:${param}: CNTR: ${CNTR}"
-        startsWithDash ${param} && ([[ ${param/-/} = "-bold" ]] || [[ ${param/-/} = "b" ]]) && BOLD='%B' && ((CNTR++)) #&& echo bold
-        startsWithDash ${param} && ([[ ${param/-/} = "-newline" ]] || [[ ${param/-/} = "n" ]]) && NL='' && ((CNTR++)) #&& echo newline
-        ([[ CNTR -eq 0 ]] || [[ CNTR -eq 1 ]] || [[ CNTR -eq 2 ]]) && [[ -z "${TEXT}" ]] && ! startsWithDash ${param} && TEXT="${param}"  && ((CNTR++)) #&& echo text
+        if startsWithDash ${param}
+        then
+            ([[ ${param/-/} = "-bold" ]] || [[ ${param/-/} = "b" ]]) && BOLD='%B' && ((CNTR++)) #&& echo bold
+            ([[ ${param/-/} = "-newline" ]] || [[ ${param/-/} = "n" ]]) && NL='' && ((CNTR++)) #&& echo newline
+        else
+            ([[ CNTR -ge 0 ]] && [[ CNTR -le 2 ]]) && [[ -z "${TEXT}" ]] && TEXT="${param}"  && ((CNTR++)) #&& echo text
+        fi
         #echo "end param:${param}: CNTR: ${CNTR}"
     done
 #echo "All:${@}"
