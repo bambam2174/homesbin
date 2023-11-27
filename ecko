@@ -1,17 +1,16 @@
 #!/bin/zsh
 
-[[ -z ${IFS_PREV} ]] && IFS_PREV=()
-IFS_PREV+=${IFS}
 IFS=${DELIMITER_ENDL}
 INPUT_STDIN=($(get-stdin &))
 
-_ecko() {
+    
+BOLD='%b'
+NL=$'\n'
+KF='%k%f'
+    
+CNTR=0
 
-    BOLD='%b'
-    NL=$'\n'
-    KF='%k%f'
-
-    CNTR=0
+_handle-args() {
 
     for param in ${@}
     do
@@ -25,24 +24,20 @@ _ecko() {
         fi
         #echo "end param:${param}: CNTR: ${CNTR}"
     done
-#echo "All:${@}"
-#echo "BOLD:${BOLD}"
-#echo "NL:${NL}"
-#echo "TEXT:${TEXT}"
     shift ${CNTR}
-#echo "All after shift:${@}"
+}
+
+_ecko() {
+
+
+            
+    TEXT="${1}" # && ((CNTR++)) #&& echo text
+    shift
+
+    #_handle-args
 
     FGC=''
     BGC=''
-
-    #if isNumeric ${1}
-    #then
-	#    TEXT="$(cat < /dev/stdin)"
-    #else
-#	    TEXT="${1}"
-#    	shift
-    #fi
-
 
     [[ -n ${1} ]] && isNumeric ${1} && FGC="%F{${1}}"
     [[ -n ${2} ]] && isNumeric ${2} && BGC="%K{${2}}"
