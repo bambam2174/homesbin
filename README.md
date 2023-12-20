@@ -21,3 +21,7 @@ EXAMPLES
 
      Peruses the file `calendar' looking for either 19, 20, or 25.
 
+     -------------------------------------------------------
+     Have a look at those hidden scripts with the word `generic` in them starting with a dot to make them hidden and the symlinks pointing to them.
+     The filename of the such a symlink defines different behaviours, e.g. the output of certain special characters behind variable names or the function itself.
+
