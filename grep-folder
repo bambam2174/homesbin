@@ -9,7 +9,13 @@
 # .*:[0-9]\+:
 # for grep -E in command line don't escape '+'
 
+TMP_EXCLUDES=()
+startsWithDash ${1} && [ ${1/-/} = 't' -o ${1/-/} = '-total-excludes' ] && TMP_EXCLUDES=(${GREP_EXCLUDES}) && shift
+
+OPTS='-nIRS'
+startsWithDash ${1} && [ ${1/-/} = 'k' -o ${1/-/} = '-kill-opts' ] && OPTS='' && shift
+
 _grep-folder () {
-	grep  --exclude-dir '\.git' --color=auto -nIRS ${@}
+	grep  --exclude-dir '\.git' ${TMP_EXCLUDES} --color=auto ${OPTS} ${@}
 }
 _grep-folder ${@}

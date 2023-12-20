@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+# truth-bomb 1 | pbcopy
+
+CMD="${0##*/}"
+CMD2EVAL="${CMD/pb-/} ${@} | pbcopy"
+$(eval "${CMD2EVAL}")
+

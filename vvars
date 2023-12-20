@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+CURR_SHELL_VARS="${SHELL_VARS}"
+startsWithDash ${1} && ([[ ${1/-/} = 't' ]] || [[ ${1/-/} = '-target' ]]) && [[ -r "${2}" ]] && CURR_SHELL_VARS="${2}" && source ${CURR_SHELL_VARS} && shift 2
+
+_vars () {
+	cat ${CURR_SHELL_VARS} | grep --color=auto $@
+}
+_vars ${@}

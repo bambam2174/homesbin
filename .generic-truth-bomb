@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# UC_TRUTH_BOMB_1
+OPTS=()
+[[ $# -gt 1 ]] && CURR_ARG=${@[-1]} && OPTS+=${@[1,-2]}
+CMD="${0##*/}"
+VARNAME="UC_$(echo ${CMD/-/_} | uppercase)_${@[-1]}"
+#VARNAME"UC_${VARNAME/-/_}_${1}"
+CMD2EVAL="echo ${OPTS} \$${VARNAME}"
+eval "${CMD2EVAL}"
+#CHARS="$(eval ${CMD2EVAL})"
+
+#echo ${OPTS} $CHARS

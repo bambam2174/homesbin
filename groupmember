@@ -1,4 +1,7 @@
 #!/bin/bash
+
+source ${SHELL_VARS_OUTPUT}
+
 USER=`whoami`
 while getopts u:g: OPTION
 do

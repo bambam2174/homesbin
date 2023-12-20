@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+echo \$SHLVL\ $SHLVL
+. rts 5
 QTS="\""
 KEEP=false
 startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
@@ -43,8 +45,9 @@ _addvar() {
     else
         echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
     fi
-    source $CURR_SHELL_VARS
+#    source $CURR_SHELL_VARS
 }
 
 _addvar ${@}
 
+#    source $CURR_SHELL_VARS
