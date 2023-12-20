@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+[[ -z $BASHFUNCTIONS ]]  && source ~/bin/.functions || echo "$BASHFUNCTIONS already sourced"
+
+#source-all
+
+update-debug-state
+
+echo SHELL_DEBUGSTATE=$SHELL_DEBUGSTATE
+isDebug && echo ja || echo nö
+update-debug-state
+isDebug && echo ja || echo nö

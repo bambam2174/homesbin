@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+source ${SHELL_VARS}_output
+
+_fl () {
+	TIMESTAMP="$(date +%s)" 
+	CSV=false 
+	PATH2FILE="${OUTPUT_FILE}/file_${TIMESTAMP}.txt" 
+	[[ ${1} = 'csv' ]] && CSV=true  && PATH2FILE="${PATH2FILE//txt/csv}"  && shift
+    eol=$'\n'
+    tab=$'\t'
+	for el in ${@}
+	do
+		${CSV} && {
+			echo -n "${el};" | tee -a "${PATH2FILE}"
+			file ${el} > >(tee -a "${PATH2FILE}")
+		} || {
+			echo "• $el," | tee -a "${PATH2FILE}"
+			echo -n "	" | tee -a "${PATH2FILE}"
+			file ${el} 1> >(sed -E "s/,/ •/g" | tee -a "${PATH2FILE}")
+			#file ${el} 1> >(tee -a "${PATH2FILE}")
+		}
+	done
+}
+_fl ${@}

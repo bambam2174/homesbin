@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+OUTPUT_FILE="$(fileroot ${1}).csv"
+
+[[ -n ${2} ]] && { 
+    if [[ -d "${2}" ]] 
+    then
+        OUTPUT_FILE="${2}/$(filename $OUTPUT_FILE)"
+    else
+        OUTPUT_FILE="${2}"
+    fi
+}
+EXT=$(fileext ${OUTPUT_FILE})
+
+[[ -f ${OUTPUT_FILE} ]] && OUTPUT_FILE="${OUTPUT_FILE//\.${EXT}/•$(timestamp).${EXT}}"
+
+for i in $(cat ${1})
+do
+    echo "${i}" | tee -a $OUTPUT_FILE
+done
+

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+source ${SHELL_VARS_OUTPUT}
+IFS=${DELIMITER_ENDL}
+CURR_FOLDER="${1}"
+
+_tree () {
+	/usr/local/bin/tree "${1}" | tee ${OUTPUT_TREES}/tree_$(path2string "${1:-${PWD}}")_$(date +%s).txt
+}
+_tree "${CURR_FOLDER}"

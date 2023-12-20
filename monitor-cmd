@@ -1,0 +1,19 @@
+#!/bin/bash
+
+LOCK_FILE=${TMP}/.monitor-cmd-lock
+CMD="${1}"
+FOLDERNAME=$(echo $CMD | cut -d ' ' -f1)
+LOGFILE=$(path2string "${CMD}")
+LOG_PATH="${OUTPUT}/${FOLDERNAME}/${LOGFILE}"
+
+mkdir -p "$(dirname ${LOG_PATH})"
+touch "${LOG_PATH}"
+
+touch ${LOCK_FILE}
+
+while [ -e ${LOCK_FILE} ];
+do 
+    #clear
+    eval "${CMD}" | tee -a ${OUTPUT}/${FOLDERNAME}/${LOGFILE}
+    sleep 1
+done

@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+if [ -z ${1}  ];then
+    echo "Creates a folder with boilerplate-code inside for an addon suitable for firefox";
+    echo "Usage: $(basename ${0}) <name of script> [ \"<descripion of script's job>\" ] ";
+    echo "Required script name ";
+    echo "Optional description (use quotes)";
+    exit 1;
+fi
+
+MD="${1}"
+
+TARGET_FOLDER="."
+[ -n "${2}" ] && TARGET_FOLDER="${2}"
+
+FORMAT="pdf"
+[ -n "${3}" ] && FORMAT="${3}"
+
+TITLE="$(fileroot ${MD})"
+TARGETFILE="${TARGET_FOLDER}/${TITLE}.${FORMAT}"
+
+pandoc --metadata title="${TITLE}" -s -o "${TARGETFILE}" ${MD}
+
+

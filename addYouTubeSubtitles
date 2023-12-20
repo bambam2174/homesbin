@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+YTURL=$(yturl "${1}")
+
+youtube-dl --no-check-certificate --skip-download --write-auto-sub $YTURL

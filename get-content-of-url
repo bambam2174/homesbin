@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+source ~/bin/.functions
+
+_get-content-url () {
+	usage "$0" "$#" 1 "<url>" "obtains the content of the html-documents and caches the result." || return 1
+	FILE_FROM_URL=$(get-temp-file-url "$1") 
+	isDebug && echo $FILE_FROM_URL
+	[[ -f $FILE_FROM_URL ]] && cat "$FILE_FROM_URL" || curl "${1}" | tee $FILE_FROM_URL
+	isDebug && echo "$FILE_FROM_URL"
+}
+_get-content-url "${1}"

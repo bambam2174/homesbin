@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_giturlall () {
+	for repo in ${@}
+	do
+		cat ${repo}/.git/config 2> /dev/null | grep --color=auto --color=auto -oE 'url.*' | sed -E 's/url = //g'
+	done
+}
+_giturlall ${@}

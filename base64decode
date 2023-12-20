@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+echo -n "${1}${2}" | base64 -d
+
+#NCODE_KEY="${1}"
+
+#INFORMATION_2_NCODE="${2}"
+
+#echo -n "${NCODE_KEY}${INFORMATION_2_NCODE}" | base64 -d

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_char-music-notes () {
+	echo ${1} ${UC_MUSIC_NOTES}
+}
+_char-music-notes ${@}

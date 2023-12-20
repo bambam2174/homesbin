@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_subtitles-merge-extracted () {
+    [[ -z ${IFS_PREV} ]] && IFS_PREV=()
+    IFS_PREV+=${IFS}
+    IFS=${DELIMITER_ENDL}
+	FILETIME="$(fileroot ${1})•time.txt" 
+	FILETEXT="$(fileroot ${1})•text.txt" 
+	FILECSV="$(fileroot ${1}).csv" 
+	for row in {1..$(($(cat ${FILETIME} |  wc -l)))}
+	do
+		echo "$(cat ${FILETIME}| head -n $row | tail -n 1),  ${ARROWR[12]}, $(cat ${FILETEXT} | head -n $row | tail -n 1)"
+	done > ${FILECSV}
+}
+_subtitles-merge-extracted ${@}

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+_timer-stop () {
+	QUIET=false
+	startsWithDash ${1:-NoParam} && [ ${1/-/} = 'q' -o ${1/-/} = '-quiet' ] && QUIET=true  && shift
+	STOP=$(timestamp)
+	echo "${STOP}" > ${TMPDIR}/timer-stop-${1:-default}.txt
+	#START=$(cat ${TMPDIR}/timer-start-${1:-default}.txt)
+	#TIME_TOTAL=$((${STOP}-${START}))
+	#${QUIET} || echo "Time Total ${TIME_TOTAL} seconds"
+	${QUIET} || timer-output ${1}
+}
+
+_timer-stop ${@}

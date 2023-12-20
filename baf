@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+
+_baf () {
+	CURRPWD="${PWD}" 
+	echo "    PWD=${PWD}"
+	echo " OLDPWD=${OLDPWD}"
+	echo "CURRPWD=${CURRPWD}"
+	echo
+	echo 'cd ${HOME}'
+	cd ${HOME}
+	echo "    PWD=${PWD}"
+	echo " OLDPWD=${OLDPWD}"
+	echo "CURRPWD=${CURRPWD}"
+	echo
+	echo 'cd ${OLDPWD}'
+	cd "${OLDPWD}"
+	echo "    PWD=${PWD}"
+	echo " OLDPWD=${OLDPWD}"
+	echo "CURRPWD=${CURRPWD}"
+}
+_baf ${@}

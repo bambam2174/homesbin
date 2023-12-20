@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_wwhich () {
+	startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-all' ] && OPTS="${1//-/}"  && shift
+	CURRCMD=${1} 
+	[[ -f $(builtin which "$CURRCMD") ]] && {
+		which -${OPTS}S "$CURRCMD" || ls -G -G -lahF `builtin which "$CURRCMD"` 2> /dev/null || builtin which -a $CURRCMD
+	}
+}
+_wwhich ${@}

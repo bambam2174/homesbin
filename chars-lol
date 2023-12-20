@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_chars-lol () {
+	echo ${1} ${CHARs_LOL}
+}
+_chars-lol ${@}

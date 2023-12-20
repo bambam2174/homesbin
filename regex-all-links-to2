@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_regex-all-links-to () {
+	echo "(http[s]?:/)?/[ %@a-zA-Z0-9./?=_-]*\.${1:-js}"
+}
+_regex-all-links-to ${@}

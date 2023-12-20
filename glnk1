@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_glnk1 () {
+	getlink ${@} 0> /dev/null
+}
+_glnk1 ${@}

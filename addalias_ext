@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+
+_addalias () {
+	if [[ $# -eq 0 ]]
+	then
+		echo "Usage: $(basename "$0") alias command"
+		return 1
+	fi
+#	ALIASESFILE=$HOME/.bash_aliases 
+	WC_ORIG=$(cat $SHELL_ALIASES_EXT | wc -l) 
+	TMPFOLDER=$HOME/tmp/.shellstuff 
+	mkdir -p $TMPFOLDER
+	TMPFILE=$TMPFOLDER/shell_aliases.prev 
+	original cp -f $SHELL_ALIASES_EXT $TMPFILE
+	echo "alias $1='$2'" >> $SHELL_ALIASES_EXT
+	WC_NEW=$(cat $SHELL_ALIASES_EXT | wc -l) 
+	if [[ $WC_NEW -lt $WC_ORIG ]]
+	then
+		echo "Error: New aliases-file didn't get extended"
+		echo "Number of lines of previous aliases-file $WC_ORIG"
+		echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
+		echo "Backing up new aliases-file $SHELL_ALIASES_EXT to ${TMPFILE}.backup\! for further analysis."
+		cp -f $SHELL_ALIASES_EXT "${TMPFILE}.backup\!"
+		[[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
+		echo "to restore previous aliases-file..."
+		echo "Execute"
+        echo "cp -f $TMPFILE $SHELL_ALIASES_EXT"
+		[[ $? -eq 0 ]] && echo "...previous aliases-file $TMPFILE got restored to $SHELL_ALIASES_EXT" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
+	fi
+}
+_addalias "${@}"

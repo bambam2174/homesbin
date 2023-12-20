@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+SCRIPTNAME=${0}
+
+ARGS_ALL="${#} args: ${@}, SHLVL=${SHLVL}"
+
+CNTR=0
+
+_sourcee () {
+    ((CNTR++))
+	builtin source new-shell-log-file
+    TS=$(timestamp)
+	echo "${CNTR}-${TS}:${SCRIPTNAME}" | tee -a ${SHELL_LOG_FILE}
+	echo "${ARGS_ALL}" | tee -a ${SHELL_LOG_FILE}
+	echo "${0}" | tee -a ${SHELL_LOG_FILE}
+	echo "${1}" | tee -a ${SHELL_LOG_FILE}
+	echo "  ---------------------  " | tee -a ${SHELL_LOG_FILE}
+	builtin source "${1}" | tee -a ${SHELL_LOG_FILE}
+}
+[[ ${#} -gt 0 ]] && _sourcee ${@}

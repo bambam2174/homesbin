@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+#
+# php -S localhost:8000 -t
+#
+
+ROOTPATH="${PWD}"
+PORT=8080
+HOST=localhost
+
+[[ ${#} -eq 1 ]] && [[ ${1} = '-h' ]] && echo "Usage: $(basename "$0") port [path]" && { [[ ${SHLVL} -eq 1 ]] && return 1 || exit 1 }
+
+if [[ ${#} -eq 0 ]]
+then
+    echo "Usage: $(basename "$0") [path] [port]"
+fi
+
+if [[ -n "${1}" ]]
+then
+    ROOTPATH="${1}"
+fi
+
+if [[ -n "${2}" ]]
+then
+    PORT="${2}"
+fi
+
+if [[ -n "${3}" ]]
+then
+    HOST="${3}"
+fi
+
+CMD="php -S ${HOST}:${PORT} -t ${ROOTPATH}"
+
+eval "$CMD"

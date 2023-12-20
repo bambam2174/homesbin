@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+latest -f ${1} ${SCREENSHOTS} --ext png
+
+# latest -f ${1} "${SCREENSHOTS}/Bildschirmfoto 202"  #${1:-1}
+

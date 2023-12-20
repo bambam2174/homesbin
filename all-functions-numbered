@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+. $HOME/.zshrc
+
+functions | grep -noE "^\w*\s?\(\)"

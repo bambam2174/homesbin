@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_latest-output-brew () {
+	ls -1Ut $OUTPUT_BREW/* | head -n ${1:-1}
+}
+_latest-output-brew ${@}

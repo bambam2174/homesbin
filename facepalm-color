@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_facepalm-color () {
+	eval "echo \"\${UC_FACEPALM}\${UC_COLOR_${1:-1}}\${UC_GENDER_${2}MALE}\""
+}
+_facepalm-color ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_list-commands () {
+	for f in ${1:-${PWD}}/*
+	do
+		[[ -f $f ]] && [[ -x $f ]] && ls -1AFhG -d $f
+	done
+}
+_list-commands ${@}

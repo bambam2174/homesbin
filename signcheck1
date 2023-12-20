@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+source ${SHELL_VARS_OUTPUT}
+
+_signcheck1 () {
+	SZ_OUTPUT="$(codesign --display --verbose=4 ${@})"
+    echo "${SZ_OUTPUT}" 1> >(tee ${OUTPUT_CODESIGN}/$(path2string ${@})•$(date +%s).txt) 2> ${TMPDIR}/foo
+}
+_signcheck1 ${@}

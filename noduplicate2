@@ -1,0 +1,64 @@
+#!/usr/bin/env php
+<?php
+//print_r($argv);
+
+$outputfile = "newfile.csv";
+
+if (count($argv) > 2) {
+    $pathOutputfile = $argv[2];
+    $arrOutputFile = explode("/", $pathOutputfile);
+    $outputfile = array_pop($arrOutputFile);
+}
+$csv = $argv[1];
+
+$array = explode("/", $csv);
+$file = array_pop($array);
+$folder = "";
+if (count($array) > 0) {
+    $folder =  join('/', $array);
+    $folder.='/';
+}
+/*
+print_r(count($array)."\n");
+print_r($file."\n");
+print_r($folder."\n");
+ */
+//die('dbug');
+//echo "unduplicating ".$argv[1];
+$myfile = fopen($argv[1], "r") or die("Unable to open file!");
+$dictDomain = [];
+//echo fread($myfile,filesize($argv[1]));
+$linecounter = 0;
+while($line = fgets($myfile)) {
+    $linecounter++;
+/*	$arrLine = explode('/', $line);
+	$arrTmpLine = array_slice($arrLine, 1);
+	$tmpLine = join('/', $arrTmpLine);*/
+//	$tmpLine = $line.split('/').slice(1).join('/');
+//	$tmpLine = join('/', array_slice(explode('/', $line), 1));
+	$tmpLine = preg_replace('/[^\/]+\/{1}/', '', $line, 1);
+    $CurrentHash = hash('md5', $tmpLine);
+    //echo "> ".trim($line).":   \t\t\t $CurrentHash\n";
+    $dictDomain[$CurrentHash] = trim($line);
+}
+
+
+fclose($myfile);
+
+//print_r($dictDomain);
+
+$arrKeys = array_keys(array_count_values($dictDomain));
+//print_r($arrKeys);
+
+//echo "$linecounter\n";
+
+
+$myfile = fopen($folder.$outputfile, "w") or die("Unable to open file!");
+
+foreach($arrKeys as $value) {
+    fwrite($myfile, $value."\n");
+}
+
+fclose($myfile);
+
+?>

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_dateYear () {
+	date '+%Y'
+}
+_dateYear ${@}

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_whichall () {
+    cat ${SHELL_ALIASES} | grep -oE " ${1}=.*" | sed -E "s/=/: aliased to /g"
+	CURR_OUTPUT=$(which -a "${1}");
+    [[ ${?} -eq 0  ]] && echo ${CURR_OUTPUT}
+	[[ -x $(echo ${CURR_OUTPUT} | tail -n 1) ]] && cs $(echo ${CURR_OUTPUT} | tail -n 1)
+    unset CURR_OUTPUT
+}
+_whichall ${@}

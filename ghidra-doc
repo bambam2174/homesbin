@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ghidra-doc () {
+	http-server -a 0.0.0.0 -U --log-ip --no-dotfiles --cors node --trace-deprecation -c-1 "${GHIDRA_DOCS}"
+}
+_ghidra-doc ${@}

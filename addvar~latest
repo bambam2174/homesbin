@@ -1,0 +1,107 @@
+#!/bin/zsh
+
+ARR_OPTS=()
+ARR_PARAM=()
+
+SCRIPTNAME="$(filename ${0})"
+CURR_SHELL_VARS="${SHELL_VARS}"
+
+QTS="\""
+KEEP=false
+QUIET=false
+
+CNTR=0
+for param in ${@}
+do
+    ((CNTR++))
+    CNTR_NEXT=$((${CNTR}+1))
+
+    startsWithDash "${param}" && 
+        [ ${param/-/} = 's' -o ${param/-/} = '-single-quotes' ] && 
+        QTS="'" && 
+        ARR_OPTS+="${param}" && 
+        continue
+    startsWithDash "${param}" && 
+        [ ${param/-/} = 'a' -o ${param/-/} = '-array' ] && 
+        QTS="" && 
+        ARR_OPTS+="${param}" && 
+        continue
+    startsWithDash "${param}" && 
+        [ ${param/-/} = 'k' -o ${param/-/} = '-keep-all' ] && 
+        KEEP=true && 
+        ARR_OPTS+="${param}" && 
+        continue
+    startsWithDash "${param}" && 
+        [ ${param/-/} = 'q' -o ${param/-/} = '-quiet' ] && 
+        QUIET=true && 
+        ARR_OPTS+="${param}" && 
+        continue
+    startsWithDash "${param}" && 
+        [ ${param/-/} = 't' -o ${param/-/} = '-target' ] && 
+        TMP_SHELL_VARS="${@[${CNTR_NEXT}]}" && 
+        ecko ${TMP_SHELL_VARS} 99 199  && 
+        [[ -w "${TMP_SHELL_VARS}" ]] && 
+        ARR_OPTS+="${param}" && 
+        ARR_OPTS+="${TMP_SHELL_VARS}" && continue
+    contains "${ARR_OPTS}" ${param} || ARR_PARAM+="${param}"
+done
+
+#echo "\$CNTR ${CNTR}"
+#echo "\$@ $@"
+#echo "\$# $#"
+echo "\$ARR_OPTS $ARR_OPTS"
+#echo "\$ARR_PARAM $ARR_PARAM"
+#echo "\$TMP_SHELL_VARS $TMP_SHELL_VARS"
+#echo "\$CURR_SHELL_VARS $CURR_SHELL_VARS"
+
+#echo "\$KEPP $KEEP"
+
+${QUIET} || ecko "Initial option paramter input finished" 100 200
+
+#[[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
+
+# add alias like
+# alias addvar='source addvar'
+
+[[ ${SHLVL} -gt 1  ]] &&  ! [[ $(alias2source-added ${SCRIPTNAME}) ]] && addalias ${SCRIPTNAME} "'source ${SCRIPTNAME}'" # && update_aliases
+
+_addvar() {
+    SZ_EXPORT='export '
+
+    if [ $# -eq 0 ] # ||  [ $# -lt 2 ]
+    then
+        echo "$# is $((2-$#)) too few"
+        echo "Usage: ${SCRIPTNAME} name [value]"
+        echo "addalias ${SCRIPTNAME} 'source ${SCRIPTNAME}'"
+        return 1
+    else
+        PNAME="${ARR_PARAM[1]}"
+        PVALUE="${ARR_PARAM[2]}"
+        PNAME="${PNAME//-/_}"
+        PNAME=$(uppercase ${PNAME})
+        PVALUE="${PVALUE:-$(pbpaste)}"
+        [[ ${#ARR_PARAM} -eq 1 ]] && startsWith $PVALUE '"' && endsWith $PVALUE '"' && PVALUE=${PVALUE[2,-2]} 
+        ! string_contains $PVALUE "(" && ! startsWith $PVALUE '"' && ! endsWith $PVALUE '"' && PVALUE=${PVALUE// /\\ }
+        ecko "PVALUE=${PVALUE}" 12 19
+    fi
+
+    LASTCHAR=${PNAME[$#PNAME]}
+
+    [[ "$LASTCHAR" = "+" ]] && SZ_EXPORT=''
+
+    if ${KEEP}
+    then
+       # isDebug && 
+            echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE}${QTS}"
+            #echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE}${QTS}" >> ${CURR_SHELL_VARS}
+            echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE}${QTS}"
+    else
+        isDebug &&
+            echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" | tee -a ${CURR_SHELL_VARS}; last-shell-vars 1 ||
+            echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> ${CURR_SHELL_VARS}
+    fi
+#    source $CURR_SHELL_VARS
+}
+
+_addvar ${@}
+

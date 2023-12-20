@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_find-launchagent () {
+	tail -n +1 $TMP_HASH/launchagents_*.csv | grep --color=auto -iE "(==>.*|${1:-com.apple})"
+}
+_find-launchagent ${@}

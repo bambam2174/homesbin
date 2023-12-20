@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+add2Symlink2Places_() {
+	ln -s "${PWD}" "${HOME}/__Places•SymLinks/$(path2string ${PWD})"
+}
+
+add2Symlink2Places_

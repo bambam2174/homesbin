@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+# cat $BIN/paths.csv | awk ''' {print $2} '''
+CMD="cat $BIN/paths.csv | awk ''' {print \$${1:-2}} '''"
+
+cat $BIN/paths.csv | awk ''' {print $'''''${1:-2}'''''} '''
+
+#eval ${CMD}

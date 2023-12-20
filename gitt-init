@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+_gitt-init () {
+	git init
+	mv -i .git ${GDRIVE_EXCLUDED_GITFOLDER}/$(path2string -b '[SPACE]' ${PWD})
+}
+_gitt-init ${@}

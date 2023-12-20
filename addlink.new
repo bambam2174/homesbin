@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+startsWith () {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
+    HAYSSTACK="$1"
+    NEEDLE="$2"
+    [[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
+}
+
+if startsWith "${1}" http
+then
+    URL="${1}"
+    LINKPATH="${2}"
+elif startsWith "${2}" http
+then
+    URL="${2}"
+    LINKPATH="${1}"
+    [[ -n "${3}" ]] && LINKPATH="${LINKPATH}/${3}" || LINKPATH="${LINKPATH}/$(path2string ${URL//http(s|):\/\//})" # $(filename ${URL})" # fileroot $(path2string ${URL//http(s|):\/\//})
+else
+    URL=$(pbpaste)
+    LINKPATH="${1}"
+    [[ -n "${2}" ]] && LINKPATH="${LINKPATH}/${2}" || LINKPATH="${LINKPATH}/$(path2string ${URL//http(s|):\/\//})" # $(filename ${URL})"
+    endsWith "${LINKPATH}" '/' && mkdir -p "$LINKS/${LINKPATH}" && LINKPATH+="$(path2string ${URL//http(s|):\/\//})"
+fi
+
+TARGET_LINK_PATH="${LINKS}/${LINKPATH}"
+startsWith ${LINKPATH} '/' && TARGET_LINK_PATH="${LINKPATH}"
+PATH2LINK=$(createlink "${URL}" "${TARGET_LINK_PATH}")
+
+echo -n \ \"$(echo ${PATH2LINK} | tail -n 1)\" | pbcopy
+echo \"${PATH2LINK}\"
+
+update-links > /dev/null

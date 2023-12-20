@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+#
+#  RDoc: Documentation tool for source code
+#        (see lib/rdoc/rdoc.rb for more information)
+#
+#  Copyright (c) 2003 Dave Thomas
+#  Released under the same terms as Ruby
+
+begin
+  gem 'rdoc'
+rescue NameError => e # --disable-gems
+  raise unless e.name == :gem
+rescue Gem::LoadError
+  warn 'Load error, lan'
+end
+
+require 'rdoc/rdoc'
+
+begin
+  r = RDoc::RDoc.new
+  r.document ARGV
+rescue Errno::ENOSPC
+  warn 'Ran out of space creating documentation'
+  warn
+  warn 'Please free up some space and try again'
+rescue SystemExit
+  raise
+# rescue Exception => e
+rescue StandardError => e
+  if $DEBUG_RDOC
+    warn e.message
+    # warn "#{e.backtrace.join "\n\t"}"
+    warn e.backtrace.join.to_s
+    warn
+  elsif Interrupt == e
+    warn
+    warn 'Interrupted'
+  else
+    warn 'uh-oh! RDoc had a problem:'
+    warn e.message
+    warn
+    warn 'run with --debug for full backtrace'
+  end
+
+  exit 1
+end
+

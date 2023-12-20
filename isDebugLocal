@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+_isDebugLocal () {
+	if [[ "${DEBUG}" -eq ${TRUE} ]] 2> /dev/null || [[ "${DEBUG}" = ${TRUE} ]]
+	then
+		true
+	else
+		false
+	fi
+}
+_isDebugLocal ${@}

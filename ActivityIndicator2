@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+_ActivityIndicator2 () {
+	ARR_PHASES=('|' '/' '-' '\\')
+	IDX=1
+	export CONT=true
+	while ${CONT}
+	do
+		echo -n "$(repeat-char $((${#2}+1)) "\b")${2}${ARR_PHASES[$((IDX++))]}${3}$(repeat-char $((${#3}+1)) "\b")"
+		sleep ${1:-0.5}
+		[[ ${IDX} -gt 4 ]] && IDX=1
+	done
+}
+
+_ActivityIndicator2 ${@}

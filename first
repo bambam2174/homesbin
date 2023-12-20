@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+
+_first () {
+	LINECOUNT=5 
+	WHERE=${PWD}
+	H='' 
+	if [ -n "${1}" ]
+	then
+		PARAM1="${1}" 
+		startsWithDash ${PARAM1} && H+=${PARAM1//-/}  || LINECOUNT=${PARAM1} 
+	fi
+	if [ -n "${2}" ]
+	then
+		PARAM2="${2}" 
+		startsWithDash ${PARAM2} && H+=${PARAM2//-/}  || WHERE=${PARAM2} 
+	fi
+	if [ -n "${3}" ]
+	then
+		PARAM3="${3}" 
+		startsWithDash ${PARAM3} && H+=${PARAM3//-/}  || H+="h" 
+	fi
+	if isDebugLocal
+	then
+		echo ${LINECOUNT}
+		echo ${WHERE}
+	fi
+	[[ -L ${WHERE} ]] && ! endsWith ${WHERE} '/' && WHERE="${WHERE}/" 
+	isDebugLocal && {
+		echo "\${WHERE}=${WHERE}"
+		echo "\${LINECOUNT}=${LINECOUNT}"
+	}
+	CMD="ls -lAGc${H}t \"${WHERE}\" | head -n $((${LINECOUNT}+1))" 
+	isDebugLocal && echo ${CMD}
+	eval ${CMD}
+}
+_first ${@}

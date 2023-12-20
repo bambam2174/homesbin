@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+LINES=115
+
+_man_description() {
+    
+    [[ $# -gt 1 ]] &&  [[ "$2" -eq "$2" ]] && LINES=$2
+    man "${1}" | grep -E '^D+.+E+S.+.*' -A $LINES
+}
+#_man_description ${@}
+#exit 0
+i=0
+#for i in {1..$LINES}
+while [[ -z $IS_CAPITAL_LETTER ]]
+do
+    i=$(($i+1))
+    #               echo $i
+    FOO=$(_man_description ${1} $i)
+    #               echo "==>FOO:\n$FOO"
+    NEWLINE=$(echo $FOO | head -n $(($i+1)) | tail -n 1)
+    FIRSTLETTER=$NEWLINE[1]
+    #               echo "==>\$NEWLINE\n$NEWLINE\n first letter ==>$FIRSTLETTER<=="
+    IS_CAPITAL_LETTER=$(echo $FIRSTLETTER | grep -E "[A-Z]")
+    #[[ -n $IS_CAPITAL_LETTER ]] && echo "$FOO" && exit 0
+done
+echo "$FOO" && exit 0
+

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+isDotShellFile ${1} || . rts 11
+
+_dot-shell-backup() {
+    TMPFOLDER="${TMP}/.shellstuff"
+    mkdir -p "${TMPFOLDER}"
+    PATH_SOURCE="${1:-${SHELL_ALIASES}}"
+    TFILE="$(filename ${PATH_SOURCE})"
+    TMPFILE=${TMPFOLDER}/${TFILE/./}_$(timestamp).prev
+    cp -f ${PATH_SOURCE} ${TMPFILE}
+}
+
+_dot-shell-backup ${@}

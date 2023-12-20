@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+
+process.argv.shift()
+
+var script = process.argv.shift()
+
+var SZPARAM = process.argv[0]
+
+// var SZ_UNESCAPED = escape(SZPARAM)
+//var SZ_UNESCAPED = escape(`${SZPARAM}`)
+//
+var SZ_UNESCAPED = SZPARAM.replace(/\\/g, "\\\\")
+    .replace(/\$/g, "\\$")
+    .replace(/'/g, "\\'")
+    .replace(/"/g, "\\\"")
+    .replace(/\s/g, "\\ ");
+
+console.log(SZ_UNESCAPED)

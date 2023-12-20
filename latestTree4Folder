@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_latestTree4Folder () {
+	ls -G -G -1AF -Ut $OUTPUT_TREES/tree_$(path2string "${1}")_*.txt | head -n 1
+}
+_latestTree4Folder ${@}

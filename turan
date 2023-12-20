@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_turan () {
+	echo "${TURAN}"
+}
+_turan ${@}

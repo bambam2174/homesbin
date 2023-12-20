@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+isDebug && echo ${@}
+CNT=0
+for TMP_PATH in "${@}"
+do
+    isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
+    echo ${TMP_PATH} | rev  | cut -d '/' -f1  | rev
+done
+

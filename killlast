@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+LAST=1
+
+[[ -n ${2} ]] && LAST=${2}
+
+# todo remove line
+cp ${1} $TMP/$(filename ${1}).prev
+
+HISTCOUNT=$(cat ${1} | wc -l); head -n $(($HISTCOUNT-$LAST)) ${1} > ${1}
+

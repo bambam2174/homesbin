@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_subtitles-extract-time () {
+    CURR_FILE="$(echo ${1} | filename | fileroot)" 
+    cat "${1}" | grep --color=auto -E '^[0-9]+:[0-9]{2}' > "$(fileroot ${1})•time.txt"
+}
+_subtitles-extract-time ${@}

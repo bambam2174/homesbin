@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+source ~/.debug_state
+
+_endsWith () {
+	usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack ends with needle" || return $?
+	HAYSSTACK="$1" 
+	NEEDLE="$2" 
+	isDebug && echo "HAYSSTACK = $HAYSSTACK"
+	isDebug && echo "NEEDLE = $NEEDLE"
+	[[ "$HAYSSTACK" = *"$NEEDLE" ]] && return 0 || return 1
+}
+_endsWith ${@}

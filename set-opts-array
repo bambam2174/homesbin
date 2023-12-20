@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_set-opts-array () {
+	export ARR_OPTS=() 
+	while startsWithDash ${1}
+	do
+		ARR_OPTS+="${1}" 
+		shift
+	done
+}
+_set-opts-array ${@}

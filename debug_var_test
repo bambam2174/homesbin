@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+. ~/bin/.functions
+export DEBUG
+echo $DEBUG
+
+if [ -n "$1" ]; then
+    echo $1
+    if isNumber "$1" && ([ "$1" -eq 0 ] || [ "$1" -eq 1 ]); then
+        export DEBUG=$1
+    fi
+fi
+
+

@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_isFunctionX () {
+	SZ_WHICH=$(which ${1}) 
+	FUNC_HEAD="$(echo ${SZ_WHICH} | head -n 1 | grep -E '[-a-zA-Z0-9_]+\s?\(\)\s?{')" 
+	(
+		source isDebugLocal || source isDebugGlobal
+	) && echo ${FUNC_HEAD}
+	FUNC_FOOT="$(echo ${SZ_WHICH} | tail -n 1 | grep -E '}')" 
+	(
+		source isDebugLocal || source isDebugGlobal
+	) && echo ${FUNC_FOOT}
+	[[ -n ${FUNC_HEAD} ]] && [[ -n ${FUNC_FOOT} ]]
+}
+_isFunctionX ${@}

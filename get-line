@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_get-line () {
+	INPUT=$(get-stdin &) 
+	isPositive ${1} && echo "${INPUT}" | head -n ${1} | tail -n 1
+    isNegative ${1} && echo "${INPUT}" | tail -n $((${1}*-1)) | head -n 1
+}
+_get-line ${@}

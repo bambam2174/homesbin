@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isNegative () {
+	[[ ${1} -lt 0 ]]
+}
+_isNegative ${@}

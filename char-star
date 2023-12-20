@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+OPTS=()
+TMPINPUT="${1}"
+
+ [[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} = 'c' ]] && echo ${#STARS} && . rts 0
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} =~ '[^0-9]' ]] && OPTS+="${1}" && shift
+
+_char-star () {
+    [[ ${#} -eq 0 ]] && { echo ${OPTS} ${STARS}; . rts 0 }
+    for IDX in ${@}
+    do
+	    isNumeric ${IDX} && [[ ${IDX} -le ${#STARS} ]] && echo ${OPTS} ${STARS[${IDX}]} || echo ${OPTS} ${IDX}
+    done
+#	[[ ${#} -gt 0 ]] && echo ${OPTS} ${STARS[${1}]} || echo ${OPTS} ${STARS}
+}
+_char-star ${@}

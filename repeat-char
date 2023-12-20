@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_repeat-char () {
+	for i in {1..${1}}
+	do
+		echo -n "${2:-}"
+	done
+}
+_repeat-char ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_escape-it () {
+	echo ${1//\//\\/}
+}
+_escape-it ${@}

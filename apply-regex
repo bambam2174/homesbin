@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_apply-regex () {
+	[[ "${1}" =~ "${2}" ]]
+}
+_apply-regex ${@}

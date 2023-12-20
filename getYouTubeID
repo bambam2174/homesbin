@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+VIDEO="${1}"
+
+fileroot $VIDEO | cut -d '-' -f2

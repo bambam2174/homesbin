@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+SCRIPTNAME=$(filename ${0})
+
+# export GREP_EXCLUDES=( --exclude-dir .git --exclude-dir node_modules )
+LOG_OUTPUT="${OUTPUT_SRCHA}/${SCRIPTNAME}•$(path2string ${@})•$(timestamp).txt"
+
+_searchFilesFolderWithRegex () {
+    ARR_WHERE=()
+    ARR_PARAM=()
+    for param in ${@}
+    do
+        [[ -r "${param}" ]] && ARR_WHERE+="${param}" || ARR_PARAM+="${param}"
+    done
+
+#	WHAT="${1}" 
+#	shift
+	for WHERE in ${ARR_WHERE}
+	do
+        echo "regex query of ${ARR_PARAM} in ${WHERE}" | tee -a "${LOG_OUTPUT}"
+		grep --color=auto -rE ${ARR_PARAM} ${WHERE} ${GREP_EXCLUDES} 2> /dev/null | tee -a "${LOG_OUTPUT}"
+	done
+}
+_searchFilesFolderWithRegex ${@}

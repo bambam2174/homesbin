@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+PREVIOUS_CSV=false
+REVERSE_ORDER=false
+DRY_RUN=false
+
+if startsWithDash ${1}
+then 
+	[ ${1/-/} = 'n' -o ${1/-/} = '-new' ] && ecko -n " ${TURK} " && memsave -s && memread && shift
+	[ ${1/-/} = 'p' -o ${1/-/} = '-previous-csv' ] && ecko " \\U1f449\\U1f3fd Previous CSV" && PREVIOUS_CSV=true && shift
+	[ ${1/-/} = 'r' -o ${1/-/} = '-reverse' ] && ecko " \\U1f449\\U1f3fd Reverse Order" 231 16 && REVERSE_ORDER=true && shift
+	[ ${1/-/} = 'd' -o ${1/-/} = '-dry-run' ] && ecko " \\U1f449\\U1f3fe Dry Run" 16 239 && DRY_RUN=true && shift
+fi
+
+# cat  $TMP/brew-outdated.txt | (false && sort -r || sort)
+
+_brew-upgrade-all () {
+	CNT=1
+	${PREVIOUS_CSV} || brew outdated | tee ${CSV_BREW_OUTDATED}
+	for pkg in $(cat ${CSV_BREW_OUTDATED} | (${REVERSE_ORDER} && sort -r || sort))
+	do
+		ecko " \\U1f449\\U1f3fb ${pkg}" 1 18 | tee -a "${1:-${CSV_BREW_PACKAGES_UPGRADING}}"
+		CURR_CMD="SUDO_ASKPASS=${BIN}/memecho breww upgrade ${pkg}"
+		${DRY_RUN} && { FG=$((${CNT}+16)); ecko ${CURR_CMD//${BIN}/\${BIN}} ${FG} $((248-${FG}));((CNT++)) } || eval "${CURR_CMD}"
+
+	done
+}
+_brew-upgrade-all ${@}

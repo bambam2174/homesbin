@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_arrow-double () {
+	for i in {1..$#ARROWDBL}
+	do
+		FG=1 
+		BG=11 
+		ecko "	${i}	$ARROWDBL[$i]	" $FG $BG
+	done
+}
+_arrow-double ${@}

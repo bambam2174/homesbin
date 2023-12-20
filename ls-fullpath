@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ls-fullpath () {
+	ls -1AlhGd ${1:-${PWD}}/* | sed -E "s/${REGEX_LISTLONG} //g"
+}
+_ls-fullpath ${@}

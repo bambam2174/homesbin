@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_evalpipe () {
+	INPUT="$(get-stdin &)" 
+	eval "${INPUT}"
+}
+_evalpipe ${@}

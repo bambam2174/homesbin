@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+INPUT_PIPE="$(cat < /dev/stdin)"
+    
+[[ -n ${INPUT_PIPE} ]] && SZ_INPUT="${INPUT_PIPE}"

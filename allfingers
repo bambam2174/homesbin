@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+
+_allfingers () {
+	#IFS=$DELIMITER_ENDL 
+    startsWithDash ${1} && [[ ${1/-/} = 's' ]] && 
+        { 
+            SEP="${2}"
+            shift 2
+            source sz2arr ${1} ${SEP} 
+        } || { 
+            SZ2ARR="${1}"
+        }
+	for i in {1..8}
+	do
+		echo "$(fingerr $i)${2}${1[$i]}${3:-$2}$(fingerl $i)"
+	done
+}
+_allfingers ${@}

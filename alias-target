@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+
+_alias-target () {
+	#ARR_PATH_ALIAS=($(/usr/bin/strings "${1}" 2> /dev/null))
+	ARR_PATH_ALIAS=($(strings "${1}" 2> /dev/null))
+
+	INDEX=0
+	for idx in {1..${#ARR_PATH_ALIAS}}
+	do
+		CURR_ELEMENT="${ARR_PATH_ALIAS[${idx}]}"
+		[[ "${CURR_ELEMENT}" = "file:"* ]] && INDEX=${idx}
+	done
+    ((INDEX--))
+    ARR_ALIAS_TARGET=( ${ARR_PATH_ALIAS[1,${INDEX}]} )
+    
+    ARR_ALIAS_TARGET=( ${ARR_ALIAS_TARGET[3,-1]} )
+	
+    echo "/${ARR_ALIAS_TARGET// //}"
+}
+_alias-target ${@}

@@ -1,0 +1,5 @@
+#!/bin/zsh
+source $HOME/.debug_state
+source $HOME/.bash_aliases
+
+ps -Axeh  -o ppid -o pid -o user -o rgroup -wo args -o %cpu | sudo tee -a rootfolder/ps.${USERNAME}.$(date +"s%")output.csv

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isPositive () {
+	[[ ${1} -gt 0 ]]
+}
+_isPositive ${@}

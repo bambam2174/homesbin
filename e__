@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo $ARR_UNDERSCORE[${1:--1}]

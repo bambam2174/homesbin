@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+CMD="echo"
+
+if [ -n "$2" ];then
+    echo "hier $2"
+    CMD="$2"
+fi
+
+find "$1" -maxdepth 1 | while read line
+COUNT=0
+do
+    #COUNT=$((COUNT+1))
+    #echo $COUNT
+    #COUNT+=1
+    CMDTEMP="$CMD -lah $line"
+    # ${CMD} "-lah $line"
+    echo $CMDTEMP
+    eval $CMDTEMP
+     #${CMD} "$line"
+done

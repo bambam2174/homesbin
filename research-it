@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_research-it () {
+	FOLDERNAME=$(path2string "${1}") 
+	echo ${FOLDERNAME}
+	ln -s "${1}" ${HOME}/Projects/research/${FOLDERNAME}
+}
+_research-it ${@}

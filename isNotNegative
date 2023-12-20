@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isNotNegative () {
+	[[ ${1} -gt -1 ]]
+}
+_isNotNegative ${@}

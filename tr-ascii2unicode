@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+PARAM="${@}"
+
+SZ_INPUT=$(get-stdin &)
+
+[[ -n ${SZ_INPUT} ]] && SZ_INPUT="$(uppercase ${SZ_INPUT})" || { SZ_INPUT=''; startsWithDash ${1} && PARAM=(${1} "$(uppercase ${@[2,-1]})")  || PARAM="$(uppercase ${@})" }
+
+echo ${PARAM} "${SZ_INPUT} " | tr "[ABCDEFGHIJKLMNOPQRSTUVWXYZ]" "[$(echo ${UC_A}${UC_B}${UC_C}${UC_D}${UC_E}${UC_F}${UC_G}${UC_H}${UC_I}${UC_J}${UC_K}${UC_L}${UC_M}${UC_N}${UC_O}${UC_P}${UC_Q}${UC_R}${UC_S}${UC_T}${UC_U}${UC_V}${UC_W}${UC_X}${UC_Y}${UC_Z})]"
+
+

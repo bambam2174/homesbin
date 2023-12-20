@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_get-stdin () {
+	INPUT_PIPE="$(cat < /dev/stdin)" 
+	[[ -n ${INPUT_PIPE} ]] && echo "${INPUT_PIPE}"
+}
+_get-stdin ${@}

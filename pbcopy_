@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+CB_STACK="${TMPDIR}/cb-stack.csv"
+
+_pbcopy_ () {
+	[[ ${#} -gt 0 ]] && startsWithDash "${1}" && [ ${1/-/} = 'd' -o  ${1/-/} = '-delete' ] && rm -rf "${CB_STACK}"  && shift
+	INPUT_STDIN=$(get-stdin &)
+    [[ -z "${INPUT_STDIN}" ]] && . rts 999
+	echo "${INPUT_STDIN}" >> "${CB_STACK}"
+	echo "${INPUT_STDIN}" | original pbcopy
+}
+_pbcopy_ ${@}

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+ln -s ${2}${1}zshrc "${1}zshrc_$TERM_PROGRAM"

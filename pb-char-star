@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-char-star () {
+	char-star ${@} | pbcopy
+}
+_pb-char-star ${@}

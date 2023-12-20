@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_months () {
+	local C=${1:-0} 
+	date -r $(($(date +%s)-${C}*30*24*60*60)) | list-col 3
+}
+_months ${@}

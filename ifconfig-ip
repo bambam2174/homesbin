@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ifconfig-ip () {
+	ifconfig ${@} | grep --color=auto -oE "$REGEX_IP"
+}
+_ifconfig-ip ${@}

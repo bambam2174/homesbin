@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+export ARR_URL=() 
+
+_url2arr () {
+	URL="${1}" 
+	IFS=${DELIMITER_ENDL}
+	for i in $(listit ${URL} '/')
+	do
+		echo "> $i"
+		[[ -n ${i} ]] && ARR_URL+=("${i}") 
+	done
+    echo '${#ARR_URL}='${#ARR_URL}
+}
+_url2arr ${@}

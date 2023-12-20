@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+CMD_NAME=$(basename ${0})
+
+echo $CMD_NAME
+ALIAS_CMD=$(alias ${CMD_NAME})
+
+echo "\$#ALIAS_CMD=$#ALIAS_CMD" 
+echo "\$ALIAS_CMD=$ALIAS_CMD" 
+
+if [[ -z ${ALIAS_CMD} ]]
+then
+    string_contains "$(tail -n 1 $SHELL_ALIASES)" "source ${CMD_NAME}" || 
+        addalias ${CMD_NAME} "source ${CMD_NAME}"
+    #last_shell_aliases
+    source ${SHELL_ALIASES}
+    alias ${CMD_NAME}
+    echo "\n–>Important<–\nNecessary alias was added in ${SHELL_ALIASES}.\nExecute\n source ${SHELL_ALIASES}\n before further use"
+    echo ""
+    which -a ${CMD_NAME}
+    source ${CMD_NAME} ${@}
+fi
+
+echo ${CLIPBOARD[-1]}
+
+CLIPBOARD=(${CLIPBOARD[1,-2]})

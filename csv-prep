@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+TARGET_FILE="${1}"
+
+TMPCSV=$(replace-commas "${TARGET_FILE}")
+TMPCSV=$(replace-dblquotes "${TMPCSV}")
+
+# cp "${TMPCSV}" "${TARGET_FILE}.csv"
+cp "${TMPCSV}" "${2:-${TARGET_FILE}.csv}"

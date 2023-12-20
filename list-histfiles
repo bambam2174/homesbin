@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_list-histfiles () {
+	# ls -1Ut ${@} ${TMP}/histfile_*.txt
+	ls -1Ut ${@} $TMP/*histfile* | grep -vE ".*.gz"
+}
+    
+_list-histfiles ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-char-mermaid () {
+	char-mermaid ${@} | pbcopy
+}
+_pb-char-mermaid ${@}

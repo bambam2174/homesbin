@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+awk '/^Host / { ++hosts; if (hosts % limit == 0) print "# import limit"} {print $0 }' hosts=0 limit=500 "${1}"  | split -p '# import limit' - "${1}-"
+

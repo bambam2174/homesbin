@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_fingerl () {
+	export ARR_FINGERL=() 
+	for f in `seq 3 2 ${#FINGERL}`
+	do
+		ARR_FINGERL+="${FINGERL[${f},$((${f}+1))]}"
+	done
+}
+_fingerl ${@}

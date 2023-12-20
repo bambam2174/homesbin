@@ -1,0 +1,57 @@
+#!/bin/zsh
+
+ usage $0 $# 1  '<Number|String>' 'Checks if Number or String' || { [[ ${SHLVL} -gt 1 ]] && exit 1 || return 1 }
+  echo "\$? = $?" 
+  echo "\$SHLVL = $SHLVL"
+_getresultt() {
+     [[ "$?" -eq 0 ]] && echo "$_TU1" || echo "$_TD1"
+}
+ww isNaN
+ww isNumber
+ww isNumeric
+
+local IS_INT_SZ="${1}"
+echo "\$# =$#\nInput : IS_INT_SZ=\"${1}\""
+RGX_NUMBER='^[0-9]+$'
+echo "RGX_NUMBER = $RGX_NUMBER"
+
+echo '[[ $IS_INT_SZ =~ $RGX_NUMBER ]] ; _getresultt'
+[[ $IS_INT_SZ =~ $RGX_NUMBER ]] ; _getresultt
+
+echo '[ $IS_INT_SZ -eq $IS_INT_SZ ] ; _getresultt'
+[ $IS_INT_SZ -eq $IS_INT_SZ ] ; _getresultt
+
+echo '[ "$IS_INT_SZ" -eq "$IS_INT_SZ" ] ; _getresultt'
+[ "$IS_INT_SZ" -eq "$IS_INT_SZ" ] ; _getresultt
+
+echo '[[ "$IS_INT_SZ" -eq "$IS_INT_SZ" ]] ; _getresultt'
+[[ "$IS_INT_SZ" -eq "$IS_INT_SZ" ]] ; _getresultt
+
+echo '[[ $IS_INT_SZ -eq $IS_INT_SZ ]] ; _getresultt'
+[[ $IS_INT_SZ -eq $IS_INT_SZ ]] ; _getresultt
+
+echo '[[ $IS_INT_SZ = $IS_INT_SZ ]] ; _getresultt'
+[[ $IS_INT_SZ = $IS_INT_SZ ]] ; _getresultt
+
+echo '[[ "$IS_INT_SZ" = "$IS_INT_SZ" ]] ; _getresultt'
+[[ "$IS_INT_SZ" = "$IS_INT_SZ" ]] ; _getresultt
+
+echo '[ "$IS_INT_SZ" = "$IS_INT_SZ" ] ; _getresultt'
+[ "$IS_INT_SZ" = "$IS_INT_SZ" ] ; _getresultt
+
+echo '[ $IS_INT_SZ = $IS_INT_SZ ] ; _getresultt'
+[ $IS_INT_SZ = $IS_INT_SZ ] ; _getresultt
+
+
+echo '[ "$IS_INT_SZ" -le 0 ] 2> /dev/null || [ "$IS_INT_SZ" -gt 0 ] 2> /dev/null ; _getresultt'
+[ "$IS_INT_SZ" -le 0 ] 2> /dev/null || [ "$IS_INT_SZ" -gt 0 ] 2> /dev/null ; _getresultt
+echo '[ $IS_INT_SZ -le 0 ] 2> /dev/null || [ $IS_INT_SZ -gt 0 ] 2> /dev/null ; _getresultt'
+[ $IS_INT_SZ -le 0 ] 2> /dev/null || [ $IS_INT_SZ -gt 0 ] 2> /dev/null ; _getresultt
+
+echo "Executing…\nmatch_parens $(which $0)\nPress Enter/Return"
+ekko "Executing…\nmatch_parens $(which $0)\nPress Enter/Return"  227 28
+read FUGZI
+match_parens $(which $0) 
+#[ $IS_INT_SZ -le 0 ]] || [ $IS_INT_SZ -gt 0 ]] ; _getresultt
+# [ $IS_INT_SZ -le 0 ]] || [[ $IS_INT_SZ -gt 0 ] ; _getresultt
+# [[ $IS_INT_SZ -le 0 ] || [[ $IS_INT_SZ -gt 0 ] ; _getresultt

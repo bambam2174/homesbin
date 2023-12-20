@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+
+_outputSpruch () {
+	BLANK='-' 
+	IFS=$DELIMITER_ENDL 
+	for i in {1..7}
+	do
+		ecko "				${BLANK}				" $((245+$i)) $((255-$i))
+		BLANK+='-' 
+	done
+	ecko "											" 1 247
+	for line in $(cat "${1}")
+	do
+		ecko "	${line}	" 235 246
+	done
+	ecko "											" 1 247
+	for i in {7..1}
+	do
+		ecko "				${BLANK[1,${i}]}			" $((245+$i)) $((255-$i))
+	done
+}
+_outputSpruch ${@}

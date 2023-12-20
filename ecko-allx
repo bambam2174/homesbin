@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_ecko-allx () {
+	source set-opts-array $@
+	shift $#ARR_OPTS
+	[[ ${#} -gt 3 ]] && {
+		local FOUR=${4} 
+		((FOUR+=${2}))
+	}
+	for idx in {${2:-16}..${3:-239}}
+	do
+		ecko ${ARR_OPTS} "${1:-"Hallo Welt"} ${idx} $((${FOUR:-256}-${idx}))" ${idx} $((${FOUR:-256}-${idx}))
+	done
+}
+_ecko-allx ${@}

@@ -1,0 +1,14 @@
+#!/usr/bin/python
+
+import sys
+
+while True:
+
+    line = raw_input()
+  
+    if line.strip() == "Are you there?":
+        print "Yes"
+       
+    sys.stdout.flush()
+
+

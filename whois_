@@ -5,4 +5,4 @@ _whoiss () {
 	whois "${1}" | tee "$OUTPUT_WHOIS/${1}_$(date +%s).txt"
 }
 
-_whoiss "${1}"
+_whoiss "${1:-$(pbpaste)}"

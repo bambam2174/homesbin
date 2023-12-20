@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_pipe-input () {
+	export PIPE_INPUT=$(get-stdin &) 
+	[[ -n ${PIPE_INPUT} ]] && echo ${PIPE_INPUT}
+}
+_pipe-input ${@}

@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+cd $GITHUB/InfoSec-Exploit-PWN/kaitai_struct_webide
+npm run servecomp

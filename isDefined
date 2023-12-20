@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+source ~/bin/.functions
+#source ~/.debug_state
+
+XLLINES=$(($(which $1 | wc -l)))
+
+if [[ "$XLLINES" -gt 1 ]];then 
+    isDebug && echo "result true"
+    exit 0 
+else 
+    isDebug && echo "result false"
+    exit 1
+fi
+
+isDebug &&  echo "which $(which $1)"

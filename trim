@@ -1,7 +1,14 @@
 #!/bin/zsh
 
 
+
 _trim () {
-	echo "${1}" | sed -E "s/(^[ ]+|[ ]+$)//g"
+    IFS=${DELIMITER_ENDL}
+    INPUT_PIPE=($(get-stdin&))
+    #[[ -n ${INPUT_PIPE} ]] && ARR_LINES=(${INPUT_PIPE})
+    for line in ${@:-${INPUT_PIPE}}
+    do
+        echo "${line}" | sed -E "s/(^[ ]+|[ ]+$)//g"    
+    done
 }
 _trim ${@}

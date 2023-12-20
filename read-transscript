@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_read-transscript () {
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+    echo '"Time", "Text","Misc"'
+    CNT=0
+	for line in $(cat "${1}")
+	do
+		#[[ $line =~ '^[0-9]{1,2}\:[0-9]{2}' ]] && echo -n "${line}, " || echo "${line}, "
+        [[ $line =~ '^[0-9]{1,2}\:[0-9]{2}' ]] && {  [[ ${CNT} -lt 3 ]] && OPT='' || OPT='-n'; echo ${OPT} "${line}, "; ((CNT++)); } || { echo "${line}, "; CNT=0; }
+	done
+}
+_read-transscript ${@}

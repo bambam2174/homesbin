@@ -1,15 +1,8 @@
 #!/bin/zsh
 
 
-_say-voice4lang () {
-	say -v "?" | grep --color=auto -i $(lowercase ${1})_ | cut -d ' ' -f1
-}
-CURRNT_OUTPUT=$(_say-voice4lang ${@})
+ARR_VOICES4LANG=($(say-voices4lang ${1}))
 
-if [[ -n ${2} ]] && isNumeric ${2}
-then
-    echo ${CURRNT_OUTPUT} | head -n ${2} | tail -n 1
-else
-    echo ${CURRNT_OUTPUT}
-fi
+    
+echo ${ARR_VOICES4LANG[${2:-1}]}
 

@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+# 
+# compare:
+#  ls -1 $BIN/ls*
+#  ls -1 $BIN | grep -E "$(path2regex "ls*")"
+#
+
+SZ_PARAM="${1}" 
+
+[[ ${SZ_PARAM[1]} = '*' ]] && SZ_RGX=''  || SZ_RGX='^' 
+
+for i in {1..$#SZ_PARAM}
+do
+	[[ ${SZ_PARAM[$i]} = '*' ]] && SZ_RGX="${SZ_RGX}"'.*' || SZ_RGX="${SZ_RGX}${SZ_PARAM[$i]}"
+done
+
+[[ ${SZ_PARAM[-1]} = '*' ]] || SZ_RGX="${SZ_RGX}"'.*'
+
+echo "${SZ_RGX//\//\\\/}"

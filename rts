@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+RETURN_CODE="${1:-74}"
+
+SHLVL_CALLER=${2:-1}
+
+#echo "\$RETURN_CODE = ${RETURN_CODE}"
+
+[[ ${SHLVL} -gt ${SHLVL_CALLER} ]] && 
+    exit ${RETURN_CODE} || 
+    return ${RETURN_CODE}

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_array-point-setup () {
+	for direction in 'UP' 'DOWN' 'LEFT' 'RIGHT'
+	do
+		echo ${direction} > /dev/stdin
+        sz_cmd="ARR_POINT_${direction}_REV=(); ARR_POINT_${direction}=( \$(list-path \${UC_POINT_${direction}_ALL}));for x in {6..1}; do  ARR_POINT_${direction}_REV+=\$ARR_POINT_${direction}[\$x]; done" 
+		eval $sz_cmd
+	done
+    ARR_POINT_UP_REV=(); for x in {6..1}; do  ARR_POINT_UP_REV+=$ARR_POINT_UP[$x]; done
+}
+_array-point-setup

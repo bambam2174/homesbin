@@ -1,0 +1,29 @@
+#!/bin/zsh
+
+errormessage() {
+    echo "…don't fuck with me…"
+    sleep 2
+    echo "…minutes and seconds have always to be less than 60"
+    sleep 2
+    echo "…American, isn't it"
+    . retexit ${1}
+}
+local DBG=${DEBUG:-$FALSE}
+local UNIT=''
+startsWithDash "${1}" && [ ${1//-/} = 'd' -o ${1//-/} = 'debug' ] && DBG=${TRUE} && shift
+startsWithDash "${1}" && [ ${1//-/} = 'u' -o ${1//-/} = 'unit' ] && UNIT='s' && shift
+
+_time2seconds () {
+	RES=0 
+    ARRXX=($(echo ${1//:/ }))
+	for i in {$#ARRXX..1}
+	do
+        DIGITS=${ARRXX[-${i}]}
+        [[ ${DIGITS} -gt 59 ]] && [[ ${i} -lt 3 ]] && { errormessage 59 && echo ". retexit 61" || return 60 }
+		SUMMAND=$((${DIGITS}*(60**(${i}-1)))) 
+		((RES+=${SUMMAND}))
+		[[ ${DBG} -eq ${TRUE} ]] && echo "${i} ${ARRXX[-${i}]} ${SUMMAND} ${RES}"
+	done
+    echo "${RES}${UNIT}"
+}
+_time2seconds ${@}

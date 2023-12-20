@@ -1,0 +1,13 @@
+#!/bin/zsh
+SCRIPTNAME=$(filename "${0}")
+
+source $SHELL_ALIASES
+ALIAS_QUERY_RESULT=$(alias ${1})
+[[ -z ${ALIAS_QUERY_RESULT} ]] && { ecko -b -n "ALIAS NOT FOUND!" 197 189; ecko -n " try w/ sourcing by executing " 196 188; ecko ". ${SCRIPTNAME} ${1}" 195 187; . retexit 123 }
+_wwit () {
+	FN="${1}_2_fn() { ${1} }" 
+	eval $FN
+	which ${1}_2_fn | tee -a ${BINTMP}/aliases-resolved.sh
+	echo >> ${BINTMP}/aliases-resolved.sh
+}
+_wwit ${@}

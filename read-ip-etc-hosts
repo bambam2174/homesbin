@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+echo  "IP ?"
+echo -n "(Value and press Enter) :"
+read ip
+
+while read line
+do
+#VARIABLES
+file1=$line
+mip=$(echo $file1 | awk '{print $1}')
+name=$(echo $file1 | awk '{print $2}')
+
+
+    if [ "$mip" = "$ip" ]
+        then
+        echo "Machine name is " $name
+    fi
+
+done < $1

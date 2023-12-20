@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_get-redirect-url () {
+	curl_ -is "${1}" | grep --color=auto -E '[Ll]ocation' | sed -E 's/[Ll]ocation: //g'
+}
+_get-redirect-url ${@}

@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+[[ -z ${OUTPUT} ]] && OUTPUT=$HOME/tmp/output
+[[ -z ${CLASS_DUMP_OUTPUT_DIR} ]] && CLASS_DUMP_OUTPUT_DIR=${OUTPUT}/class-dump
+mkdir -p ${CLASS_DUMP_OUTPUT_DIR}
+[[ $# -gt 1 ]] && OPT="_${@[-2]}"
+CLASS_DUMP_OUTPUT_FILE="$(filename ${@[-1]})${OPT}_$(date +%s)"
+
+CLASS_DUMP_OUTPUT_PATH=${CLASS_DUMP_OUTPUT_DIR}/${CLASS_DUMP_OUTPUT_FILE}
+
+original class-dump ${@} | tee -a ${CLASS_DUMP_OUTPUT_PATH}
+

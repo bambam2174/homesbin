@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_arrow-left-right () {
+	for i in {1..$#ARROWDBL}
+	do
+		FG=1 
+		BG=11 
+		ecko "	${i}	$ARROWDBL[$i]	$ARROWLR[$i]$ARROWLR[-$i]	" $FG $BG
+	done
+}
+_arrow-left-right ${@}

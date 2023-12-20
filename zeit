@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_zeit () {
+	date +"Timezone %Z"
+	date +"%X"
+}
+_zeit ${@}

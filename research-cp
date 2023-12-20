@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_research-cp () {
+	cp -i ${1} ~/TutProjects/research/$(path2string ${1}).xml
+}
+_research-cp ${@}

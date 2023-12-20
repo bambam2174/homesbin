@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+OPTS=()
+TMPINPUT="${1}"
+
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} =~ '[^0-9]' ]] && OPTS+="${1}" && shift
+
+_char-facepalm_ () {
+	echo -n "${UC_FACEPALM}"
+	eval "echo -n \${UC_COLOR_${1}}"
+	echo ${OPTS}
+}
+
+_char-facepalm() {
+    for IDX in ${@}
+    do
+	    isNumeric ${IDX} && [[ ${IDX} -le 5 ]] && _char-facepalm_ ${IDX} || echo ${OPTS} ${IDX}
+    done
+}
+[[ ${#} -gt 0 ]] && _char-facepalm ${@} || _char-facepalm {0..5}

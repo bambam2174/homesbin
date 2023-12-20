@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_alsvv () {
+	alias | grep --color=auto --color=auto -E "=\'?\"?.*set2path.*"
+}
+_alsvv ${@}

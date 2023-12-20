@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+
+process.argv.shift()
+
+var script = process.argv.shift()
+
+var SZPARAM = process.argv[0]
+
+
+console.log(console)
+
+console.log(eval(`${SZPARAM}`))
+

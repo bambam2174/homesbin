@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+
+_repeat: shell reserved word
+_repeat ${@}

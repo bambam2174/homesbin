@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+OUTPUTFILE=""
+
+for opts in ${@}
+do
+    [[ $opts[1] != '-' ]] && isNaN $opts && OUTPUTFILE=$opts
+done
+
+_chh-naked () {
+	history -E | grep --color=auto "${@}" | sed -E "s/^[ 0-9]+.*  //g" | tee "${OUTPUT}/${OUTPUTFILE}.txt"
+}
+_chh-naked ${@}
+
+first 5 $OUTPUT > /dev/stdin

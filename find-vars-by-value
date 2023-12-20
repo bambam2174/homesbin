@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+set | grep -E "[_a-zA-Z]+$(path2regex '*='${1})" | grep -vE 'path2regex'
+
+# Bsp.:
+# search-vars sedatkilinc
+# search-vars sedat
+# search-vars '[a-z]*kilinc'

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+apropos "${1}" | tee -a "${OUTPUT_APROPOS}/$(date +%s)_${1}.txt"

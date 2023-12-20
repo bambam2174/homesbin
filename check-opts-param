@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+CNT=0
+while getopts s:r:t: OPTION
+do
+	case "$OPTION"
+	in
+		s)
+            SEARCH=$OPTARG
+            shift 2
+            #((CNT+=2))
+            ;;
+		r)
+            REPLACE=$OPTARG
+            shift 2
+            #((CNT+=2))
+            ;;
+		t)
+            TARGET=$OPTARG
+            shift 2
+            #((CNT+=2))
+            ;;
+        *)            
+            OTHER=${1}
+            #((CNT+=2)) 
+            ;;
+	esac
+    ecko OPTION=$OPTION 1 10
+done
+
+echo "param count $#@"
+echo "params $@"
+echo "CN=${CNT}"
+#shift ${CNT}
+
+echo "param count $#@"
+echo "params $@"
+
+cat << EOT
+SEARCH=$SEARCH
+REPLACE=$REPLACE
+TARGET=$TARGET
+OTHER=$OTHER
+EOT

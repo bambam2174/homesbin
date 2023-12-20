@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_declension-ru () {
+	browser -b "google chrome" "https://duckduckgo.com/?q=declension+${1}&ia=web"
+	browser -b "google chrome" "https://en.wiktionary.org/wiki/${1}"
+	browser -b "google chrome" "https://www.online-translator.com/conjugation and declension/russian/${1}"
+	browser -b "google chrome" "https://cooljugator.com/run/${1}"
+	browser -b "google chrome" "https://en.openrussian.org/ru/${1}"
+}
+_declension-ru ${@}

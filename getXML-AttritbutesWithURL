@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_getXML-AttritbutesWithURL () {
+	ccat "${1}" | grep -oE '[-a-z]+="http[s]?://[-\/.a-zA-Z0-9]+"'
+}
+_getXML-AttritbutesWithURL ${@}

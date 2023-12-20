@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+isDebug && echo "Script name $0"
+
+export SCRIPT_ADDED="SCRIPT_ADDED"
+
+[[ -z "$BASHVARS" ]] && source ~/.bash_vars
+[[ -z "$CLICOLOR" ]] && source $BIN/.functions
+[[ -z "$ALIASES_SET" ]] && source ~/.bash_aliases
+#[[ -z "$BASHVARS" ]] && source ~/.bash_vars
+
+add_script () {
+     [[ -z "$ARR_SCRIPT" ]] && export ARR_SCRIPT=("start");
+     ARR_SCRIPT+="$1"
+}
+
+showscript () {
+    if isDebug; then
+        for i in $ARR_SCRIPT
+        do
+            echo $i
+        done
+        debug
+        echo "\$ZSH_ARGZERO = $ZSH_ARGZERO";
+        echo "\$ZSH_SCRIPT = $ZSH_SCRIPT";
+    fi
+}
+

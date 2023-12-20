@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+source $HOME/.debug_state
+
+isDebug && echo "DEBUG ON"
+
+if [[ -z "$BREW_TEMP" ]]
+then
+    export BREW_TEMP="$HOME/tmp/brew_output"
+fi
+mkdir -p "$BREW_TEMP"
+
+TIMESTAMP="$(date +%s)"
+
+#BREWCOMMAND="${1}"
+#shift
+
+BREW_FILE="$BREW_TEMP/brew.${@}_${TIMESTAMP}.txt"
+BREW_FILE="${BREW_FILE// /.}"
+
+isDebug && echo "\$TIMESTAMP = $TIMESTAMP\n\$BREW_FILE = $BREW_FILE\n\$BREW_TEMP = $BREW_TEMP"
+
+mkdir -p "$(dirname $BREW_FILE)"
+
+brew "${@}" --verbose --debug | tee "$BREW_FILE"
+
+NOTINSTALLED=$(cat "$BREW_FILE" | grep -i 'not installed')
+[[ -n $NOTINSTALLED ]] && echo "\t Not installed" || echo "\t already installed"
+if [[ "${@}" == *"info"* ]] && [[ -n $NOTINSTALLED ]]
+then
+    #CMD=$(lct $BREW_TEMP | head -n 1 | cut -d '_' -f1)
+    #CMD=${CMD//./ }
+    CMD="${@}"
+    echo -n "$(filename "${0}") ${CMD/info/install}" | pbcopy
+fi
+
+

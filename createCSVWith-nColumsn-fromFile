@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_createCSVWith-nColumsn-fromFile () {
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	CNT=0 
+	for line in $(cat "${2}")
+	do
+		((CNT++))
+		[[ $((${CNT}%${1})) -eq 0 ]] && echo " $line" || echo -n "${line},"
+	done
+}
+_createCSVWith-nColumsn-fromFile ${@}

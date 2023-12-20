@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_arr-left-right () {
+	export ARR_ARROW_L=() 
+	export ARR_ARROW_R=() 
+	for idx in {1..$#ARROWL_}
+	do
+		echo "$idx,	${ARROWL_[$idx]}	${ARROWR_[$idx]}"
+		[[ ${ARROWL_[$idx]} = ' ' ]] || ARR_ARROW_L+=${ARROWL_[$idx]} 
+		[[ ${ARROWR_[$idx]} = ' ' ]] || ARR_ARROW_R+=${ARROWR_[$idx]} 
+	done
+}
+_arr-left-right ${@}

@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+env | grep -iE $(path2regex "${1}")

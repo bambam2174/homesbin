@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+SEARCHTERM="$1"
+
+source $HOME/.bash_aliases
+
+l *$SEARCHTERM*
+

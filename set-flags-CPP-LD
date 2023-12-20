@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_set-flags-CPP-LD () {
+	export CPPFLAGS="-I${PATH_CPP_FLAGS_INCLUDE}" 
+	export LDFLAGS="-L${PATH_LD_FLAGS_LIB}" 
+}
+_set-flags-CPP-LD ${@}

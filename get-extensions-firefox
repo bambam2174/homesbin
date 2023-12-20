@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+COMPLETE_PATH=false
+
+startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-path' ] && COMPLETE_PATH=true; shift
+
+_get-extensions-firefox () {
+        ${COMPLETE_PATH} && 
+            ls -AFlhGUt $LIBRARY_APPLICATION_SUPPORT_USER/Firefox/Profiles/*/extensions/(\.*|*) || 
+            ls -AFlhGUt $LIBRARY_APPLICATION_SUPPORT_USER/Firefox/Profiles/*/extensions
+}
+_get-extensions-firefox ${@}

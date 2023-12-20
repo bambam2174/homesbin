@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_say-test () {
+	CMD="say -v \${CURRENT_SAY_$(uppercase ${1}):-\$(say-voice4lang ${1} 1)} \"\$(say-voices ${1} | grep -i \${CURRENT_SAY_$(uppercase ${1}):-\$(say-voice4lang ${1} 1)} | grep -oE \"#.*\")\"" 
+	eval $CMD
+}
+_say-test ${@}

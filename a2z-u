@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_a2z-u () {
+	source a2z-i > /dev/null
+	export ARR_A2Z_U=(${ARR_A2Z_I[1,26]}) 
+	echo ${ARR_A2Z_U}
+}
+_a2z-u ${@}

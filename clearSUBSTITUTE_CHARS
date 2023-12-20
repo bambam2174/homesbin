@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_clearSUBSTITUTE_CHARS () {
+	unset SUBSTITUTE_CHARS
+}
+_clearSUBSTITUTE_CHARS ${@}

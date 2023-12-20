@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_söyle () {
+	echo $1 | pbcopy
+	Speak $2
+}
+_söyle ${@}

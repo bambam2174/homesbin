@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_get-dirnames () {
+	IFS=$DELIMITER_ENDL 
+	for i in ${@}
+	do
+		startsWith "${i}" http || dirname "${i}" | sed -E 's/^\///g'
+	done
+}
+ARRELEMENTS=(${@})
+#echo "${#ARRELEMENTS} $#@"
+[[ -f ${1} ]] &&  ARRELEMENTS=( $(cat ${@}) )
+#echo "${#ARRELEMENTS} $#@"
+_get-dirnames ${ARRELEMENTS}

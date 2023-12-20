@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+[[ ${#} -gt 1 ]] && FILENAME="${2}" ||  FILENAME="Video_$(date +%s).mp4"
+
+curl "${1}" \
+      -H 'Connection: keep-alive' \
+      -H 'Pragma: no-cache' \
+      -H 'Cache-Control: no-cache' \
+      -H 'sec-ch-ua: "(Not(A:Brand";v="8", "Chromium";v="99", "Google Chrome";v="99"' \
+      -H 'sec-ch-ua-mobile: ?0' \
+      -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4818.0 Safari/537.36' \
+      -H 'sec-ch-ua-platform: "macOS"' \
+      -H 'Accept: */*' \
+      -H 'Origin: https://stape.me' \
+      -H 'Sec-Fetch-Site: cross-site' \
+      -H 'Sec-Fetch-Mode: cors' \
+      -H 'Sec-Fetch-Dest: video' \
+      -H 'Referer: https://stape.me/' \
+      -H 'Accept-Language: de-DE,de;q=0.9,en-GB;q=0.8,en;q=0.7,fr-FR;q=0.6,fr;q=0.5,tr-TR;q=0.4,tr;q=0.3,ru-RU;q=0.2,ru;q=0.1,it-IT;q=0.1,it;q=0.1,en-US;q=0.1,ja;q=0.1,zh-TW;q=0.1,zh;q=0.1' \
+      -H 'Range: bytes=1638400-' \
+      ' --compressed"))"' >> ${FILENAME}
+

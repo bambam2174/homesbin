@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+source ~/.bash_aliases
+ufunc
+
+#setDebug
+
+DIGITS=4
+
+BASE=$1
+
+NUMBER=$2
+
+PREFIX=""
+
+if [ $BASE = 2  ];
+then
+    PREFIX="0b";
+elif [ $BASE = 16  ];
+then
+    PREFIX="0x";
+fi
+
+OUTPUT=$(([##$BASE]$NUMBER))
+echo $PREFIX$OUTPUT
+
+
+if isDebug;
+then
+    echo "$(([$BASE]$OUTPUT)) -> $PREFIX$OUTPUT";
+fi
+
+

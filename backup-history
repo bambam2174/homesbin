@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+_backitup() {
+    TS=$(timestamp)
+    e "\$TS = $TS"
+
+    ecko "tarc" 88 188
+    tar -czvf "${TMP}/histfile_${TS}.tar.gz" -C "$(dirname ${HISTFILE})" "$(filename ${HISTFILE})"
+    ecko "ls -lah ${TMP}/histfile_${TS}.tar.gz" 188 18
+    ls -lah  "${TMP}/histfile_${TS}.tar.gz" 
+    ecko "ls -lah ${HISTFILE}" 188 88
+    ls -lah "${HISTFILE}"
+
+    ecko "mv ${HISTFILE} ${TMPDIR}/zsh_history-${TS}.txt" 188 88
+    mv "${HISTFILE}" "${TMPDIR}/zsh_history-${TS}.txt"
+    ecko "ls -lah ${TMPDIR}/zsh_history-${TS}.txt" 188 88
+    ls -lah "${TMPDIR}/zsh_history-${TS}.txt"
+    ecko "cat ${TMPDIR}/zsh_history-${TS}.txt | tail -n 100 > ${HISTFILE}" 188 88
+    cat "${TMPDIR}/zsh_history-${TS}.txt" | tail -n 100 > "${HISTFILE}"
+    ecko "ls -lah ${HISTFILE}" 188 88
+    ls -lah "${HISTFILE}"
+
+}
+
+_backup-history () {
+    WCL=$(cat ${HISTFILE} | wc -l)
+    ecko "WCL $WCL" 88 188
+    ecko "HISTFILE $HISTFILE" 88 188
+    
+    [[ ${WCL} -lt 3500 ]] || _backitup    
+}
+_backup-history

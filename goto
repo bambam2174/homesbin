@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_goto () {
+	[[ -f "${1}" ]] && cd $(dirname "${1}") || {
+		ecko -n "use " 1 18
+		ecko -n " cd ${1} " 18 1
+		ecko -n " ……f*cking moron" 1 18
+	}
+}
+_goto ${@}

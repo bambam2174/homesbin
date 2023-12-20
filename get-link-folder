@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_get-link-folder () {
+	LINKFOLDER="$(dirname "$(ls -lAF ${1} | cut -d'>' -f2)")" 
+	LINKFOLDER=$(echo ${LINKFOLDER/ /}) 
+	echo ${LINKFOLDER}
+}
+_get-link-folder ${@}

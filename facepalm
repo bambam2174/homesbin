@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_facepalm () {
+	for idx in {1..6}
+	do
+		echo -n "$(facepalm-color $idx)$(facepalm-color $idx FE)"
+	done
+	echo ${@}
+}
+_facepalm ${@}

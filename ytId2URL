@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ytId2URL () {
+	echo "https://www.youtube.com/watch?v=${1}"
+}
+_ytId2URL ${@}

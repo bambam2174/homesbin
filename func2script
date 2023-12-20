@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+source ${SHELL_FUNCTIONS}
+source ${SHELL_FUNCTIONS_EXT}
+update-vars-output
+
+#[[ ${1[1]} = '-' ]] && [[ ${1//-/} = 'alias'  ]] && 
+startsWithDash "${1}" && [ ${1//-/} = 'alias' -o ${1//-/} = 'a' ] && 
+{
+    ADD_ALIAS=true
+    shift 
+} || { 
+    ADD_ALIAS=false
+    [[ ${#} -gt 1  ]] && shift 
+}
+
+F2C="${1}"
+FUNCBLOCK=$(which ${F2C})
+
+[[ $(echo ${FUNCBLOCK} | wc -l) -gt 1 ]] || { 
+    echo "Function ${F2C} doesn't exist, lan" > /dev/stderr
+    . rts 1 
+}
+
+shebang-bin ${F2C}
+
+echo -n '_' >> ${BIN}/${F2C}
+
+echo ${FUNCBLOCK}  >> ${BIN}/${F2C}
+
+echo '_'${F2C}' ${@}' >> ${BIN}/${F2C}
+
+${ADD_ALIAS} && echo "alias ${F2C}='. ${F2C}'" >> ${SHELL_ALIASES}
+
+update-aliases
+
+# check result & execute `unfunction` the function the script originates from if everything is fine else error message and facepalm
+SZ_WWA="$(which -a ${F2C})"
+PATH_WWA="$(echo ${SZ_WWA} | tail -n 1)"
+[[ -x ${BIN}/${F2C} ]] && [[ -x ${PATH_WWA} ]] && [[ "${PATH_WWA}" = "${BIN}/${F2C}" ]] && unfunction "${F2C}" || { ecko " Something went wrong " 188 88; facepalm }
+

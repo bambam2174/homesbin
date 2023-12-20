@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_hist2hist () {
+	for i in $(cat "${1}")
+	do
+		TS=$(e $i | grep -oE '[0-9]{10}') 
+		(
+			[[ ${#TS} -eq 0 ]] || isNumber "1669747077"
+			[[ "$?" -eq 0 ]] && echo "$_TU1" || echo "$_TD1" ${TS}
+		) && continue
+		echo "$(date -r $TS) ${i[15,-1]}" >> "${1}.txt"
+	done
+}
+_hist2hist ${@}

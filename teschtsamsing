@@ -1,0 +1,7 @@
+ #!/bin/bash
+
+ show2() {
+    echo "yy"
+    tail -n +1 ~/unutmalist/*$1*
+    echo "yy"
+ }

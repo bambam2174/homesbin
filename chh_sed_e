@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_chh_sed_e () {
+	omz_history -E | grep --color=auto -i "${1}" | sed -E "s/${REGEX_NO_HIST_DATETIME}//g"
+}
+_chh_sed_e ${@}

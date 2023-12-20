@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+LINES=115
+
+_see_also() {
+    
+    [[ $# -gt 1 ]] &&  [[ "$2" -eq "$2" ]] && LINES=$2
+    man "${1}" | grep -E '^S+.+E+E.+.*' -A $LINES
+}
+#_see_also ${@}
+#exit 0
+i=1
+NEW=0
+#for i in {1..$LINES}
+NEWLINE="DummyValue4WhileConditionTestedAtLoopStart"
+until [[ $NEW -eq $i ]]
+do
+    #               echo $i
+    FOO=$(_see_also ${1} $i)
+    #               echo "==>FOO:\n$FOO"
+    NEW=$(echo $FOO | wc -l)
+    #echo "$NEW vs $i"
+    [[ $NEW -eq $i ]]
+    i=$(($i+1))
+done
+echo "$FOO"
+

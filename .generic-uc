@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+VARNAME=$(echo ${${0//uc-/}##*/} | uppercase) 
+VARNAME=${VARNAME//-/_} 
+CURR_CMD="echo \$UC_${VARNAME}" 
+eval ${CURR_CMD}

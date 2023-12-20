@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-spaceout () {
+	echo -n "$(spaceout ${@})" | pbcopy
+}
+_pb-spaceout ${@}

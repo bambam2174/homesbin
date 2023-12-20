@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_new-shell-log-file () {
+	export SHELL_LOG_FILE=${SHELL_LOG_FOLDER}/sourced_files_$(date +%s).txt 
+}
+_new-shell-log-file ${@}

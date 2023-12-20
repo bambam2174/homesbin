@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbfinger-right () {
+	finger-right ${1} | pbcopy
+}
+_pbfinger-right ${@}

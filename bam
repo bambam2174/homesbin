@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+JOIN="$@"
+JOIN=$(echo $JOIN | tr -cd '[:print:]')
+JOIN=${JOIN// /}
+CONCAT=""
+
+for i in {1..$#JOIN}
+do
+    #echo $JOIN[$i]
+    TMP_NMB=$JOIN[$i]
+    idx=$(($TMP_NMB%5))
+    CONCAT="${CONCAT}${bambam2174X/\#/$idx} "
+done
+echo $CONCAT

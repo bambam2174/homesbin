@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_error () {
+	echo ${SHLVL}
+	echo error: "$@" >&2
+	source retexit 1
+}
+_error ${@}

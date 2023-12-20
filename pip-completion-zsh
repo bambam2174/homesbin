@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+pip completion --zsh ${1} 2> /dev/null

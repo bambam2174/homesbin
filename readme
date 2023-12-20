@@ -2,6 +2,12 @@
 
 
 _readme () {
-	browser "${1:-.}"/README(|.md|.txt)
+	ARR_REPO=(${@:-.})
+	echo $#ARR_REPO\ $ARR_REPO
+	for repo in ${ARR_REPO}
+	do
+		browser "${repo:-.}"/README(|.md|.txt)
+	done
+    #browser "${1:-.}"/README(|.md|.txt)
 }
 _readme ${@}

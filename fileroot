@@ -3,18 +3,31 @@
 #echo $1 | rev  | cut -d '.' -f2  | rev # didn't work with filename with dots in it
 
 source ~/bin/.functions
+FULL=false
+
+startsWithDash ${1} && [ ${1/-/} = 'f' -o ${1/-/} = '-full' ] && FULL=true && shift
 
 if [[ ${#} -gt 0 ]]
 then
-    FILENAME="$1"
+    ARR_FILEPATH=("${1}")
 else
     INPUT_PIPE="$(cat < /dev/stdin)"
-    [[ -n ${INPUT_PIPE} ]] && FILENAME="${INPUT_PIPE}"
+    [[ -n ${INPUT_PIPE} ]] && ARR_FILEPATH=($(echo ${INPUT_PIPE}))
 fi
-FILEEXT=$(fileext "$FILENAME")
-isDebug && echo "FILENAME = $FILENAME"
-isDebug && echo "FILEEXT = $FILEEXT"
 
-FILEROOT=${FILENAME//.$FILEEXT/}
-echo $FILEROOT
+for FILEPATH in ${ARR_FILEPATH}
+do
+    if ${FULL}
+    then
+        FILEROOT=$(echo ${FILEPATH} | sed -E "s/${REGEX_FILEROOT_NO_PATH_NO_EXT}//g") 
+    else
+        FILENAME=$(filename ${FILEPATH})
+        FILEEXT=$(fileext "$FILENAME")
 
+        isDebug && echo "FILENAME = $FILENAME"
+        isDebug && echo "FILEEXT = $FILEEXT"
+
+        FILEROOT=${FILENAME//\.$FILEEXT/}
+    fi
+    echo $FILEROOT
+done

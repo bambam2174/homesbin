@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+ ARR_ALIAS=($(strings "${1}"))
+
+_getAliasTarget () {
+	INDEX_START=0 
+	INDEX_STOP=0 
+	ARR_TARGET=() 
+	for idx in {1..$#ARR_ALIAS}
+	do
+		el=$ARR_ALIAS[$idx] 
+		[[ ${INDEX_START} -eq 0 ]] && [[ ${el} = 'Users' ]] && INDEX_START=${idx} 
+		[[ ${INDEX_STOP} -eq 0 ]] && startsWith ${el} 'file' && INDEX_STOP=${idx} 
+		[[ ${INDEX_START} -gt 0 ]] && [[ ${INDEX_STOP} -eq 0 ]] && ARR_TARGET+="${el}" 
+	done
+	((INDEX_STOP--))
+	echo "${INDEX_START}, ${INDEX_STOP}" > /dev/stdin
+	SZ_TARGET='/' 
+	for pe in $ARR_TARGET
+	do
+		SZ_TARGET+="${pe}/" 
+	done
+	echo ${SZ_TARGET}
+}
+_getAliasTarget ${@}

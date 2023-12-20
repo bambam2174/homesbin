@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_mem-load-lock () {
+	memsave -s
+	memread
+}
+_mem-load-lock ${@}

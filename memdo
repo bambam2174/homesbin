@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+if startsWithDash ${1}
+then
+	[ ${1/-/} = 'n' -o ${1/-/} = '-new' ] && ecko -n " ${TURK} " 120 222 && memsave -s && memread && shift
+fi
+
+_memdo () {
+    SUDO_ASKPASS=${BIN}/memecho sudo -A ${@}
+}
+_memdo ${@}

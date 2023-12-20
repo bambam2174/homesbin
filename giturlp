@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_giturlp () {
+	PATH2REPO='.' 
+	if [ $# -gt 0 ]
+	then
+        PATH2REPO=(${@} )
+	fi
+	for folder in ${PATH2REPO}
+	do
+		[[ -r "${folder}/.git/config" ]] && cat "${folder}/.git/config" | grep --color=auto -i url | cut -d'=' -f 2
+	done
+}
+_giturlp ${@}

@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+INDEX_COUNTER=0
+STARTS='.*/'$KEYWORD'.*'
+ENDS='.*'$KEYWORD'$'
+QUERY=''
+while [[ $# -gt 0  ]]; do
+
+    case "${1}" in
+        --start | -b | --begin)
+            KEYWORD=$2
+            STARTS=$KEYWORD'*'
+            QUERY="${STARTS}${QUERY}"
+            ;;
+        --stop | -e | --end)
+            KEYWORD=$2
+            ENDS='*'$KEYWORD
+            QUERY="${QUERY}${ENDS}"
+            ;;
+    esac
+    shift
+done
+
+for i in $(listit $PATH :)
+do
+    find $i -d 1 -iname "${QUERY}"
+done

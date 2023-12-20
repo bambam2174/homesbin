@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_get-last-nth-path-element () {
+    [[ "${1[-1]}" = '/' ]] && 1=${1[1,-2]}
+	echo ${1} | rev | cut -d '/' -f${2} | rev
+}
+_get-last-nth-path-element ${@}

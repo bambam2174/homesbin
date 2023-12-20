@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_date-format () {
+	for i in {A..z}
+	do
+		RES=$(echo $i | grep -E "[a-zA-Z]") 
+		RES=$(date +"%${RES}") 
+		if [[ $RES != '%' ]] && [[ $RES != $i ]]
+		then
+			echo "$i \t date +%$i\t 👉 ${RES}"
+		fi
+	done
+}
+
+_date-format

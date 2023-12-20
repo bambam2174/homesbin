@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+
+color=( 00 none 01 bold 02 faint 22 normal 03 standout 23 no-standout 04 underline 24 no-underline 05 blink 25 no-blink 07 reverse 27 no-reverse 08 conceal 28 no-conceal 30 black 40 bg-black 31 red 41 bg-red 32 green 42 bg-green 33 yellow 43 bg-yellow 34 blue 44 bg-blue 35 magenta 45 bg-magenta 36 cyan 46 bg-cyan 37 white 47 bg-white 39 default 49 bg-default )
+
+echo '–––> for k in $color'
+
+for k in $color
+do 
+    echo $k
+done
+
+
+echo '\n–––> for k in ${(k)color}'
+
+for k in ${(k)color}
+do 
+    echo $k
+done
+
+echo '\n–––> for k in ${(k)color}'
+
+for k in ${(k)color}
+do 
+    echo "$k: $color[$k]"
+done

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_contains-link () {
+	for p in ${@}
+	do
+		startsWith $p http && true && break
+	done
+}
+_contains-link ${@}

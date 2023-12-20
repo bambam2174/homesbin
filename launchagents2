@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+source ${SHELL_VARS}
+TYPE_ARROW=1
+
+_launchagents () {
+	for i in $launch[@]
+	do
+        ecko "==>   ${i}" 1
+        ecko "${ARROWR[${TYPE_ARROW}]}   ${i}  ${ARROWL[-${TYPE_ARROW}]}" 1
+		#echo "==> $i <=="
+		for tmp_file in $(ls -1 $i)
+		do
+			#isDebug && echo "$i/$tmp_file" || echo "$tmp_file"
+		done
+        ((TYPE_ARROW++))
+         
+        [[ ${TYPE_ARROW} -eq 6 ]] && ((TYPE_ARROW++))
+        [[ ${TYPE_ARROW} -gt ${#ARROWR} ]] && TYPE_ARROW=1
+	done
+}
+
+_launchagents
+
+#alias lauchagents='for i in $launch[@]; do; echo "$(red "==>   $i")"; for tmp_file in $(ls -1 $i); do; isDebug && echo "$i/$tmp_file" || echo "$tmp_file"; done; done'

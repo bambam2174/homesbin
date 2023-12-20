@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+export CHECKOCCURENCES=CHECKOCCURENCES
+
+add_ls() {
+    echo $0
+     [ -z "$ARR_ALIAS" ] && export ARR_ALIAS=("start");
+     ARR_ALIAS+="$1"
+}
+
+showshit () {
+    for i in $ARR_ALIAS
+    do
+        echo $i
+    done
+}
+
+#echo "-----"
+#add_ls "$(alias l)"
+#add_ls "$(alias ll)"
+#add_ls "$(alias lll)"
+
+#showshit
+
+#echo "---------------------------"

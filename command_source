@@ -1,8 +1,14 @@
-#!/bin/bash
+#!/bin/zsh
 
-CAT=ccat
-[[ -e "$(which ccat)" ]] || CAT=cat
-startsWithDash ${1} && [ ${1/-/} = 'n' -o ${1/-/} = '-number' ] && CAT='cat -n' && shift
+CAT1=ccat
+CAT2=ccat
+SHOW_PATHNAME=false
+STRIP_COMMENTS=false
+
+[[ -e "$(which ccat)" ]] || { CAT1=cat; CAT2=cat }
+startsWithDash ${1} && [ ${1/-/} = 's' -o ${1/-/} = '-strip-comments' ] && STRIP_COMMENTS=true && shift
+startsWithDash ${1} && [ ${1/-/} = 'n' -o ${1/-/} = '-number' ] && CAT1='cat' && OPTS='-n' && shift
+startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-pathname' ] && SHOW_PATHNAME=true && shift
 
 read -d '' QRYTERM <<EOF
 script
@@ -11,17 +17,18 @@ text
 EOF
 
 _cs_() {
+    PATH_COMMAND=($(which -a "${1}" | egrep '^/.*' ))
 
-
-
-    for cmd in ${@}
+    CNTR=0
+    for cmd in ${PATH_COMMAND}
     do
-
-        PATH_COMMAND=$(which -a "${cmd}")
-        [[ ${#} -gt 1 ]] && ecko ${PATH_COMMAND} 100 199
-        # [[ -x "${PATH_COMMAND}" ]] && RESULT=$(file ${PATH_COMMAND} | grep -oE "(script|text)")
-        # [[ ${RESULT} = ${QRYTERM} ]] && ${CAT} ${PATH_COMMAND}
-        isShellScript "${PATH_COMMAND}" && ${CAT} ${PATH_COMMAND}
+        ${SHOW_PATHNAME} && ecko "\n$((++CNTR)): ${cmd}" 10 199
+        if isShellScript "${cmd}" 
+        then
+            ${STRIP_COMMENTS} && 
+                ${CAT1} ${OPTS} ${cmd} | sed -E "s/(^[ ]*|[^\$\{])#[^\!].*/${SUBSTITUTE_CHARS}/g" | ${CAT2} || 
+                ${CAT1} ${OPTS} ${cmd} | ${CAT2}
+        fi
     done
 }
 

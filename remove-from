@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+[[ -z $2 ]] && echo "Remove what??" && exit 80
+
+2=${2//$/\\$}
+2=${2//\(/\\(}
+2=${2//\)/\\)}
+
+COUNT_PREV=$(cat "${1}" | wc -l)
+COUNT_REMOVEE=$(grep -E "\b${2}\b" ${1} | wc -l)
+COUNT_EXPECTED=$(($COUNT_PREV-$COUNT_REMOVEE))
+
+TMP_SWAP_FILE="${TMP}/.removed-content_$(date +%s)"
+
+mkdir -p $(dirname "$TMP_SWAP_FILE")
+
+grep -vE "\b${2}\b" ${1} > $TMP_SWAP_FILE
+
+COUNT_RESULT=$(cat "$TMP_SWAP_FILE" | wc -l)
+
+[[ $COUNT_EXPECTED -eq $COUNT_RESULT ]] && mv $TMP_SWAP_FILE "${1}" || echo "COUNT_EXPECTED = ${COUNT_EXPECTED} -ne COUNT_RESULT = ${COUNT_RESULT}\nPrev = ${COUNT_PREV}\nremovee = ${COUNT_REMOVEE}"

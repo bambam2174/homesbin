@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_gitt-on () {
+	alias git=gitt
+}
+_gitt-on ${@}

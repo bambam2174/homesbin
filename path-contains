@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_path-contains () {
+	listit $PATH : | grep --color=auto -E "${1}"
+}
+_path-contains ${@}

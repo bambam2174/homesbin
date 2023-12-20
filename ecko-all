@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+END=256
+
+if [[ -n ${4} ]]
+then
+    ((END+=${4}))
+fi
+
+for FC in {${2:-16}..${3:-239}}
+do
+    BC=$((${END}-${FC}))
+    [[ ${2} -gt ${3} ]] && [[ ${BC} -gt 255 ]] && BC=255
+    [[ ${2} -lt ${3} ]] && [[ ${BC} -gt 255 ]] && BC=255
+	ecko "${1:-"Hallo Welt"} ${FC} ${BC}" ${FC} ${BC}
+done

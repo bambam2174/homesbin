@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+COUNT_LAST=2
+
+COUNT_LINES=$(cat "${1}" | wc -l)
+
+[[ -n "${2}"  ]] && isNumber "${2}" && COUNT_LAST="${2}"
+
+COUNT_LINES_NEW=$(($COUNT_LINES-$COUNT_LAST))
+
+head -n $COUNT_LINES_NEW "${1}" > $TMP/.deleting-last-lines
+
+mv  $TMP/.deleting-last-lines "${1}"

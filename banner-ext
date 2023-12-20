@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_banner-ext () {
+	BANNER="${1}" 
+	shift
+	source ekko "$(banner ${BANNER})" ${@}
+}
+_banner-ext ${@}

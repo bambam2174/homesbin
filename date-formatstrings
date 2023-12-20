@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+COMPACT=false
+
+startsWithDash ${1} && [ ${1/-/} = 'c' -o ${1/-/} = '-compact' ] && COMPACT=true && shift
+
+_date-formatstrings () {
+	date-format-strings | grep --color=auto -E "([-]+$|date.+ -> .{2,})"
+}
+_date-formatstrings-compact () {
+	date-format-strings | grep --color=auto -E "date.+ -> .{2,}"
+}
+${COMPACT} && _date-formatstrings-compact || _date-formatstring-compact || _date-formatstrings

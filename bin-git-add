@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_bin-git-add () {
+	cd $BIN && git add ${1} && git status && cd "${OLDPWD}"
+}
+_bin-git-add ${@}

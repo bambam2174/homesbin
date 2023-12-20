@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_mkdiropnjdk () {
+	for i in $(ls -1d /usr/local/Cellar/openjdk*/*)
+	do
+		mkdir /Library/Java/JavaVirtualMachines/$(echo $i | rev | cut -d '/' -f1-2 | rev | sed -E 's/@[0-9]*//g' | sed -E 's/\///g')
+	done
+}
+_mkdiropnjdk ${@}

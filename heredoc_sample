@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+cat <<-END >&2
+     USAGE: lastwords command
+        eg,
+            lastwords netscape
+END

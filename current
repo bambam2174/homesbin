@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+source $HOME/.shell_aliases
+
+#alias
+#ARRCMDS=( 'csvi chrome-ext-keys' )
+
+setIFS
+
+for cmd in $(cat ${TMP}/current-todos.csv)
+do
+    echo "${cmd}…(y/N)?"
+    read ANSWER
+    [[ -z ${ANSWER} ]] || [[ ${ANSWER} = 'n' ]] || [[ ${ANSWER} = 'N' ]] && continue
+    eval ${cmd}
+    exit $?
+done
+

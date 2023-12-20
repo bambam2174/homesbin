@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_getProjectStuff4Project () {
+	source ${SHELL_VARS_PROJECTS}
+	find ${PROJECTS_STUFF}/ -name "$(basename ${1:-${PWD}})"
+}
+_getProjectStuff4Project ${@}

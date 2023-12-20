@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+OPTS=()
+TMPINPUT="${1}"
+
+# ecko "${@}" 88 188; ecko "${TMPINPUT}" 188 88
+
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} = 'c' ]] && echo $(($(char-arrow-left-right -c)/2)) && . rts 0
+
+# ecko "2${@}" 88 188; ecko "${TMPINPUT}" 188 88
+
+_arrow-emphasize () {
+                    # ecko "11${@}" 88 188; ecko "${TMPINPUT}" 188 88
+	IDX_ARROW=${1}  && shift
+    [[ ${IDX_ARROW} -lt 0 ]] && IDX_ARROW=$(($(arrow-emphasize -c)+${IDX_ARROW}+1))
+	CONTENT="${1}" # && shift
+                    # ecko "12${@}" 88 188 ;  ecko "${TMPINPUT}" 188 88;  
+                    # ecko "char-arrow-left-right -n -${IDX_ARROW} \"  ${CONTENT}\" ${IDX_ARROW} '   '"
+    char-arrow-left-right -n -${IDX_ARROW} "  ${CONTENT} " ${IDX_ARROW} '   '
+}
+_arrow-emphasize ${@}

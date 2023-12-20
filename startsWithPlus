@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_startsWithDash () {	
+    PARAM="${1}"
+    ( isDebugLocal || isDebugGlobal	) && echo $PARAM
+	startsWith '\+' "${PARAM}"
+}
+_startsWithDash ${@}

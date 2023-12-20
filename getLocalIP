@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_getLocalIP () {
+	ifconfig ${1:-en0} | grep --color=auto -oE "${REGEX_IP}" | head -n 1
+}
+_getLocalIP ${@}

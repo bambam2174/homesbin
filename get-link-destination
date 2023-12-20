@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_get-link-folder () {
+	LINK_DESTINATION="$(ls -lAF ${1} | cut -d'>' -f2)"
+	LINK_DESTINATION=$(echo ${LINK_DESTINATION/ /}) 
+	echo ${LINK_DESTINATION}
+}
+_get-link-folder ${@}

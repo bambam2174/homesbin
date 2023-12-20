@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+[ ${1} -gt -1 2> /dev/null -o ${1} -lt 0 2> /dev/null ]

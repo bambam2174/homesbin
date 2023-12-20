@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+[[ ${SHLVL} -gt 1 ]] && source "${SHELL_ALIASES}"
+
+_als-effective () {
+	eval "foo() { ${1} }"
+	local SZWW=$(which foo) 
+	LINES=$(echo ${SZWW} | wc -l) 
+	echo ${SZWW} | head -n $(($LINES-1)) | tail -n $(($LINES-2))
+}
+_als-effective ${@}

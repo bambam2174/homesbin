@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+PROJECT_ROOT=my-project-name
+PROJECT_ROOT="${1}"
+
+#GIT_NAME="angular-project-template"
+GIT_NAME="${2}"
+
+GIT_URL="https://github.com/McNull/angular-project-template.git"
+#GIT_URL="${1}"
+
+mkdir -p "$PROJECT_ROOT"
+cd "$_"
+git init
+git remote add "$GIT_NAME" "$GIT_URL"
+git pull "$GIT_NAME" HEAD

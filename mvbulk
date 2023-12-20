@@ -1,0 +1,10 @@
+#!/bin/zsh
+aliases
+
+setIFS; 
+for ffile in $(brew link --overwrite --dry-run nmap); do 
+    echo $ffile; 
+    [ -f "$ffile" ] && mv $ffile ~/tmp/usr_local_share_man_X_man1_nmap/$(echo ${ffile//\//_}) || echo "$ffile nix da" ;
+done
+
+resetIFS;

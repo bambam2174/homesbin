@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+source ${SHELL_FUNCTIONS}
+source ${SHELL_FUNCTIONS_EXT}
+    
+ADD_ALIAS=false
+
+#[[ ${1[1]} = '-' ]] && [[ ${1//-/} = 'alias'  ]] && 
+startsWithDash "${1}" && [ ${1//-/} = 'alias' -o ${1//-/} = 'a' ] && 
+{
+    ADD_ALIAS=true
+    shift 
+}
+
+F2C_ALIAS="${@[1]}"
+F2C="${@[-1]}"
+FUNCBLOCK=$(which ${F2C})
+
+[[ $(echo ${FUNCBLOCK} | wc -l) -gt 1 ]] || { 
+    echo "Function ${F2C} doesn't exist, lan" > /dev/stderr
+    . retexit 1 
+}
+
+shebang-bin ${F2C}
+
+echo -n '_' >> ${BIN}/${F2C}
+
+echo ${FUNCBLOCK}  >> ${BIN}/${F2C}
+
+echo '_'${F2C}' ${@}' >> ${BIN}/${F2C}
+
+${ADD_ALIAS} && echo "alias ${F2C_ALIAS}='. ${F2C}'" >> ${SHELL_ALIASES}
+
+update_aliases
+

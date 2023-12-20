@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_files2arr () {
+	IFS=$DELIMITER_ENDL 
+	startsWithDash "${1}" && [ ${1//-/} = '-c' -o ${1//-/} = 'count' ] && CNT=${2}  && shift 2
+	CURDIR="${1}" 
+	export ARRDIR=($(ls -1${OPTS:-c}t "${CURDIR}"/* | head -n ${CNT:-5} )) 
+}
+_files2arr ${@}

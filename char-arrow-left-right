@@ -1,0 +1,18 @@
+#!/bin/zsh
+OPTS=()
+TMPINPUT="${1}"
+
+# ecko "${@}" 88 188
+# ecko "${TMPINPUT}" 188 88
+
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} = 'c' ]] && echo ${#ARROWLR} && . rts 0
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} =~ '[^0-9]' ]] && OPTS+="${1}" && shift
+
+_char-arrow-left-right () {
+	[[ ${#} -eq 0 ]] && { echo ${OPTS} ${ARROWLR}; . rts 0 }
+    for IDX in ${@}
+    do
+	    isNumeric ${IDX} && [[ ${IDX} -le ${#ARROWLR} ]] && echo ${OPTS} ${ARROWLR[${IDX}]} || echo ${OPTS} ${IDX}
+    done
+}
+_char-arrow-left-right ${@}

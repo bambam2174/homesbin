@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_show-in-finder () {
+	open "$(dirname ${1})"
+}
+_show-in-finder ${@}

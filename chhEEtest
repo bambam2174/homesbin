@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_chhEEtest () {
+	local OPT
+	local SEARCHTERM
+	[[ $# -gt 1 ]] && startsWithDash ${1} && {
+		OPT=${1}  && SEARCHTERM=${2} 
+	} || SEARCHTERM=${1} 
+	CMD='history | grep '${OPT}' -E "[^a-zA-Z0-9_]{1}'${SEARCHTERM}'[^a-zA-Z0-9_]{1}"' 
+	echo $CMD
+	eval $CMD
+}
+_chhEEtest ${@}

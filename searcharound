@@ -1,9 +1,10 @@
 #!/bin/zsh
 
-source ${SHELL_DEBUGSTATE}
+[[ ${SHLVL} -eq 2 ]] && source ${SHELL_DEBUGSTATE}
 
 usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || . retexit $?
 
+GREP_OPTIONS=()
 
 BEFORE=0
 AFTER=0
@@ -12,18 +13,22 @@ if  [[ -n "`which ccat`" ]]; then
     CAT=ccat
 fi
 (isDebugLocal || isDebug) && echo "1. \${@} = ${@}"
-if startsWith ${1} "-"
-then
-    GREP_OPTIONS="${1}"
-    shift
-fi
+SHIFT_COUNTER=0
+for param in ${@}
+do
+    startsWithDash "${param}" && GREP_OPTIONS+="${param}" && ((SHIFT_COUNTER++))
+done
+shift ${SHIFT_COUNTER}
 
 (isDebugLocal || isDebug) && printf "2. \${@} = ${@} \n $GREP_OPTIONS\n"
 
 LOG="${TMP}/srcha/search_${1//\//•}.txt"
 mkdir -p $(dirname ${LOG})
 
-if isNumber ${3} || [[  ${3} -gt 0 ]]
+FILE_OR_DIR="${}"
+QUERY="${}
+"
+if isNumber ${3} && [[  ${3} -gt 0 ]]
 then
     AFTER="-A ${3}"
 fi
@@ -36,12 +41,12 @@ fi
 
 LOG_OUTPUT="${OUTPUT_SRCHA}/srcha•${1//\//${SLASH_DIVISION}}_${2//\//${SLASH_DIVISION}}_${BEFORE}_${AFTER}•$(date +'%s').txt"
 
-if [[ -f "${2}" ]]
+if [[ -f "${FILE_OR_DIR}" ]]
 then
-    (isDebugLocal || isDebug) && echo "${CAT} ${2} | grep -n ${GREP_OPTIONS} ${BEFORE} ${AFTER} ${1} "
-    ${CAT} "${2}" | grep -n $GREP_OPTIONS "${1}" $BEFORE $AFTER 2> /dev/null | tee -a ${LOG_OUTPUT}
-elif [[ -d "${2}" ]]
+    (isDebugLocal || isDebug) && echo "${CAT} ${FILE_OR_DIR} | grep -n ${GREP_OPTIONS} ${BEFORE} ${AFTER} ${QUERY} "
+    ${CAT} "${FILE_OR_DIR}" | grep -n $GREP_OPTIONS "${QUERY}" $BEFORE $AFTER 2> /dev/null | tee -a ${LOG_OUTPUT}
+elif [[ -d "${FILE_OR_DIR}" ]]
 then
-    (isDebugLocal || isDebug) && echo "grep -nRIs ${GREP_OPTIONS} \"${1}\" \"${2}\" ${BEFORE} ${AFTER}"
-    grep -nRIs ${GREP_OPTIONS} "${1}" "${2}" ${BEFORE} ${AFTER} --exclude-dir .git --exclude-dir node_modules 2> /dev/null | tee -a ${LOG_OUTPUT}
+    (isDebugLocal || isDebug) && echo "grep -nRIs ${GREP_OPTIONS} \"${QUERY}\" \"${FILE_OR_DIR}\" ${BEFORE} ${AFTER}"
+    grep -nRIs ${GREP_OPTIONS} "${QUERY}" "${FILE_OR_DIR}" ${BEFORE} ${AFTER} --exclude-dir .git --exclude-dir node_modules 2> /dev/null | tee -a ${LOG_OUTPUT}
 fi

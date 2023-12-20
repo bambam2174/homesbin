@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_check-ext () {
+	cat_ $CHROME_EXT/${1}*/*/manifest.json | /usr/bin/less
+}
+_check-ext ${@}

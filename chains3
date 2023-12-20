@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_chains () {
+	for line in ${@}
+	do
+		echo "${UC_CHAIN} ${UC_CHAIN} ${UC_CHAIN}\t ${line}\t ${UC_CHAIN} ${UC_CHAIN} ${UC_CHAIN}"
+	done
+}
+_chains ${@}

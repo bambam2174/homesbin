@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_get-fileext () {
+	echo ${1##*.}
+}
+_get-fileext ${@}

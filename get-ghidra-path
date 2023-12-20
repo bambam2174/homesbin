@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_get-ghidra-path () {
+    GHIDRA_RUN_EXEC=$(wwhich ghidraRun | cut -d '>' -f2)
+    dirname "${GHIDRA_RUN_EXEC}"
+}
+_get-ghidra-path ${@}

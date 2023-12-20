@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_add-horizontal-separator () {
+	P_SEPARATOR="/* ${SEPARATOR_HORIZONTAL_SPACED} */" 
+	startsWithDash ${1} && [ ${1/-/} = 's' -o ${1/-/} = '-separator' ] && P_SEPARATOR="${2}"  && shift 2
+    TARGET_FILE="${1}"
+    EXT=$(fileext ${TARGET_FILE})
+	[[ -z ${EXT} ]] || [[ ${EXT} = 'sh' ]] && P_SEPARATOR="${SEPARATOR_HORIZONTAL_SPACED}" 
+	echo "\n\t\t${P_SEPARATOR}\n" >> "${TARGET_FILE}"
+}
+_add-horizontal-separator ${@}

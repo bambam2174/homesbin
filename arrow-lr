@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_arrow-lr () {
+	SZ_OUTPUT="${1}" 
+	shift
+	ecko "${ARROWR}${SZ_OUTPUT}${ARROWL}" ${@}
+}
+_arrow-lr ${@}

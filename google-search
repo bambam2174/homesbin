@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+QRY=( steven crowder demon demonic 666 )
+
+BROWSER_IT=true
+CALL_BY=browser
+
+startsWithDash ${1} && ([[ ${1/-/} = "c" ]] || ${1/-/} = "-curl" ) && CURL_IT=true && CALL_BY=true
+
+#startsWithDash ${1} && ([[ ${1/-/} = "b" ]] || ${1/-/} = "-browser" ) && BROWSER_IT=true
+
+
+URL_QRY='https://www.google.com/search?q='$(arrjoin -c "+" ${@:-$QRY})'&oq='$(arrjoin -c "+" ${@:-$QRY})'&aqs=chrome..69i64j69i57.5638j0j9&sourceid=chrome&ie=UTF-8'
+
+${CALL_BY} "${URL_QRY}" \
+  -H 'authority: www.google.com' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: en-GB,en;q=0.9,de-DE;q=0.8,de;q=0.7,tr-TR;q=0.6,tr;q=0.5,en-US;q=0.4' \
+  -H 'cache-control: no-cache' \
+  -H 'cookie: __Secure-ENID=6.SE=Xd_AM_0wO1yeW1i2kzFfymB4dtaNHF0hJFC27xDR-j3bYBusY43gdvL_F01uZWdegMZ7XyGKTR-lvZYXFppxOW_HH-WkF55mJ9nfZgREkNpjq1xN0pzcBuFfgtFSGtuWf1Fhl0tmkLGgBLoKYa88RrVffwxd-RBnggM5ZRmxuQVI4t8-lwHsalBcXrHc5YZgseI2GKuqkeyd6_Wg7nkT4pvR3jtZEvbbxBrTb7uaXvpn9euvfR6QBQJTmTyqRxsFOlHkioxTnZW_OdwaW_H8hpIiROUOLSbpJT9MHB2yWBI83uNebgmPpkBZoZnxoUlgDSPTT2ZxEVee; HSID=AHy6SFfrBmq4W3hEy; SSID=APYngA5S_D0iaWu_L; APISID=ILTSKgKDlTFc4xEw/AFLtwVJtWuatJL1cp; SAPISID=845QvKQnStf6Sb8i/AbA_Nmhgv7CEe-WgJ; __Secure-1PAPISID=845QvKQnStf6Sb8i/AbA_Nmhgv7CEe-WgJ; __Secure-3PAPISID=845QvKQnStf6Sb8i/AbA_Nmhgv7CEe-WgJ; SEARCH_SAMESITE=CgQI_5cB; SID=Vwh7zOXNxvZyCEn67WeuIOJspu8tmEAlferaelyPx1gd5xP8dev6CCeRWd8ng2Y_LG5ucw.; __Secure-1PSID=Vwh7zOXNxvZyCEn67WeuIOJspu8tmEAlferaelyPx1gd5xP810VFiRkQg609abXS_dBfFA.; __Secure-3PSID=Vwh7zOXNxvZyCEn67WeuIOJspu8tmEAlferaelyPx1gd5xP89fwU0TmoTyLWJDY8uYtjSA.; AEC=AUEFqZfBbvwtDiur1_RO9iYQ3ll1IX3DNI56P0YN4mTxzGfrJXjGywJnV7o; SL_G_WPT_TO=de; SL_GWPT_Show_Hide_tmp=1; SL_wptGlobTipTmp=1; OTZ=7004080_44_48_123900_44_436380; 1P_JAR=2023-04-27-15; NID=511=mlhu7eMcGfIXbwl18XTWW-F_l9UrLooEiEJ1V60nME0kCEckLfMi_rKXjSnSaYRmEFbvSguNTfMmTqgu57dHNL4UDXy2KfaSm6nR3Ojg7Zx_1KdKZ8Xq_A6a2ZcK34HsVEc4ETIudDdsTLeDK4LcWNIoYW0QM5Vwe9sRa3d-R6B8iYsNnDCGY9IBLbulbpYqTVeVgM_KXZsoc3mP5Fm13cx5UnbFBHVu2m7rKNFl9xJJTMVCwy2DvEcO5Nuf7GtZiMJEP-UE6k8QkqElNTq9PDghjK8RuJlWN5QI9m3G9EtWHbMNWocXbOMwFznINNJXQohwis0vG00XQlyX1ioWtBrAD_00mSMnFrnr_CJoh5HQnpYoD2jPuDOMpb8GNWcInNKRiNsYQRIxo0m_3Rn1eFO5kfsW4-4JX2p3PO4qU8dSi-v2z3sfEp2SQJ-KEaTHHO7o-83KH9AA4OUnhyRPkJeofZo1ULhX9EMIw6VL4BfKVRZxEMvdjGAl; SIDCC=AP8dLtxHYLd773bMjvZdkLORiYCTgpiLsfAr_1gzdm3o91cxGwLxVKwvQ_-wHn3Ihd-i3MSXn9vH; __Secure-1PSIDCC=AP8dLtzDJfz7w5QgZFSwjFEL1g51OjfSfpqvswn38X0l8hwR5u5usxPkGizGOFqIjy5qtUi9oSZ3; __Secure-3PSIDCC=AP8dLtzeWwngz1UmVZspJ0QNf4zl6YYy374tgMaCYjCchbvJ0pEaTvF8mp1Q-uHBwdUKclKSfnom' \
+  -H 'dnt: 1' \
+  -H 'pragma: no-cache' \
+  -H 'sec-ch-ua: "Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"' \
+  -H 'sec-ch-ua-arch: "x86"' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "112.0.5615.137"' \
+  -H 'sec-ch-ua-full-version-list: "Chromium";v="112.0.5615.137", "Google Chrome";v="112.0.5615.137", "Not:A-Brand";v="99.0.0.0"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-model: ""' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-ch-ua-platform-version: "10.15.7"' \
+  -H 'sec-ch-ua-wow64: ?0' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: none' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36' \
+  -H 'x-client-data: CIa2yQEIpLbJAQjEtskBCKmdygEI0KDKAQiA/8oBCJahywEIm/7MAQi8lM0BCPKYzQEI7J7NAQixn80BCIagzQEIt6HNAQi+os0BCP+izQEIoKTNAQiTpc0BCIqmzQEI16bNAQjcps0BCJaqzQEIqYStAg==' \
+  --compressed

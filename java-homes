@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+
+ls -lah /Library/Java/JavaVirtualMachines/*/Contents/Home/
+ls -lah $CELLAR/openjdk*/*/libexec/openjdk.jdk/Contents/Home

@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+OPTS=''
+
+startsWithDash ${1} && OPTS=${1} && shift
+
+_charTimes () {
+	local SZ_RES='' 
+	local INT_TIMES=${1:-5} 
+	local SZ_CHAR="${2:-}" 
+	for c in {1..${INT_TIMES}}
+	do
+		SZ_RES+="${SZ_CHAR}" 
+	done
+	echo ${OPTS} ${SZ_RES}
+}
+_charTimes ${@}

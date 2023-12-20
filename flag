@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+OPTS=()
+
+startsWithDash ${1} && OPTS+="${1}" && shift
+
+_flag () {
+	local CC=$(uppercase ${1}) 
+	[[ ${CC[1]} =~ '[A-Z]' ]] && [[ ${#CC} -eq 2 ]] || source retexit 69
+	[[ ${CC[2]} =~ '[A-Z]' ]] && [[ ${#CC} -eq 2 ]] || source retexit 69
+	eval "echo ${OPTS} \${UC_${CC[1]}}\${UC_${CC[2]}}"
+}
+_flag ${@}

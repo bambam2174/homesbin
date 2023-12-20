@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+local SUBST=${SLASH_DIVISION}
+local SUBST_SPACE='-'
+local NO_LEADING_SLASH=true
+
+_verbose-output() {
+    ecko -n "${PATH2FILE}" 1 11
+    ecko -n "\t${ARROWR[2]}\t" 11 1
+    ecko "${NEWFILENAME}" 1 11
+}
+
+VERBOSE=false
+
+[[ ${1[1]} = '-' ]] && [[ ${1//-/} = 'v' ]] && VERBOSE=true && shift
+
+PATH2FILE="${1}"
+NEWFILENAME_NO_EXT="${2//\//${SUBST}}"
+NEWFILENAME="${PATH2FILE/$(fileroot ${PATH2FILE})/${NEWFILENAME_NO_EXT}}"
+
+mv "${PATH2FILE}" "$(dirname ${PATH2FILE})/${NEWFILENAME}"
+
+[[ $? -eq 0 ]] && $VERBOSE && _verbose-output
+

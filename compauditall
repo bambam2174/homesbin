@@ -1,0 +1,7 @@
+#!/bin/zsh
+#
+for i in $(compaudit); 
+do 
+    ls -ld $i; 
+done
+

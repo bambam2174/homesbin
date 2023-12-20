@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+BROWSER=${2:-${CHROME_EXT}}
+
+_getExtByID () {
+    local TMP_OUTPUT_FILE_ALL=tmp_$(basename "${1}").txt
+	echo "###### ${CHAR_ASTERISK_OPEN_CENTRE} ${1} ${CHAR_ASTERISK_OPEN_CENTRE} ######" > "${TMP_OUTPUT_FILE_ALL}"
+	for i in ${BROWSER}/${1}*/*/manifest.json
+    do
+		echo "###  ${i} ###" >> "${TMP_OUTPUT_FILE_ALL}"
+		cat "${i}" >> "${TMP_OUTPUT_FILE_ALL}"
+        SZ_BROWSER_EXT_DOTTED=$(path2string -s ${CHAR_ASTERISK_OPEN_CENTRE} -b '_' "$(getPathPartOf "${i}" "4,5")")
+        SZ_BROWSER_EXT_SLASHED=$(path2string -s ${SLASH_FRACTION} -b '_' "$(getPathPartOf "${i}" "4,5")")
+        local TMP_OUTPUT_FILE_PROFILE="tmp_${SZ_BROWSER_EXT_SLASHED}.txt"
+		echo "###  ${i} ###" >> "${TMP_OUTPUT_FILE_PROFILE}"
+		cat "${i}" >> "${TMP_OUTPUT_FILE_PROFILE}"
+	done
+    most "${TMP_OUTPUT_FILE_ALL}"
+    #rm -f "${TMP_OUTPUT_FILE}"
+}
+_getExtByID ${@}

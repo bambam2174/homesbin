@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+local IDX=1
+
+local VERBOSITY_LEVEL=0
+
+local PB_CONTENT=$(pbpaste)
+
+[[ -n "${1}" ]] && {
+
+    local OPTS="${1//-/}"
+    1=''
+    local CNT_OPT=$(($#OPTS))
+    
+    isDebug && echo "OPTS = $OPTS, CNT_OPT = $CNT_OPT"
+    
+    while [[ ${IDX} -le ${#OPTS} ]]
+    do
+        isDebug && echo "${IDX}:  ${OPTS[${IDX}]}"
+        local CURRENT_OPT=${OPTS[${IDX}]}
+        case ${CURRENT_OPT} in
+            v) 
+                ((VERBOSITY_LEVEL++))
+                isDebug && echo "Verbosity –> ${VERBOSITY_LEVEL}"
+                ;;
+            c)
+                CLIPBOARD=(  )
+                isDebug && echo "CLIPBOARD emptied"
+                ;;
+            g)
+                isDebug && echo "globally persistent: yet to get implemented"
+                ;;
+            *)
+                isDebug && echo "Default ${CURRENT_OPT}"
+                ;;
+        esac
+        ((IDX++))
+    done
+}
+[[ ${VERBOSITY_LEVEL} -gt 0 ]] && echo "PB content = ${PB_CONTENT}"
+[[ ${VERBOSITY_LEVEL} -gt 1 ]] && echo "pre CLIPBOARD content = ${CLIPBOARD}"
+CLIPBOARD+=${PB_CONTENT}
+[[ ${VERBOSITY_LEVEL} -gt 2 ]] && echo "post CLIPBOARD content = ${CLIPBOARD}"
+
+export CLIPBOARD

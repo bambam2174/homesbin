@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+CURRPATH="${1}"
+
+ORIGINAL_PATH=$(ls -l $CURRPATH | cut -d '>' -f2)
+
+ORIGINAL_PATH_WC=${#ORIGINAL_PATH[@]}
+
+ORIGINAL_PATH="${ORIGINAL_PATH:1:$(($ORIGINAL_PATH_WC-1))}"
+
+#echo "$ORIGINAL_PATH"
+
+echo ${ORIGINAL_PATH// /\\ }

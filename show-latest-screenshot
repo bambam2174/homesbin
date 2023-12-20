@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_show-latest-screenshot () {
+	IFS=$DELIMITER_ENDL 
+	ic2 $(path-latest-screenshot ${1})
+}
+_show-latest-screenshot ${@}

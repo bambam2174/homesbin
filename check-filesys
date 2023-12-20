@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_check-filesys () {
+	SUDO_ASKPASS=${BIN}/memecho sudo -A fs_usage -w -f filesys "${@}"
+}
+_check-filesys ${@}

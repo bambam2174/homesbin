@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+VARNAME=$(echo ${0##*/} | uppercase) 
+VARNAME=${VARNAME//-/_} 
+CURR_CMD="echo \$${VARNAME}" 
+eval ${CURR_CMD}

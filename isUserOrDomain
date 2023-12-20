@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+const myArgs = process.argv.slice(2);
+
+if(myArgs.length > 0) {
+    
+    (isUrlValid(myArgs.pop(), myArgs.length)) ? console.log('true') : console.log('false');
+}
+
+/* **************************
+ * **************************
+ * *****		*****
+ * ***** EMAIL VALID	*****
+ * *****     OR		*****
+ * *****  NOT  !!!	*****
+ * *****		*****
+ * **************************
+ * **************************/
+
+function matchEmail(email, debug = false) {
+	var matchEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.exec(email);
+    if (debug) {
+        console.log('debug', matchEmail);
+    }
+	return matchEmail;
+}
+
+function matchUrl(url, debug = false) {
+	var matchUrl = /^((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.exec(url);
+    if (debug) {
+        console.log('debug', matchUrl);
+    }
+	return matchUrl;
+}
+
+function isEmailValid(email, debug = false) {
+	let m = matchEmail(email, debug);
+	return (m && m.length) || false;
+}
+
+function isUrlValid(email, debug = false) {
+	let m = matchUrl(email, debug);
+	return (m && m.length) || false;
+}
+
+/*
+let email = 'sedat.kilinc@live.de';
+console.log((isEmailValid(email)) ? matchEmail(email) : email + ' is invalid' );
+
+email = 'sedat.kilinc@lüövä.dö';
+console.log((isEmailValid(email)) ? matchEmail(email) : email + ' is invalid' );
+*/

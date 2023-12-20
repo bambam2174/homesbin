@@ -1,0 +1,58 @@
+#!/usr/bin/php
+<?php
+//print_r($argv);
+
+$outputfile = "newfile.csv";
+
+if (count($argv) > 2) {
+    $pathOutputfile = $argv[2];
+    $arrOutputFile = explode("/", $pathOutputfile);
+    $outputfile = array_pop($arrOutputFile);
+}
+$inputFilePath = $argv[1];
+
+$arrInputFilePathElements = explode("/", $inputFilePath);
+$inputFile = array_pop($arrInputFilePathElements);
+$inputFileFolderPath = "";
+if (count($arrInputFilePathElements) > 0) {
+    $inputFileFolderPath =  join('/', $arrInputFilePathElements);
+    $inputFileFolderPath.='/';
+}
+/*
+print_r(count($arrInputFilePathElements)."\n");
+print_r($inputFile."\n");
+print_r($inputFileFolderPath."\n");
+ */
+//die('dbug');
+//echo "unduplicating ".$argv[1];
+$myfile = fopen($argv[1], "r") or die("Unable to open file!");
+$dictDomain = [];
+//echo fread($myfile,filesize($argv[1]));
+$linecounter = 0;
+while($line = fgets($myfile)) {
+    $linecounter++;
+    $CurrentHash = hash('md5', $line);
+    //echo "> ".trim($line).":   \t\t\t $CurrentHash\n";
+    $dictDomain[$CurrentHash] = trim($line);
+}
+
+
+fclose($myfile);
+
+//print_r($dictDomain);
+
+$arrKeys = array_keys(array_count_values($dictDomain));
+//print_r($arrKeys);
+
+//echo "$linecounter\n";
+
+
+$myfile = fopen($inputFileFolderPath.$outputfile, "w") or die("Unable to open file!");
+
+foreach($arrKeys as $value) {
+    fwrite($myfile, $value."\n");
+}
+
+fclose($myfile);
+
+?>

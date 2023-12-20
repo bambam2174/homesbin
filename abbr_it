@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_abbr_it () {
+	IFS=$DELIMITER_ENDL 
+	for i in $(cat $SHELL_VARS | grep -E '^export abbr_')
+	do
+		TMP_KEY=$(echo "${i}" | cut -d'=' -f1) 
+		TMP_KEY=${TMP_KEY//export /} 
+		CMD=$(echo "addvar $(echo \"${i}\" | grep -oE '\s.*\=')") 
+		CMD="${CMD//abbr_/}'\$${TMP_KEY}'" 
+		EXISTS=$(cat $SHELL_VARS | grep -e "\$${TMP_KEY}") 
+		CMD=${CMD//=/ } 
+		echo "\$CMD = ${CMD}"
+		[[ -z ${EXISTS} ]] && eval ${CMD}
+	done
+}
+_abbr_it ${@}

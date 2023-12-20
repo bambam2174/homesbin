@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbgcl () {
+	git clone --recurse-submodules "$(pbpaste)" $(path2string `pbpaste | sed -E "s/http.*github.com\///g"`)
+}
+_pbgcl ${@}

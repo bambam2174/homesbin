@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_getAllChromeExtensionGFX () {
+	IFS=$DELIMITER_ENDL 
+	ARR_EXT_IMGS=($(ls -1 $LIBRARY_APPLICATION_SUPPORT_USER_CHROME/Profile\ */Extensions/*/*/**/*.(png|jpg|jpeg|gif))) 
+}
+_getAllChromeExtensionGFX ${@}

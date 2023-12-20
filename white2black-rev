@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_white2black-rev () {
+	#echo -n "${1:-${UC_THUMBS_UP}}$(white2black ${1:-${UC_THUMBS_UP}}| rev)"
+    OUTPUT="${1:-${UC_THUMBS_UP}}$(white2black ${1:-${UC_THUMBS_UP}}| rev)"; echo -n ${OUTPUT[1,-2]};
+}
+_white2black-rev ${@}

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_history-extract-old-tars2tmpdir () {
+	mkdir -p ${TMPDIR}/all-histfiles
+    CNTR=1
+	for targz in $(ls -1Ut ${TMP}/*(HIST|hist)*.tar.gz)
+	do
+		echo ${targz}
+        tar -xzvf ${targz} -s /\.\*zsh_history/zsh_history$(timestamp)-${CNTR}/g --directory ${TMPDIR}/all-histfiles/
+        ((CNTR++))
+	done
+}
+_history-extract-old-tars2tmpdir ${@}

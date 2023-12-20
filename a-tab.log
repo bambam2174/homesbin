@@ -1,0 +1,166 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=utf8mex 2021.8.3)  17 APR 2022 04:53
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+ encTeX v. Jun. 2004, reencoding enabled
+**a-tab.txt
+(./a-tab.txt
+This is MeX  Version 1.05  18 XII 1993  (B. Jackowski & M. Ry\'cko)
+This is UTF8MeX Version 0.1 13.VI.2004 (W. Bzyl)
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.4 ...erUtil     add-apt-repositoryx.sh    alias_
+                                                  value               apache...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.22 
+     
+? abc
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? m
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? M
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? H
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+? 
+
+Overfull \hbox (72.52386pt too wide) in paragraph at lines 1--22
+[]\tenrm ASObjC Run-ner acyc-lic al an-tRun.pl argv atrm ava-ila-bi-lity Ap-ple
+-Fi-le-Se-rver adb al2 an-tenv.cmd arm-linux-androideabi-ld|
+
+\hbox(6.88889+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm A
+.\tenrm S
+.\tenrm O
+.\tenrm b
+.etc.
+
+
+Overfull \hbox (26.14209pt too wide) in paragraph at lines 1--22
+\tenrm ge-rU-til add-apt-repositoryx.sh alias$[]\teni alueapachectlarraystuffau
+ditdavbdiagnoseAssetCacheTetheratorUtiladd \tensy ^^@|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm g
+.\tenrm e
+.\discretionary
+..\tenrm -
+.\tenrm r
+.\tenrm U
+.etc.
+
+
+Overfull \hbox (501.45668pt too wide) in paragraph at lines 1--22
+\teni zsh \tensy ^^@ \teni hookaliasesapfs[]fs[]onvertarraystuff\tenrm 2\teni a
+uditreduceavbutila\tenrm 2\teni paddPath\tenrm 2\teni Placesaliasesapiasauth[]n
+tonellaavconverta\tenrm 2\teni p\tenrm 5\teni :\tenrm 18\teni add[]ounter[]refi
+xaliasesStartingWithapkanalyzerasaauth[]ntonella:curlavdmanageraac \tensy ^^@|
+
+\hbox(6.94444+2.86108)x469.75499, glue set - 1.0
+.\teni z
+.\kern0.4398
+.\teni s
+.\teni h
+.\glue(\medmuskip) 2.22217 plus 1.11108 minus 2.22217
+.etc.
+
+
+Overfull \hbox (102.72333pt too wide) in paragraph at lines 1--22
+\teni encaddftinfoalldocapksignerasciitopgmauthserveravdsaaptaddr\tenrm 2\teni 
+linealsapmasctlautoconfavmetareadwriteaapt\tenrm 2\teni afclipamtapp \tensy ^^@
+|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\teni e
+.\teni n
+.\teni c
+.\teni a
+.\teni d
+.etc.
+
+
+Overfull \hbox (244.57208pt too wide) in paragraph at lines 1--22
+\teni ssoaslmanagerautoheaderavstopamaarch\tenrm 64 \tensy ^^@ \teni linux \ten
+sy ^^@ \teni android \tensy ^^@ \teni ldafconvertandroidapplesingleasp \tensy ^
+^@ \teni stateautoloadawkabafhashandroid[]orrectedappletviewerasp \tensy ^^@|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\teni s
+.\teni s
+.\teni o
+.\teni a
+.\teni s
+.etc.
+
+
+Overfull \hbox (214.40045pt too wide) in paragraph at lines 1--22
+\teni state\tenrm 2\teni autom\tenrm 4\teni teaws[]ynamodb[]elpabcabcafidaandro
+iddocapplyasp \tensy ^^@ \teni state\tenrm 4\teni automakeaws[]ist \tensy ^^@ \
+teni tables[]efaultabspathafindandroidstudioappresasrautomake \tensy ^^@|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\teni s
+.\teni t
+.\teni a
+.\teni t
+.\teni e
+.etc.
+
+
+Overfull \hbox (78.67087pt too wide) in paragraph at lines 1--22
+\tenrm 1\teni :\tenrm 16\teni awsdbhabspathtestafinfoannotateappsleepdassetutil
+automatorawsltdacafmtoditantapratautomountacctonafplayant \tensy ^^@|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\teni :
+.\tenrm 1
+.\tenrm 6
+.\teni a
+.etc.
+
+
+Overfull \hbox (517.4845pt too wide) in paragraph at lines 1--22
+\teni docaproposatktopbmautoreconfaclocalafscexpandant:bataptatobmautoscanacloc
+al \tensy ^^@ \tenrm 1\teni :\tenrm 16\teni agentxtrapant:cmdaratomautoupdateac
+tivate[]code[]ommandsagvtoolantRunarchatosauvalactoolaidlantRun:batarchqueryatq
+auvaltool$ |
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\teni d
+.\teni o
+.\teni c
+.\teni a
+.\teni p
+.etc.
+
+)
+*
+(Please type a command or say `\end')
+*\end
+[1]
+Output written on a-tab.dvi (1 page, 2336 bytes).

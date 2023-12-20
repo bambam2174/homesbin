@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+SUBST="${2:-${UNICODE_LEFT_DBLQUOTATION_MARK}}"
+
+_replace-dblquotes () {
+TARGET_PATH="${TMPDIR}/#$(timestamp)_$(filename ${1})"
+cat "${1}" | sed -E "s/\"/$(echo -n ${SUBST})/g" > "${TARGET_PATH}"
+	echo "${TARGET_PATH}"
+}
+_replace-dblquotes ${@}

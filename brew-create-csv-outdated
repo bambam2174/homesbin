@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+brew outdated | tee ${CSV_BREW_OUTDATED}
+
+echo -n 'vi ${CSV_BREW_OUTDATED}' | pbcopy

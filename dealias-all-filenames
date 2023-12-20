@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_dealias-all-filenames () {
+	for i in *Alias
+	do
+		dealias-filename "${i}"
+	done
+}
+_dealias-all-filenames

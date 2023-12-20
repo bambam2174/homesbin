@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_git-exludes2tmpRepo () {
+	for GIT_FOLDERPATH in ${GIT_EXCLUDES_FOLDERPATHS}
+	do
+		GIT_FOLDERPATHNAME="$(filename $GIT_FOLDERPATH)" 
+		mkdir -p ${TMPREPO}/${GIT_FOLDERPATHNAME}
+		cp -i -i -r $GIT_FOLDERPATH ${TMPREPO}/${GIT_FOLDERPATHNAME}/.git
+		echo $GIT_FOLDERPATHNAME
+	done
+	ls -G -G -1AF -lhG ${TMPREPO}
+}
+_git-exludes2tmpRepo ${@}

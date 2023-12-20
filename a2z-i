@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+export ARR_A2Z_I=()
+
+_a2z-i () {
+	for i in {A..z}
+	do
+		[[ ${i} =~ [a-zA-Z] ]] && ARR_A2Z_I+=${i} && isDebug && echo ${i}
+	done
+	echo ${ARR_A2Z_I}
+}
+_a2z-i ${@}

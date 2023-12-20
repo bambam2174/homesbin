@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_alias2source-added () {
+	cat ${SHELL_ALIASES} | egrep --color=auto 'alias '${1}'=.?(\.|source) '${1}'.'
+}
+_alias2source-added ${@}

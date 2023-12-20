@@ -1,12 +1,23 @@
 #!/bin/zsh
 
+[[ ${#} -eq 0 ]] && . rts 124
 
-_isNumber () {
-	if [[ ${1} =~ $REGEX_IS_NUMERIC ]]
-	then
-		return 0
-	else
-		return 1
-	fi
-}
-_isNumber ${1}
+[[ ${1} =~ $REGEX_IS_NUMERIC ]] 2> /dev/null
+
+#####################################################################################################################################
+# The one-liner above totally checks it out and makes the previous code below unnecessary and even facepalm-level silly             #
+#                     🤦🏻‍♂🤦🏻‍♀🤦🏼‍♂🤦🏼‍♀🤦🏽‍♂🤦🏽‍♀🤦🏾‍♂🤦🏾‍♀🤦🏿‍♂🤦🏿‍♀🤦‍♂🤦‍♀                                                                                      #
+#                                                                                                                                   #
+# "Man lernt halt nie aus, gell?!¿??"                                                                                               # 
+# - irgendein Philosoph, der höchstwahrscheinlich "Meischter" gerufen wurde und dessen Sätze immer auf "da'hande" geendet haben     #
+#####################################################################################################################################
+
+##_isNumber () {
+#	if [[ ${1} =~ $REGEX_IS_NUMERIC ]]
+#	then
+#		. rts  true
+#	else
+#		. rts false
+#	fi
+#}
+# _isNumber ${1}

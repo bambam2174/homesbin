@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+PATH2FILE="${1}"
+OUTPUT=$(file "${PATH2FILE}" | cut -d ":" -f2)
+
+echo $OUTPUT | sed -e 's/^ //g'

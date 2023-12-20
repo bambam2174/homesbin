@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+OPEN_IN_BROWSER=false
+startsWithDash "${1}" && [ ${1/-/} = 'o' -o  ${1/-/} = '-open' ] && OPEN_IN_BROWSER=true && shift
+
+quran_ () {
+    if [[ ${#} -eq 2 ]] && isNumeric ${1} && isNumeric ${2}
+    then
+	    browser "https://quran.com/${1}?startingVerse=${2}"
+    else
+	    getlink ${LINKS_QURAN}/*.webloc
+        ${OPEN_IN_BROWSER} &&browser "$(ls -Ut $LINKS_QURAN/*.webloc | head -n 1)"
+    fi
+}
+quran_ ${@}

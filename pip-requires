@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pip-requires () {
+	export ARR_REQ_PCKGS=($(pip show ${1} | grep -iE "requires:.*" | sed -E "s/(Requires:|,)/ /g" | awk '{print $0}')) 
+}
+_pip-requires ${@}

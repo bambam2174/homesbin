@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_subtitles2csv () {
+	subtitles-extract-time "${1}"
+	subtitles-extract-text "${1}"
+	subtitles-merge-extracted "${1}"
+	show-in-finder "${1}"
+}
+_subtitles2csv ${@}

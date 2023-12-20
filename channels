@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_channels () {
+	OPTS=1GF 
+	[[ -d "${1}" ]] && {
+		P2F="${1}" 
+		ADD_OPT="${2}" 
+	} || {
+		P2F="${2}" 
+		ADD_OPT="${1}" 
+	}
+	original ls -${OPTS}${ADD_OPT//-/} ${P2F}/**/$CHANNELS/
+}
+_channels ${@}

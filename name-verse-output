@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_name-verse-output () {
+	HOLY_SCRIPTURE='' 
+	isNaN ${1} && HOLY_SCRIPTURE="${1}"  && shift
+	echo "${HOLY_SCRIPTURE:-Quran} ${1}${COLON_FULLWIDTH}${2}"
+}
+_name-verse-output ${@}

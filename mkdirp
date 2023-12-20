@@ -7,7 +7,7 @@ TSE=''
 
 DATETIME_FORMAT='+%s'
 
-startsWith "${1}" + && DATETIME_FORMAT="${1}" && shift
+startsWith "${1}" "\+" && DATETIME_FORMAT="${1}" && shift
 
 TIMESTAMP="$(date ${DATETIME_FORMAT})"
 

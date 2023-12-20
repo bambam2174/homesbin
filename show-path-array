@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_show-path-array () {
+    echo "Setting up array \$ARRPATH…"
+	ARRPATH=($(list_path)) 
+	for i in {01..${#ARRPATH}}
+	do
+		echo "$i : ${ARRPATH[${i}]}"
+	done
+}
+_show-path-array ${@}

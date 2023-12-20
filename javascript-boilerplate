@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+
+const myArgs = process.argv.slice(2);
+
+# INPUT_PIPE="$(cat < /dev/stdin)"
+# [[ -n ${INPUT_PIPE} ]] && SZ_LISTE="${INPUT_PIPE}"

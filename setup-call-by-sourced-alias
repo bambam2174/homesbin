@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+SHELL_RC="${HOME}/.${SHELLNAME}rc"
+echo "\$SHELL_RC = ${SHELL_RC}"
+source "${SHELL_RC}"
+
+CALLER=$(basename ${1})
+
+[[ -z ${SHELL_ALIASES} ]] && SHELL_ALIASES="${HOME}/.shell_aliases"
+[[ -f ${SHELL_ALIASES} ]] && source ${SHELL_ALIASES}
+
+ALIASEXISTS=$(alias ${CALLER})
+echo "\${ALIASEXISTS} = ${ALIASEXISTS}"
+[[ -z ${ALIASEXISTS} ]] && 
+    { 
+        #echo "alias ${CALLER}=\"source '${1}'\"" | tee -a ${SHELL_ALIASES}; 
+        echo "alias ${CALLER}=\"source ${CALLER}\"" | tee -a ${SHELL_ALIASES}; 
+    } ||
+    { 
+        echo "alias for ${CALLER} already exists"; 
+        exit 1; 
+    }
+
+SHELLRC_ENTRY_EXISTS=$(cat ${SHELL_RC} | grep -i 'source "${SHELL_ALIASES}"')
+echo "\$SHELLRC_ENTRY_EXISTS = ${SHELLRC_ENTRY_EXISTS}"
+[[ -z "${SHELLRC_ENTRY_EXISTS}" ]] || { echo "entry already exists"; reset; exit 1; }
+
+cat << EOT >> ${SHELL_RC}
+
+
+#### added by ${CALLER} & $(basename ${0}) ####
+
+SHELL_ALIASES="\${HOME}/.shell_aliases"
+
+if [ -f "\${SHELL_ALIASES}" ]; then
+    source "\${SHELL_ALIASES}"
+fi
+EOT
+
+#.  $BIN/tmp/${SHELLNAME}rc
+reset

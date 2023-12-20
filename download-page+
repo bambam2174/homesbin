@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+DOIT=true
+
+startsWithDblDash "${1}" && [[ ${1//-/} = "dryrun" ]] &&  DOIT=false && shift
+
+_download-page+ () {
+	URL="${1}" 
+	shift
+	DOWNLOAD_FOLDER="$(filename ${URL})" 
+	[[ -z "${DOWNLOAD_FOLDER}" ]] && DOWNLOAD_FOLDER="$(echo ${URL} | rev | cut -d '/' -f2 | rev)" 
+	mkdir -p "${DOWNLOAD_FOLDER}"
+    cd "${DOWNLOAD_FOLDER}"
+	${DOIT} && download-page "${URL}" js css png jpg jpeg gif ${@}
+}
+_download-page+ ${@}

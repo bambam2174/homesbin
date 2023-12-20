@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+printf "\e]1337;ClearCapturedOutput\e\\"
+

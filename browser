@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+DEFAULT_BROWSER="Google Chrome"
+[[ -n ${BROWSER} ]] && DEFAULT_BROWSER="$(capitalcase ${BROWSER})"
+
 if startsWithDash ${1} && 
     [ ${1//-/} = 'b' -o ${1//-/} = 'browser' ] && 
     [[ -d "${APPLICATIONS}/$(capitalcase ${2}).app" ]]
@@ -12,11 +15,19 @@ PIPE_INPUT=$(get-stdin &)
 
 [[ -z ${PIPE_INPUT} ]] && URL="${1:-$(pbpaste)}"
 
-#if [[ -z $URL ]] || (! startsWith ${URL} 'http' && ! startsWith ${URL} 'file')
-#then
-#    INPUT_PIPE="$(cat < /dev/stdin)"
-#    [[ -n ${INPUT_PIPE} ]] && URL="${INPUT_PIPE}"
-#fi
+_open-browser() { 
+    open -a "/Applications/${CURR_BROWSER:-${DEFAULT_BROWSER}}.app" "${1:-${URL}}" 2> ${TMPDIR}/ToStdErr.txt 
+}
 
-open -a "/Applications/${CURR_BROWSER:-Google Chrome}.app" "${URL}"
+_open-browser
+
+if [[ $? -gt 0 ]]
+then
+    [[ -f  ${TMPDIR}/ToStdErr.txt ]] && CONTENT_LAST_LINE="$(cat ${TMPDIR}/ToStdErr.txt | tail -n 1)"
+
+    URL_CORRECTED="$(echo $CONTENT_LAST_LINE | grep -oE "http.*" | sed -E "s/'\?//g" | sed -E "s/http:/https:/g")"
+    echo "URL_CORRECTED from  : ${URL_CORRECTED}" > /dev/stdin
+
+    _open-browser "${URL_CORRECTED}"    
+fi
 

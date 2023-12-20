@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+[[ -z ${ARR_TS} ]] && export ARR_TS=()
+
+_ts-delta () {
+	ARR_TS+=$(date +%s) 
+	echo $ARR_TS[-1]
+	if [[ $#ARR_TS -gt 1 ]]
+    then
+        echo -n "DELTA " > /dev/stdin
+        echo $(($ARR_TS[-1]-$ARR_TS[-2]))
+    fi
+}
+_ts-delta ${@}

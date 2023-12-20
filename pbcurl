@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbcurl () {
+	curl_ $(pbpaste)
+}
+_pbcurl ${@}

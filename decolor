@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_decolor () {
+	#cat ${1:-$TMPDIR/pgks.csv} | sed -E "s/(.*;18m|.\[49.*)//g"
+	cat ${1:-$TMPDIR/pgks.csv} | sed -E "s/[^a-z]+//g" | sed -E "s/(^m+|m?m$)//g"
+}
+_decolor ${@}

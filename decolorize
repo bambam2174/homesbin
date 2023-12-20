@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_decolorize () {
+	cat ${1:-${TMPDIR}/pgks.csv} | grep --color=auto -oE "m[ a-z0-9]+" | sed -E "s/^m//g"
+}
+_decolorize ${@}

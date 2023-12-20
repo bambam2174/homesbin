@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+SZADDRESS=$(nslookup ${1:-servebom.com} | grep Address | tail -n 1 | cut -d ":" -f2)
+
+echo ${SZADDRESS// /}
+

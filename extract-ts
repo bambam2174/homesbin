@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_extract-ts () {
+	[[ ${#@} -gt 0 ]] && TS="${1}"  || TS="$(pbpaste)" 
+	echo ${TS} | grep --color=auto -oE '[0-9]{10}'
+}
+_extract-ts ${@}

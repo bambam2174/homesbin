@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+source $HOME/.debug_state
+#[[ ${1} = "-d" ]] && echo "${1} - ${#}" && shift && echo "${1} - ${#}"
+[[ ${1} = "-d"  ]] && shift && source ~/bin/.functions && DEBUG=$TRUE && alias isDebug=isDebugLocal && which -a isDebug
+
+#LINES=13
+
+EXAMPLES='^E+.+X+A.+.*'
+
+[[ $(man "${1}" | grep -E "${EXAMPLES}") = ""  ]] && echo "No such section as EXAMPLES " && exit 1
+
+_examples() {
+    [[ $# -gt 1 ]] &&  [[ "$2" -eq "$2" ]] && LINES=$2
+    man "${1}" | grep -E "${EXAMPLES}" -A $LINES
+}
+
+_isFinished() {
+    [[ ${#} -gt 1  ]] &&  [[ "${2}" -eq "${2}" ]] && LINES=${2}
+    man "${1}" | grep -E "${EXAMPLES}" -A ${LINES} | tail -n 1 | grep -E '^\S+'
+}
+
+CURRENT_CONTENT=""
+i=1
+while [[ $(_isFinished cpio ${i}) = "" ]]
+do
+    isDebug && echo "\$i = ${i}"
+    CURRENT_CONTENT=$(_examples ${1} $i)
+    isDebug &&echo "\$CURRENT_CONTENT = $CURRENT_CONTENT"
+    
+    i=$((${i}+1))
+    isDebug && echo "\$i = ${i}"
+done
+echo ${CURRENT_CONTENT}

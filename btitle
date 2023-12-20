@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+# add alias banner-title='. banner-title'
+# to meet intended goals
+
+local FGC=0
+local BGC=1
+[[ -n ${2} ]] && FGC=${2}
+[[ -n ${3} ]] && BGC=${3}
+
+local TITLE="$(echo ${1} | tr -cd "[:print:]")"
+
+local MARGIN=5
+[[ -n ${4} ]] && [[ ${4} -gt 4 ]] && MARGIN=${4}
+
+local SUBST=$(echo ${TITLE} | tr -u "[:print:]" " ")
+
+btt () {
+    LL=$(printf "%${MARGIN}b" " ")
+    LL2=$(printf "%$((${MARGIN}-4))b" " ")
+	echo -n "\t\t\t"
+	ecko "${LL}${SUBST}${LL}" ${FGC} ${BGC}
+	echo -n "\t\t\t"
+	ecko "${LL2}👉  ${TITLE}  👈${LL2}" ${FGC} ${BGC}
+	echo -n "\t\t\t"
+	ecko "${LL}${SUBST}${LL}" ${FGC} ${BGC}
+}
+
+BTT=$(btt)
+echo $BTT
+
+# The reason to pack the commands below👇 
+# into that function above 👆🏼
+# and execute the output into a variable and echo it
+# is to prevent rendering it line by line.
+# Instead, this solution makes the banner get shown completely at once
+
+#echo -n "\t\t\t"; ecko "$(printf "%${MARGIN}b" " ")${SUBST}$(printf "%${MARGIN}b" " ")" ${FGC} ${BGC}
+#echo -n "\t\t\t"; ecko "$(printf "%$((${MARGIN}-4))b" " ")👉  ${TITLE}  👈$(printf "%$((${MARGIN}-4))b" " ")" ${FGC} ${BGC}
+#echo -n "\t\t\t"; ecko "$(printf "%${MARGIN}b" " ")${SUBST}$(printf "%${MARGIN}b" " ")" ${FGC} ${BGC}

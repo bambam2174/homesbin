@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+source ${SHELL_ALIASES}
+
+_template-checkered () {
+	TARGET_FILE="${PWD}/${2:-kariert}-$(timestamp).jpg" 
+	cp -i "$(templates-checkered-din-a4 | head -n ${1} | tail -n 1)" "${TARGET_FILE}"
+	open "${TARGET_FILE}"
+}
+_template-checkered ${@}

@@ -1,0 +1,15 @@
+#!/bin/zsh
+OPTS=()
+TMPINPUT="${1}"
+
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} = 'c' ]] && echo ${#SUB_DIGITS} && . rts 0
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} =~ '[^0-9]' ]] && OPTS+="${1}" && shift
+
+_char-digit-sub () {
+	[[ ${#} -eq 0 ]] && { echo ${OPTS} ${SUB_DIGITS}; . rts 0 }
+    for IDX in ${@}
+    do
+	    isNumeric ${IDX} && [[ ${IDX} -le ${#SUB_DIGITS} ]] && echo ${OPTS} ${SUB_DIGITS[${IDX}]} || echo ${OPTS} ${IDX}
+    done
+}
+_char-digit-sub ${@}

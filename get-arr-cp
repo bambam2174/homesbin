@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_get-arr-cp () {
+	ARRPB=(ruler find font) 
+	contains "${ARRPB}" "${1}" && PB="${1}"  || PB="find" 
+	eval "$(pbpaste -pboard ${PB})"
+}
+_get-arr-cp ${@}

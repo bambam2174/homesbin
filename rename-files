@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_rename-files () {
+	TMP_FILENAME="${1}" 
+	shift
+	CNT=1 
+	for i in ${@}
+	do
+		rename-file ${i} "${TMP_FILENAME} $((CNT++))"
+	done
+}
+_rename-files ${@}

@@ -12,6 +12,7 @@ _contains () {
         #[[ -n "${1}" ]] && echo "$_TU1" || echo "$_TD1"
         [[ -n "${1}" ]] && [[ -n "${2}" ]] && [[ "${1}" = *"${2}"* ]] && CONTAINS=true
     fi
-    ${CONTAINS} && return 0 || return 1
+    return ${CONTAINS}
+#    ${CONTAINS} && return true || return false
 }
 _contains ${@}

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_memsave () {
+	read ${@} A
+	echo -n "${A}" | pbcopy -pboard font
+}
+_memsave ${@}

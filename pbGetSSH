@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+_pbGetSSH () {
+	cat ~/.ssh/${1} | pbcopy
+}
+_pbGetSSH ${@}

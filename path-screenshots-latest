@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_path-screenshots-latest () {
+	ls -G -1AF -Ut -d $SCREENSHOTS/*.* | head -n ${1:-1} | tail -n 1
+}
+_path-screenshots-latest ${@}

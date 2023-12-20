@@ -1,0 +1,6 @@
+export HISTFILE_PREV=${HISTFILE}
+export HISTFILE=${ZDOTDIR}/$(filename ${PWD})_history
+
+reset-historyfile() {
+	export HISTFILE=${HISTFILE_PREV}
+}

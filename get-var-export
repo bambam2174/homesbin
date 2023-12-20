@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+# cat $SHELL_VARS | grep --color=auto -oE "^export ${1}="
+
+RESULT=$(grep --color=auto -oE "^export ${1}=" $SHELL_VARS)
+
+echo ${RESULT[1,$#RESULT-1]}

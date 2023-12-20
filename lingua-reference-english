@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_lingua-reference-english () {
+    TOPIC='irregular-verbs'
+    URL="reference/${TOPIC}/${1}.html"
+
+    startsWithDash ${1} && ([[ ${1/-/} = 't' ]] || [[ ${1/-/} = '-topic' ]]) && TOPIC="${2}" && URL="reference/${TOPIC}/${3}.html" && shift 3
+    startsWithDash ${1} && ([[ ${1/-/} = 's' ]] || [[ ${1/-/} = '-search' ]]) && QUERY="${2}" && URL="search/?q=${QUERY}" && shift 2
+
+    browser "https://www.usingenglish.com/${URL}"
+}
+_lingua-reference-english ${@}

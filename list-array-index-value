@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_list-array-index-value () {
+	#echo "\$@ = $@"
+	#echo "\$# $#"
+	#echo ${1//\ /x}
+	for idx in {1..$#1}
+	do
+		echo "$idx : ${1[${idx}]}"
+	done
+}
+_list-array-index-value ${@}

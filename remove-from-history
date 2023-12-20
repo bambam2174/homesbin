@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+SCRIPTNAME=$(dirname ${0})
+echo "\$SCRIPTNAME = ${SCRIPTNAME}"
+
+source $SHELL_FUNCTIONS
+source $SHELL_VARS
+
+cp $HISTFILE $TMP/histfile_$(date +%s)
+
+remove-from $HISTFILE "${1}"
+
+remove-from $HISTFILE ${SCRIPTNAME}
+

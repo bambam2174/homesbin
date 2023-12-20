@@ -1,0 +1,123 @@
+#!/bin/zsh
+
+##############################################################################
+###                            {range1}{range2}                            ###
+##############################################################################
+
+for i in {0..9}{A..Z}; do echo "$i"; done
+
+echo -n "Number of iterations: "
+for i in {0..9}{A..Z}; do echo "$i"; done | wc -l
+
+sleep 1
+echo '###### 2 ranges without space in between -> {0..9}{A..Z} ########'
+echo "Press RETURN/ENTER key to continue"
+read
+
+##############################################################################
+###                            {range1} {range2}                           ###
+##############################################################################
+
+for i in {0..9} {A..Z}; do echo "$i"; done
+
+echo -n "Number of iterations: "
+for i in {0..9} {A..Z}; do echo "$i"; done | wc -l
+
+sleep 1
+echo '###### 2 ranges WITH SINGLE SPACE in between -> {0..9} {A..Z} ########'
+echo "Press RETURN/ENTER key to continue"
+read
+
+##############################################################################
+###                            {range1},{range2}                           ###
+##############################################################################
+
+for i in {0..9},{A..Z}; do echo "$i"; done
+
+echo -n "Number of iterations: "
+for i in {0..9},{A..Z}; do echo "$i"; done | wc -l
+
+sleep 1
+echo '###### 2 ranges WITH SINGLE CHARACTER in between e.g. "{0..9},{A..Z}" ########'
+echo "Press RETURN/ENTER key to continue"
+read
+
+##############################################################################
+###                             {range1}"->Sedat<-"{range2}                ###
+##############################################################################
+
+for i in {0..9}"->Sedat<-"{A..Z}; do echo "$i"; done
+
+echo -n "Number of iterations: "
+for i in {0..9}"->Sedat<-"{A..Z}; do echo "$i"; done | wc -l
+
+sleep 1
+echo '###### 2 ranges WITH MULTIPLE CHARACTERS in between e.g. {0..9}"->Sedat<-"{A..Z} ########'
+echo "Press RETURN/ENTER key to continue"
+read
+
+##############################################################################
+###                             {range1}"->Sedat<-"{range2}                ###
+##############################################################################
+
+for i in {0..9}"->Sedat<-"{A..Z}; do echo "$i"; done
+
+echo -n "Number of iterations: "
+for i in {0..9}"->Sedat<-"{A..Z}; do echo "$i"; done | wc -l
+
+sleep 1
+echo '###### 2 ranges WITH MULTIPLE CHARACTERS in between e.g. {0..9}"->Sedat<-"{A..Z} ########'
+echo "Press RETURN/ENTER key to continue"
+read
+
+##############################################################################
+###                            "von "{range1}" bis "{range2}                ###
+##############################################################################
+
+for i in "von "{0..9}" bis "{A..Z}; do echo "$i";done
+
+echo -n "Number of iterations: "
+for i in "von "{0..9}" bis "{A..Z}; do echo "$i";done | wc -l
+
+sleep 1
+echo '###### 2 ranges WITH MULTIPLE CHARACTERS at the beginning and in between e.g. "von "{0..9}" bis "{A..Z} ########'
+
+cat <<EOT
+
+
+
+
+
+EOT
+echo "_______________________________________________________________________________"
+echo "Conclusion:"
+echo "Only if the ranges are separated by a single blank space then the ranges are iterated one by one like two loops one after the other"
+echo "In all the other cases like no character, one character (besides blank space) or multiple characters (always in quotes) the ranges behave like two nested loops."
+echo "_______________________________________________________________________________"
+echo
+
+## 
+#
+# sleep 1
+# sleep 1
+# sleep 1
+# echo "Press RETURN/ENTER key to continue"
+# read
+# sleepo
+#
+################# OFF TOPIC ########################
+#OFFTOPIC
+#SEARCH
+#SEARCHING
+#VI
+#VIM
+###########
+# try the following out
+#
+# /\<sleep \(1\|3\)\>
+#
+# /\<sleep \(1\|2\)\>
+#
+# \<sleep\>
+#
+# \<sleep

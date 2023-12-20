@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+source $HOME/.debug_state
+
+if isDebug; then 
+    echo "Script $0"
+    echo "CALLER $CALLER"
+    echo "CALLERER $CALLERER"
+fi
+
+export ARR_PACKAGES=() 
+export PACKAGES=$(npm -g outdated --depth=0 | cut -d: -f3)
+
+export TMP_CMDs=()
+export TMP_PACKAGES=()
+
+_populate_update_package_array () {
+
+    for i in $(echo $PACKAGES | cut -d ' ' -f1)
+	do
+		[[ "$i" != "Package" ]] && TMP_PACKAGES+=$i 
+		[[ "$i" != "Package" ]] && TMP_CMDs+="npm i -g $i@latest"
+		[[ "$i" != "Package" ]] && ARR_PACKAGES+=$i 
+		[[ "$i" != "Package" ]] && ARR_PACKAGES+="npm i -g $i@latest"
+        
+        LAST_minus_1=$(($#ARR_PACKAGES-1))
+        LAST=$#ARR_PACKAGES
+
+        if isDebug; then 
+            { echo -n "LAST-1\t: $LAST_minus_1 "; echo $ARR_PACKAGES[$LAST_minus_1]; }
+            { echo -n "LAST  \t: $LAST "; echo $ARR_PACKAGES[$LAST]; }
+
+            echo "Count \t: $#TMP_PACKAGES = $(($LAST/2))"
+            { echo -n "LAST  \t: $#TMP_PACKAGES "; echo $TMP_PACKAGES[$#TMP_PACKAGES]; echo $TMP_CMDs[$#TMP_CMDs]; }
+        fi
+    done
+}
+
+_populate_update_package_array

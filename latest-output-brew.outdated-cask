@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_latest-output-brew.outdated-cask () {
+	ls -1Ut $OUTPUT_BREW/brew.outdated.--cask* | head -n ${1:-1}
+}
+_latest-output-brew.outdated-cask ${@}

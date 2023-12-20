@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+source $ZSH/lib/spectrum.zsh
+
+echo $FG
+echo $BG
+spectrum_ls
+spectrum_bls

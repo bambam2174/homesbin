@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+
+_subtitles-merge-extracted2 () {
+    [[ -z ${IFS_PREV} ]] && IFS_PREV=()
+    IFS_PREV+=${IFS}
+    IFS=${DELIMITER_ENDL}
+    FILEROOT="$(fileroot $(fileroot ${1}))"
+    if [[ ${#} -eq 1 ]]
+    then
+        ARRFILES=($(ls -1 ${FILEROOT}.*.txt))
+    else
+        ARRFILES[1]="${1}"
+        ARRFILES[2]="${2}"
+    fi
+    echo "ARRFILES COUNT $#ARRFILES"
+    FILEEXTA="$(fileext $(fileroot ${ARRFILES[1]}))"
+    FILEEXTB="$(fileext $(fileroot ${ARRFILES[2]}))"
+    FILEA="$(replace-commas ${ARRFILES[1]})"
+    FILEB="$(replace-commas ${ARRFILES[2]})"
+	FILECSV="${FILEROOT}.${FILEEXTA}.${FILEEXTB}.csv" 
+    echo "$FILEA \n $FILEB \n $FILECSV"
+   
+    CNTA=$(($(cat ${FILEA} |  wc -l)))
+    CNTB=$(($(cat ${FILEB} |  wc -l)))
+    [[ ${CNTA} -gt ${CNTB} ]] && FILESOURCE=${FILEA} || FILESOURCE=${FILEB}
+	for row in {1..$(($(cat ${FILESOURCE} |  wc -l)))}
+	do
+		echo "$(cat ${FILEA}| head -n $row | tail -n 1),  ${ARROWR[12]}, $(cat ${FILEB} | head -n $row | tail -n 1)"
+	done > ${FILECSV}
+}
+_subtitles-merge-extracted2 ${@}

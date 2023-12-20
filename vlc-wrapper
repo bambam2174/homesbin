@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vlc-wrapper () {
+	/usr/local/bin/vlc ${@}
+}
+_vlc-wrapper ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbLowercase () {
+	pbpaste | lowercase | pbcopy
+}
+_pbLowercase ${@}

@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+[[ -z ${IFS_PREV} ]] && IFS_PREV=()
+IFS_PREV+=${IFS}
+IFS=${DELIMITER_ENDL}
+
+isDebug && 
+    echo "Args: ${@} ${#@} $#"
+
+TO_TRIM=' '
+[[ ${#1} -eq 1 ]] && TO_TRIM=${1} && shift
+
+isDebug && 
+    echo "Args: ${@} ${#@} $#"
+
+_sed-trim () {
+    isDebug &&
+        echo "_sed-trim: ${@} ${#@} $#"
+	echo "${1}" | sed "s/^${TO_TRIM}${TO_TRIM}*//g" | sed "s/${TO_TRIM}*${TO_TRIM}$//g"
+}
+
+ARR_LINE=()
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_LINE in "${@}"
+    do
+        isDebug && 
+            echo "Pfad Nr.$((CNT+=1)) ${TMP_LINE}"
+        ARR_LINE+="${TMP_LINE}"
+    done
+     isDebug &&
+         echo "unpiped: ARR_LINE:${#ARR_LINE} -> ${ARR_LINE}" && list-array-elements ${ARR_LINE}
+else
+    INPUT_PIPE=$(cat < /dev/stdin)
+    [[ -n ${INPUT_PIPE} ]] && ARR_LINE=($(echo ${INPUT_PIPE}))
+     isDebug &&
+         echo "piped: ARR_LINE:${#ARR_LINE} -> ${ARR_LINE}" && list-array-elements ${ARR_LINE}
+fi
+
+for currLine in ${ARR_LINE}
+do
+    _sed-trim ${currLine}
+done

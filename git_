@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_git_ () {
+	git ${@} | tee –a ${OUTPUT_GIT}/$(arrjoin ${@}).txt
+}
+_git_ ${@}

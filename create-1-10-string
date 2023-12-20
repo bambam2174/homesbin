@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_create-1-10-string () {
+	ARR_1_10=($(echo {1..9} 0)) 
+	SZ_EXPORT_VAR="export ${1:-SZ_COLON_SEPARATED}=\"" 
+	for idx in ${ARR_1_10}
+	do
+		SZ_EXPORT_VAR+="$(eval "echo \$${2:-UC_SUPER_}${idx}")" 
+		[[ $idx -ne 0 ]] && SZ_EXPORT_VAR+=':' 
+	done
+	SZ_EXPORT_VAR+='"' 
+	echo $SZ_EXPORT_VAR | pbcopy
+	pbpaste > /dev/stdin
+}
+_create-1-10-string ${@}

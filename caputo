@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+CNT=0
+	
+echo "${CNT}.) Outside ${0}\n\tParam Count ${#}"
+echo "${CNT}.) Outside ${@}"
+echo "#############################################"
+
+_caputo () {
+    ((CNT++))
+    echo "${CNT}.) Inside ${0}\n\tParam Count ${#}"
+	echo "${CNT}.) Inside ${@}"
+    echo "#############################################"
+}
+_caputo ${@}
+
+_caputo
+
+_caputo "$(filename ${0})" 
+
+PARAM_LENGTH=${#}
+
+echo "Param Count ${ARROWS[1]} ${#}\n\tParam Lenght ${PARAM_LENGTH}"
+
+IDX=$((${PARAM_LENGTH}/2))
+echo "Index ${IDX}"
+_caputo ${@[${IDX},-${IDX}]}

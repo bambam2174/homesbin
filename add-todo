@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_add-todo () {
+	echo "${1}" >> $TMP/current-todos.csv
+}
+_add-todo ${@}

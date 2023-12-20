@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+RETVAL=1
+echo "\$@  ${@}"
+[[ -n ${@} ]] && RETVAL=0 && . retexit ${RETVAL}
+
+echo "Stdin"
+
+INPUT_PIPE="$(cat < /dev/stdin)"
+echo ${INPUT_PIPE}
+[[ -n ${INPUT_PIPE} ]] && RETVAL=0 && . retexit ${RETVAL}
+
+echo "Stdout"
+
+INPUT_PIPE="$(cat < /dev/stdout)"
+echo ${INPUT_PIPE}
+[[ -n ${INPUT_PIPE} ]] && RETVAL=0 &&. retexit ${RETVAL}
+
+echo "Stderr"
+
+INPUT_PIPE="$(cat < /dev/stderr)"
+echo ${INPUT_PIPE}
+[[ -n ${INPUT_PIPE} ]] && RETVAL=0 &&. retexit ${RETVAL}
+
+

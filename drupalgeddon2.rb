@@ -1,1 +1,1 @@
-/Users/sedatkilinc/Projects/github/_exploits/Drupalgeddon2/drupalgeddon2.rb
+/Users/sedatkilinc/Projects/InfoSec/CVEs/CVE-2018-7600/Drupalgeddon2/drupalgeddon2.rb

@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+REPEAT_CMD_LOCK="$HOME/tmp/.$(filename ${0}).lock"
+
+CURRENT_STATE="TRUE"
+
+echo "$CURRENT_STATE" > $REPEAT_CMD_LOCK
+
+[[ -f $REPEAT_CMD_LOCK  ]] && echo "Lock-file exists" || echo "Lock-file doesn't exist" 
+CURRENT_STATE=$(cat $REPEAT_CMD_LOCK) && echo "Content is $CURRENT_STATE"
+
+CMD=$(filename $0)
+
+PARAMS="${@}"
+echo "${PARAMS}"
+eval "${PARAMS}"
+#$(echo $PARAMS)
+
+sleep 5 && 
+    [[ -f $REPEAT_CMD_LOCK  ]] && 
+    CURRENT_STATE=$(cat $REPEAT_CMD_LOCK) && 
+    [[ $CURRENT_STATE = "TRUE" ]] && $(echo $CMD $PARAMS) || echo "CANCELLED"

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-ffmpeg -i $@  -c copy $(fileroot $@).mp4
+ffmpeg -strict -2 -i $@  -c copy $(fileroot $@).mp4
 
 

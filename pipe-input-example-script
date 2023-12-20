@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_pipe-input-example-script () {
+    IFS=${DELIMITER_ENDL}
+    INP=($(pipe-input)) 
+	echo "Input via Pipe \${#INP}=${#INP} ${INP}"
+	echo "Input via Args \$#=$# or \${#@}=${#@} ${@} "
+}
+_pipe-input-example-script ${@}

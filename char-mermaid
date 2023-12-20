@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+OPTS=()
+TMPINPUT="${1}"
+SPACER=""
+UC_SIGN_GENDER="${UC_SIGN_FEMALE}"
+
+[[ ${#} -gt 0 ]] && startsWithDash ${1} && [ ${1/-/} = 'm' -o ${1/-/} = '-male'  ] && UC_SIGN_GENDER="${UC_SIGN_MALE}" && shift
+[[ ${#} -gt 0 ]] && startsWithDash ${1} && [ ${1/-/} = 's' -o ${1/-/} = '-spacer'  ] && SPACER="${2}" && shift 2
+[[ ${#} -gt 0 ]] && startsWithDash ${TMPINPUT} && [[ ${TMPINPUT[2]} =~ '[^0-9]' ]] && OPTS+="${1}" && shift
+
+_char-mermaid_ () {
+	echo -n "${UC_MERMAID}"
+	eval "echo -n \${UC_COLOR_${1}}"
+	echo ${OPTS} "${UC_GENDER}${UC_SIGN_GENDER}${SPACER}"
+}
+
+_char-mermaid() {
+    for IDX in ${@}
+    do
+	    isNumeric ${IDX} && [[ ${IDX} -le 5 ]] && _char-mermaid_ ${IDX} || echo ${OPTS} ${IDX}
+    done
+}
+SZ_OUTPUT=$([[ ${#} -gt 0 ]] && _char-mermaid ${@} || _char-mermaid {0..5})
+echo ${SZ_OUTPUT[1, -$((${#SPACER}+1))]}

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_printDotStrings () {
+	X=${#ARR_FINGERR} 
+	for plist in *.strings
+	do
+		echo "${ARR_FINGERR[$((X--))]} $plist"
+		plutil -p $plist
+		[[ $X -eq 0 ]] && X=${#ARR_FINGERR} 
+	done
+}
+_printDotStrings ${@}

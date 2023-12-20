@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbshow () {
+	pbpaste | mdcat -p
+}
+_pbshow ${@}

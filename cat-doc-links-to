@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_cat-doc-links-to () {
+	cat "${1}" | grep --color=auto -oE "$(regex-all-links-to ${2})"
+}
+_cat-doc-links-to ${@} 2> /dev/null

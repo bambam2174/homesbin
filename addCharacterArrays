@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+
+_addCharacterArrays () {
+    # Alphabet A-Z
+    export ARR_ALPHABET=()
+	for letter in {A..Z}
+	do
+		ARR_ALPHABET+=${letter} 
+	done
+	
+    # Digits 0-9
+    export ARR_DIGITS_DECIMAL=() 
+	for digit in {0..9}
+	do
+		ARR_DIGITS_DECIMAL+=${digit} 
+	done
+	
+    # HexDigits 0-f
+    export ARR_DIGITS_HEXADECIMAL=() 
+	for digit in {0..9}
+	do
+		ARR_DIGITS_HEXADECIMAL+=${digit} 
+	done
+	for digit in {a..f}
+	do
+		ARR_DIGITS_HEXADECIMAL+=${digit} 
+	done
+}
+_addCharacterArrays ${@}

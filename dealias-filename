@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_dealias-filename () {
+	mv -i "${1}" "${1// Alias/}"
+}
+_dealias-filename "${1}"

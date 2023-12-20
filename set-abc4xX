@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_set-abc4xX () {
+	x='' 
+	for i in {a..z}
+	do
+		x=${x}${i} 
+	done
+	X='' 
+	for i in {A..Z}
+	do
+		X=${X}${i} 
+	done
+	echo "${x}${X}"
+	echo "${X}${x}"
+}
+_set-abc4xX ${@}

@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+LOG_FOLDER="/var/log/scriptz"
+
+FULLY_QUALIFIED_NAME=${1}
+
+LOG_MESSAGE="${2}"
+
+CURRENT_LOG_FOLDER="${LOG_FOLDER}/${FULLY_QUALIFIED_NAME}"
+
+CURRENT_APPNAME=$(echo ${FULLY_QUALIFIED_NAME} | rev | cut -d '.' -f1 | rev)
+
+CURRENT_LOG_FILE="${CURRENT_LOG_FOLDER}/${CURRENT_APPNAME}.log"
+
+mkdir -p "${CURRENT_LOG_FOLDER}"
+touch "${CURRENT_LOG_FILE}"
+
+echo "$(date +%s•%c) • ${FULLY_QUALIFIED_NAME} • ${LOG_MESSAGE}" >> "${CURRENT_LOG_FILE}"
+
+COUNT_LOG_LINES=$(cat "${CURRENT_LOG_FILE}" | wc -l)
+#COUNT_LOG_LINES=$(cat "${CURRENT_LOG_FILE}" 2>> ${TMPDIR}/error-message$(char-star -n 1)${SZ_CMD} | wc -l)
+
+ARR_GZIP=( $(ls -1 $CURRENT_LOG_FOLDER | grep -E "\.\d+\.gz") )
+COUNT_GZ_FILES=${#ARR_GZIP}
+
+_get-tmp-log-file() {
+    cTMP_LOG_FILE="${CURRENT_LOG_FILE}.$(timestamp).$((++COUNT_GZ_FILES))"
+echo "1 $cTMP_LOG_FILE" >> $TMPDIR/checkthis.txt
+    while [[ -f "${cTMP_LOG_FILE}.gz" ]] || [[ ${COUNTER_FOR_HANGUP_SAFETY} -le 10 ]]
+    do
+         cTMP_LOG_FILE="${CURRENT_LOG_FILE}.$(timestamp).$((++COUNT_GZ_FILES))"
+         ((COUNTER_FOR_HANGUP_SAFETY++))
+echo "2 $cTMP_LOG_FILE" >> $TMPDIR/checkthis.txt
+    done
+echo "3 $cTMP_LOG_FILE" >> $TMPDIR/checkthis.txt
+    echo ${cTMP_LOG_FILE}
+}
+
+echo "XXX COUNT_LOG_LINES ${COUNT_LOG_LINES} • CURRENT_LOG_FILE ${CURRENT_LOG_FILE}" >> $TMPDIR/checkthis.txt
+[[ ${COUNT_LOG_LINES} -gt 350 ]] && { 
+    COUNTER_FOR_HANGUP_SAFETY=0
+    
+echo "YYY1 COUNT_LOG_LINES ${COUNT_LOG_LINES} • CURRENT_LOG_FILE ${CURRENT_LOG_FILE}" >> $TMPDIR/checkthis.txt
+    #TMP_LOG_FILE="${CURRENT_LOG_FILE}.$(timestamp).$((${#ARR_GZIP}+1))"
+    TMP_LOG_FILE="$(_get-tmp-log-file)"
+echo "YYY2 COUNT_LOG_LINES ${COUNT_LOG_LINES} • CURRENT_LOG_FILE ${CURRENT_LOG_FILE} TMP_LOG_FILE -> ${TMP_LOG_FILE}" >> $TMPDIR/checkthis.txt
+    mv "${CURRENT_LOG_FILE}" "${TMP_LOG_FILE}"
+    gzip  "${TMP_LOG_FILE}"
+}
+

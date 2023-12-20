@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_print-unicode-char () {
+	echo "\\${1}"
+}
+_print-unicode-char ${@}

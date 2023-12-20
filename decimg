@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+F2C="${1}"
+KII="out-bamd.jpg"
+shift
+
+FCD="${F2C}"
+F2C_D=$(dirname "${F2C}")
+F2C_F=$(filename "${F2C}")
+
+TMP_ARR=( ${@} )
+if [[ ${#} -eq 0 ]]
+then
+    read XY
+    TMP_ARR=( ${@} ${XY} )
+fi
+convert -append $(bam ${TMP_ARR}) "${KII}"
+decrypt3 "${F2C}" "${KII}" "${F2C_D}/${F2C_F/enc-/}"
+rm -f "${KII}"
+
+echo "${F2C_D}/${F2C_F/enc-/}"

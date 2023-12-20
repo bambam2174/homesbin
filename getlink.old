@@ -1,0 +1,69 @@
+#!/bin/zsh
+
+#usage "$0" "$#" 1 '[-c] <WEBLOC>' "displays URL that the webloc file points to. \n -c makes all URLs appear at once"
+CMDSCRIPT=$0
+isExecutable "${CMDSCRIPT}" || CMDSCRIPT=$(which -a "${CMDSCRIPT}" | tail -n 1)
+CMDDIR=$(dirname ${CMDSCRIPT})
+
+AT_ONCE=false
+COLOR_START=16
+[[ ${1} = '-c'  ]] && AT_ONCE=true && shift
+
+usage "$0" "$#" 1 '[-c] <WEBLOC>' "displays URL that the webloc file points to. \n -c makes all URLs appear at once" || back2shell
+
+_getlink() {
+
+    BOOKMARK_FILE="$1"
+
+
+    EXT=$(fileext $BOOKMARK_FILE)
+
+
+#    if [ $# -gt 1 ]; then
+#        BOOKMARK_FILE="$2"
+#        OPTION="$1"
+#    fi
+
+
+    if [ $EXT = "url" ]
+    then
+        URL=$(cat $BOOKMARK_FILE | cut -d "=" -f2)
+    else if [ $EXT = "webloc" ]
+
+        URL_NODE=$(cat "$BOOKMARK_FILE" | grep -E '<.+string>')
+
+        URL1=${URL_NODE//<string>/ }
+
+        URL2=${URL1//<\/string>/ }
+
+        URL=${URL2// /}
+
+    fi
+
+    [[ -n ${URL} ]] && echo -n ${URL} | pbcopy
+#    [[ ${SHLVL} -gt 1 ]] && 
+#        echo "• $(basename ${BOOKMARK_FILE})\n\t${URL}" || 
+#        { 
+            [[ ${3} -gt 1 ]] && ecko "• $(basename ${BOOKMARK_FILE})" $((${COLOR_START/}+${2})) 15
+            ecko "\t${URL}" 15 $((${COLOR_START}+${2})) > /dev/stdin
+            echo "${URL}"
+#        }
+}
+
+output-links () {
+	CNT=0
+	for i in "${@}"
+	do
+		[[ -f "${i}" ]] && _getlink "${i}" ${CNT} ${#@}
+		((CNT++))
+	done
+}
+
+$AT_ONCE && {
+    imgcat "${CMDDIR}/hotupshirt.gif"
+    RNDR=$(output-links $@)
+    clear
+    echo ${RNDR}
+} || {
+    output-links $@
+}

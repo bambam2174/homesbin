@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo "$USER aka $USERNAME hat nach $1 geschrieben" | tee "$1"
+

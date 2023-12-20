@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_timer-start () {
+	START=$(timestamp) 
+	echo "${START}" > ${TMPDIR}/timer-start-${1:-default}.txt
+}
+_timer-start ${@}

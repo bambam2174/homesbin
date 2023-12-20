@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pbtr-ascii2unicode () {
+	echo "${1}" | tr-ascii2unicode -n | pbcopy
+}
+_pbtr-ascii2unicode ${@}

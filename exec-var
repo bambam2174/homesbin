@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+CMD=${1}
+
+echo $CMD > $TMP/.execit && $SHELL $TMP/.execit && rm -f $TMP/.execit || rm -f $TMP/.execit
+

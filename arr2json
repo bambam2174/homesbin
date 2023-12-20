@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+_arr2json () {
+	JSON=AARR_$(timestamp).json 
+	echo "{" >> $JSON
+	for i in {1..${#@}}
+	do
+        echo "\t\"key${i}\": \"${@[$i]}\"$([[ ${i} -eq ${#@} ]] || echo ',')" >> $JSON
+
+	done
+	#echo "\"key$((${#@}+1))\": \"last item \"" >> $JSON
+	echo "}" >> $JSON
+	echo "JSON written to ${JSON}"
+	ccat ${JSON}
+}
+_arr2json $@

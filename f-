@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+
+_f () {
+	mkdir -p "/var/log/find"
+	touch "/var/log/find/$1.log"
+	if [ $# -eq 1 ]
+	then
+		find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
+	fi
+	PARAM=$1 
+	f_it () {
+		touch "/var/log/find/$PARAM.log"
+		find "$@" -iname "*$PARAM*" | tee -a "/var/log/find/$PARAM.log"
+	}
+	shift
+	for fname in "$@"
+	do
+		f_it "$fname"
+	done
+}
+_f ${@}

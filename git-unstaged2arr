@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_git-unstaged2arr () {
+	IFS=$DELIMITER_ENDL 
+	ARRGST=($(gst | grep -i 'git add' -A 900)) 
+    ARRGSTC=()
+   
+    for i in $ARRGST
+    do 
+        ARRGSTC+=$(e $i | grep -oE '\S+')
+    done 
+    export ARRGITSTATUS=($ARRGSTC[2,-1])
+}
+_git-unstaged2arr ${@}

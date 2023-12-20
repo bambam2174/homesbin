@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_create-csv-with-headers () {
+	CSV="${1}" 
+	shift
+	for i in $@
+	do
+		echo -n "\"${i}\";"
+	done > $CSV
+	echo " " >> $CSV
+}
+_create-csv-with-headers ${@}

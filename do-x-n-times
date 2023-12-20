@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_do-x-n-times () {
+	ROUNDS=${2:-5} 
+	for i in {1..${ROUNDS}}
+	do
+		echo -n "w/ \$(echo \$SZ_CMD)	"
+		$(echo ${1:-"echo $i"})
+		echo -n "w/ eval \$SZ_CMD		"
+		eval ${1:-"echo $i"}
+		echo
+	done
+}
+_do-x-n-times ${@}

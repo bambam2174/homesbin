@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+startsWithDash ${1} && [ ${1/-/} = 'h' -o ${1/-/} = '-help' ] && { 
+    ecko " default clipboard is font " 190 196
+    ecko " other possible clipboards are " 192 198
+    ecko "${UC_FIST_RIGHT}${UC_COLOR_2} general | ruler | find | font " 196 192 
+    . retexit 0
+}
+_memecho () {
+    echo $(pbpaste -pboard ${1:-font})
+}
+_memecho ${@}

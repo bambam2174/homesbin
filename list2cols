@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_list2cols () {
+	SAMPLE_FILE=${TMP_HASH}/Export_PATHX.txt 
+	cat "${1:-${SAMPLE_FILE}}" | awk -F ':' 'NR>0 {print $1"   	 Line" $2 "	 " $3 }'
+}
+_list2cols ${@}

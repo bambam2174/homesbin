@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_handshake () {
+	echo ${@} "${UC_HANDSHAKE}"
+}
+_handshake ${@}

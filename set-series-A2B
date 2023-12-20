@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_set-series-A2B () {
+	SERIES='' 
+	for i in {${1}..${2}}
+	do
+		SERIES=${SERIES}${i} 
+	done
+	echo "${SERIES}" > /dev/stdout
+	echo "SERIES=${SERIES}" > /dev/stdin
+	echo "SERIES :=${SERIES}" > /dev/stderr
+}
+_set-series-A2B ${@}

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#/usr/local/bin/nss-config
+
+for opt; do :; done
+case "$opt" in
+  --version) opt="--modversion";;
+  --cflags|--libs) ;;
+  *) exit 1;;
+esac
+echo  "$opt"

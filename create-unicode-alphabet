@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+cp "${SHELL_VARS}" "${TMPDIR}/shell_vars~backup"
+. addCharacterArrays
+# source addCharacterArrays for ARR_ALPHABET, ARR_DIGITS_DECIMAL & ARR_DIGITS_HEXADECIMAL
+
+if startsWithDash ${1}
+then
+    ([[ ${1/-/} = 'a' ]] || [[ ${1/-/} = '-alphabet' ]]) && ARR_CHARACTERS=(${ARR_CHARACTERS}) && shift
+    ([[ ${1/-/} = 'd' ]] || [[ ${1/-/} = '-decimal' ]]) && ARR_CHARACTERS=(${ARR_DIGITS_DECIMAL}) && shift
+    ([[ ${1/-/} = 'du' ]] || [[ ${1/-/} = '-decimal-uppercase' ]]) && ARR_CHARACTERS=($(ntow "${ARR_DIGITS_DECIMAL}" | uppercase)) && shift
+    ([[ ${1/-/} = 'dl' ]] || [[ ${1/-/} = '-decimal-lowercase' ]]) && ARR_CHARACTERS=($(ntow "${ARR_DIGITS_DECIMAL}" | lowercase)) && shift
+    ([[ ${1/-/} = 'x' ]] || [[ ${1/-/} = '-hexadecimal' ]]) && ARR_CHARACTERS=(${ARR_DIGITS_HEXADECIMAL}) && shift
+    ([[ ${1/-/} = 'A' ]] || [[ ${1/-/} = '-array' ]]) && N_ELEMENTS=${2} && ARR_CHARACTERS=(${@[3,$((${N_ELEMENTS}+2))]}) && shift $((${N_ELEMENTS}+2))
+
+fi
+echo "\$1=${1}"
+echo "\$2=${2}"
+echo "\$3=${3}"
+NAME="_${1}"
+[[ ${#NAME} -gt 1 ]] && NAME="${NAME}_"
+FROM="${2:-0x1f1e6}"
+TO="${3:-$(convert-number -x $((${FROM}-1+${#ARR_CHARACTERS})))}"
+#TO="${3:-$(convert-number -x $((0x${FROM[6,-1]}-1+${#ARR_CHARACTERS})))}"
+
+echo "NAME=${NAME}"
+echo "FROM=${FROM}"
+echo "TO=${TO}"
+echo "ARR_CHARACTERS=${ARR_CHARACTERS[@]}"
+CNT=1
+for uc in {$((${FROM}))..$((${TO}))}
+do 
+    [[ -n $(eval "echo \$UC${NAME}${ARR_CHARACTERS[${CNT}]}") ]] && echo "continue" && continue
+    UC_HEX=$(convert-number -x ${uc})
+    UC_HEX_ROOT=${UC_HEX[3,-1]}
+    
+    echo "addvar -k -q \"UC${NAME}${ARR_CHARACTERS[${CNT}]}\"" '\\\\U'"${UC_HEX_ROOT}"
+
+    
+    addvar -k -q "UC${NAME}${ARR_CHARACTERS[${CNT}]}" '\\\\U'${UC_HEX_ROOT}
+    echo -n $((CNT++))
+done
+
+last-shell-vars ${CNT} > /dev/stdin

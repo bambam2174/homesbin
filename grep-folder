@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+# REGEX to grep file name in the result output using `less`
+# of shape:  ./path/to/file.js:12:
+#  ^\..*:[0-9]\+:   
+# of shape:  /User/username/project/path/to/file.js:12:
+#  ^\/.*:[0-9]\+:   
+# or for both type  just 
+# .*:[0-9]\+:
+# for grep -E in command line don't escape '+'
+
+_grep-folder () {
+	grep  --exclude-dir '\.git' --color=auto -nIRS ${@}
+}
+_grep-folder ${@}

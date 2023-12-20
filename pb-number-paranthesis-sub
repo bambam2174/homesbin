@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-number-paranthesis-sub () {
+	number-paranthesis-sub ${@} | pbcopy
+}
+_pb-number-paranthesis-sub ${@}

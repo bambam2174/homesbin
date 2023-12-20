@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+SECTION="${1}"
+
+CSECTION=""
+
+for i in {1..$#SECTION}
+do 
+    [[ $SECTION[$i] = ' ' ]] && CSECTION+=$SECTION[$i] || CSECTION+=$SECTION[$i].$SECTION[$i]
+done
+
+echo $CSECTION

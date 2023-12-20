@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+HEADLINE='"Nr.";"From";"To";"Remark"'
+TARGET="$1-Scenes_to_cut_out.csv"
+echo $HEADLINE > $TARGET
+

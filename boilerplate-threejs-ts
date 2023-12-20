@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_boilerplate-threejs-ts () {
+	git clone https://github.com/Sean-Bradley/Three.js-TypeScript-Boilerplate.git "${1}"
+}
+_boilerplate-threejs-ts ${@}

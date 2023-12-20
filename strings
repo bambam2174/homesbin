@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_OUTPUT}
 
 _strings () {
     TARGETFILE=${OUTPUT_STRINGS}/strings_$(path2string ${@[-1]:-${PWD}})_$(date +%s).txt

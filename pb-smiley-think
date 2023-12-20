@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-smiley-think () {
+	smiley-think ${1} | pbcopy
+}
+_pb-smiley-think ${@}

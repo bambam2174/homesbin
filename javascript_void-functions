@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+const myArgs = process.argv.slice(2);
+let SZ_URL = myArgs[0];
+
+javascript:void(location.href='https://tinyurl.com/create.php?url='+encodeURIComponent(location.href))
+

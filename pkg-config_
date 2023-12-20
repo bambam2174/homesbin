@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+pkg-config ${@} | tee 

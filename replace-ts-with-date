@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_replace-ts-with-date () {
+	isNumeric "${1}" && P_LINENR=${1}  && TMPLINE="$(cat ${2:-${HISTFILE}} | head -n ${1} | tail -n 1)"  || {
+		[[ -n ${1} ]] && TMPLINE="${1}" 
+	}
+	TMPTS=$(extract-ts "${TMPLINE}") 
+	echo $TMPTS
+	SZDATE="$(timestamp2date $TMPTS)" 
+	echo "${TMPLINE//${TMPTS}/${SZDATE}}"
+}
+_replace-ts-with-date ${@}

@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+FULLPATH=false
+startsWithDash ${1} && [ ${1/-/} = 'f' -o ${1/-/} = '-fullpath' ] && FULLPATH=true && shift
+
+FOLDER='./'
+COUNT=1
+
+[[ -n "${1}" ]] && [[ -d "${1}" ]] && FOLDER="${1}" || { COUNT="${1}";  [[ -n "${2}" ]] && FOLDER="${2}"  }
+
+if ${FULLPATH}
+then
+    ls -dlUt1 "${FOLDER}"/* | head -n "${COUNT}"
+else
+    ls -lUt1 "${FOLDER}" | head -n "${COUNT}"
+fi
+

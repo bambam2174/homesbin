@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+filename=/tmp/$$; file_count=0; short=0; long=0
+
+while [ $# -ne 0 ]; do
+    case $1 in # 2 kinds of arguments: files and ops ...
+	-*) echo $1 > $filename; opt=`sed 's/-//' $filename`; eval "$opt=1" ;;
+	*) ((file_count++)); echo "log$file_count=$1" ;;
+    esac; shift;
+done
+
+echo $filename
+echo $file_count
+echo $short
+echo $log

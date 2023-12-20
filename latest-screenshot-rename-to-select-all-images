@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_rename-captcha () {
+	NEWNAME="${1}" 
+	rename-file "$(path-latest-screenshot)" "Select All Images With•${NEWNAME}"
+    ecko "Renamed to \"Select All Images With•${NEWNAME}\""
+}
+_rename-captcha ${@}

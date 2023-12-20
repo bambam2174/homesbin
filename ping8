@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+mkdir -p  "${OUTPUT_PING}"
+
+_ping8 () {
+	ping 8.8.8.8 | tee "${OUTPUT_PING}/ping8888.$(timestamp).date.txt"
+}
+_ping8 ${@}

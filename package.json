@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cordova-res": "^0.15.4",
+    "native-run": "^1.6.0"
+  }
+}

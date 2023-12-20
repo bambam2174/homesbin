@@ -1,4 +1,7 @@
 #!/bin/zsh
 
-date +"%s"
 
+_timestamp () {
+	date +"%s"
+}
+_timestamp ${@}

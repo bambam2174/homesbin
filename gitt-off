@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_gitt-off () {
+	unalias git
+}
+_gitt-off ${@}

@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+echo \$@=$@
+echo PWD=${PWD}
+echo
+FSOBJ="${1}"
+1=${1//\(/\\\(}
+1=${1//\)/\\\)}
+echo \$1=${1}
+echo "\$(dirname \${1})  $(dirname "${1}")"
+echo "ls -1 \"\$(dirname \${1})\" | grep -E \"^$(basename ${1})\" "
+ls -1 "$(dirname ${1})" | grep -E "^$(basename ${1})"
+CURREN_COUNT_1=$(($(ls -1 "$(dirname ${1})" | grep -E "^$(basename ${1})" | wc -l)))
+echo "CURREN_COUNT_1=${CURREN_COUNT_1}"
+echo
+echo TPATH="${PWD}/${1}"
+echo "\$(dirname \${TPATH})  "$(dirname "${TPATH}")
+CURREN_COUNT_TPATH=$(($(ls -1 $(dirname "${TPATH}") | grep -E "^$(basename ${1})" | wc -l)))
+echo "CURREN_COUNT_TPATH=${CURREN_COUNT_TPATH}"
+
+cp -r "${FSOBJ}" "${FSOBJ} (${CURREN_COUNT_1})"
+

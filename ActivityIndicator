@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+_ActivityIndicator () {
+	SLEEP=${1:-1}
+	echo -n "\b|"
+	sleep ${SLEEP}
+	echo -n "\b/"
+	sleep ${SLEEP}
+	echo -n "\b-"
+	sleep ${SLEEP}
+	echo -n "\b\\"
+	sleep ${SLEEP}
+}
+
+_ActivityIndicator ${@}

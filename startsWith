@@ -1,18 +1,46 @@
 #!/bin/zsh
 
-source $SHELL_DEBUGSTATE
+source "${SHELL_DEBUGSTATE}"
+
+STRICT=false
+
+#echo "\$1=${1}"
+#echo "\${1[1]}=${1[1]}"
+#echo "\$@=${@}"
+#[[ ${1[1]} = '-' ]] && echo "yes 1" || echo "less 1"
+#[[ ${1/-/} = 's' ]] && echo "yes 2" || echo "less 2"
+#[[ ${1/-/} = '-stricts' ]] && echo "yes 3" || echo "less 3"
+#${STRICT} && echo "Strict" || echo "not strict all"
+if [[ ${1[1]} = '-' ]] && ([[ ${1/-/} = 's' ]] || [[ ${1/-/} = '-strict' ]])
+then
+    STRICT=true
+    shift
+fi
+
+#${STRICT} && echo "Strict" || echo "not strict all"
 
 _startsWith () {
-	usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
-	[[ $#1 -gt $#2 ]] && {
-		HAYSSTACK="$1" 
-		NEEDLE="$2" 
+	usage "${0}" "${#}" 2 '<HAYSTACK> <NEEDLE>' "checks if haystack starts with needle" || . retexit ${?}
+	# isDebug && echo "\$@ = ${@}"
+	[[ "${#1}" -gt "${#2}" ]] && {
+		HAYSTACK="${1}" 
+		NEEDLE="${2}" 
 	} || {
-		HAYSSTACK="$2" 
-		NEEDLE="$1" 
+		HAYSTACK="${2}" 
+		NEEDLE="${1}" 
 	}
-	isDebug && echo "HAYSSTACK = $HAYSSTACK"
-	isDebug && echo "NEEDLE = $NEEDLE"
-	[[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
+	isDebug && 
+        echo "HAYSTACK = ${HAYSTACK}"
+	isDebug && 
+        echo "NEEDLE = ${NEEDLE}"
+#	[[ "${HAYSTACK}" = "${NEEDLE}"* ]] && . rts 0 || . rts 1
+    if ${STRICT}
+    then
+        [[ "${HAYSTACK}" =~ "^${NEEDLE}[^${NEEDLE[1]}]" ]] && . rts 0 || . rts 1
+    else
+#        [[ "${HAYSTACK}" =~ "^${NEEDLE}"* ]] && . rts 0 || . rts 1
+        [[ "${HAYSTACK}" =~ "^${NEEDLE}" ]] && . rts 0 || . rts 1
+    fi
+	# echo "[[ \"${HAYSTACK}\" =~ \"^${NEEDLE}[^${NEEDLE[1]}]\" ]]; asdf"
 }
 _startsWith ${@}

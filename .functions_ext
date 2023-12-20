@@ -1,0 +1,305 @@
+do-chess () {
+	doline1 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 10 15)$(ekko '   ' 10)"
+		done
+	}
+	doline2 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 10)$(ekko '   ' 10 15)"
+		done
+	}
+	FLOP=1 
+	for i in {1..8}
+	do
+		[[ $FLOP -eq 1 ]] && doline1 || doline2
+		echo
+		FLOP=$(($FLOP*-1)) 
+	done
+}
+
+do-chess2 () {
+	doline1 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 015 010)$(ekko '   ' 000 010)"
+		done
+	}
+	doline2 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 000 010)$(ekko '   ' 015 010)"
+		done
+	}
+	FLOP=1 
+	COUNT=1 
+	for i in {1..8}
+	do
+		echo -n " $i "
+		[[ $FLOP -eq 1 ]] && doline1 || doline2
+		echo
+		FLOP=$(($FLOP*-1)) 
+	done
+	echo -n "   "
+	for b in {H..A}
+	do
+		echo -n " $b "
+	done
+	echo
+}
+
+do-chess3 () {
+	doline1 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 015 010)$(ekko '   ' 000 010)"
+		done
+	}
+	doline2 () {
+		for i in {1..4}
+		do
+			echo -n "$(ekko '   ' 000 010)$(ekko '   ' 015 010)"
+		done
+	}
+	FLOP=1 
+	for i in {8..1}
+	do
+		echo -n " $i "
+		[[ $FLOP -eq 1 ]] && doline1 || doline2
+		echo
+		FLOP=$(($FLOP*-1)) 
+	done
+	echo -n "   "
+	for b in {A..H}
+	do
+		echo -n " $b "
+	done
+	echo
+}
+
+
+list-links () {
+	for i in ${1}/**/*.webloc
+	do
+		dirname "${i/${1}/}"
+		TMPL=$(getlink $i)
+		TMPN=$(filename $i)
+		ekko ${TMPN} 200 007
+		ekko ${TMPL} 107 197
+	done
+}
+
+setup_virtualenv () {
+	source $(which virtualenvwrapper.sh)
+	workon
+}
+
+## transferred to $HOME/.debug_state
+#isDebugLocal () {
+#	if [[ "$DEBUG" -eq $TRUE ]] 2> /dev/null || [[ "$DEBUG" = $TRUE ]]
+#	then
+#		return 0
+#	else
+#		return 1
+#	fi
+#}
+
+#isDebug () {
+#	DEBUG=$(cat $DEBUG_STATE_FILE)
+#	isDebugLocal && return 0 || return 1
+#}
+
+last-command () {
+	[[ $# -gt 0 ]] && LINENR=${1}  || LINENR=2 
+	LASTCMD=$(tail -n ${LINENR} $HISTFILE | head -n 1) 
+	TO_REPLACE=$(echo $LASTCMD |  cut -d ';' -f1) 
+	echo ${LASTCMD/${TO_REPLACE};/}
+}
+
+
+show-dirstack () {
+	for dir in $dirstack
+	do
+		echo ${dir}
+	done
+}
+
+sploit-tools () {
+	cd $GITHUB/InfoSec-Exploit-PWN/DOOOOONNNNNNEEEEE/sploit-tools
+	PATH=$PWD:$PATH 
+	cd $OLDPWD
+}
+
+man-header () {
+	IFS=$DELIMITER_ENDL 
+	for i in $(cat /usr/share/man/man*/${1}.* | grep -E '\.S[Hh]+ [A-Z]*')
+	do
+		echo $i | sed "s/.S[Hh] //" | sed "s/[\"]*//g"
+	done
+}
+
+man-path () {
+	ls -G /usr/share/man/man*/${1}.*
+}
+
+chhEEtest () {
+	local OPT
+	local SEARCHTERM
+	[[ $# -gt 1 ]] && startsWithDash ${1} && {
+		OPT=${1}  && SEARCHTERM=${2} 
+	} || SEARCHTERM=${1} 
+	CMD='history | grep '${OPT}' -E "[^a-zA-Z0-9_]{1}'${SEARCHTERM}'[^a-zA-Z0-9_]{1}"' 
+	echo $CMD
+	eval $CMD
+}
+
+first2arr () {
+	LINECOUNT=5 
+	WHERE=$PWD
+    CORRECTION4LISTOUTPUT=0
+	H='' 
+	if [ -n "$1" ]
+	then
+		PARAM1="$1" 
+		startsWithDash $PARAM1 && H=$PARAM1[2]  || LINECOUNT=$PARAM1 
+	fi
+	if [ -n "$2" ]
+	then
+		PARAM2="$2" 
+		startsWithDash $PARAM2 && H=$PARAM2[2]  || WHERE=$PARAM2 
+	fi
+	if [ -n "$2" ]
+	then
+		PARAM3="$3" 
+		startsWithDash $PARAM3 && H=$PARAM3[2,-1]  || H="h" 
+	fi
+	if isDebugLocal
+	then
+		echo $LINECOUNT
+		echo $WHERE
+		echo "${PARAM3} : $PARAM3[2,-1]"
+	fi
+	[[ -L $WHERE ]] && ! endsWith $WHERE '/' && WHERE="${WHERE}/" 
+	isDebugLocal && {
+		echo "\$WHERE=${WHERE}"
+		echo "\$LINECOUNT=${LINECOUNT}"
+	}
+    string_contains ${H} "l" && CORRECTION4LISTOUTPUT=1
+	CMD="ls -${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+${CORRECTION4LISTOUTPUT}))" 
+	isDebugLocal && echo ${CMD}
+    setIFS
+    export ARR_FILES=( $(eval ${CMD}) )
+	for f in ${ARR_FILES}
+	do
+		echo "${f}"
+	done
+    resetIFS
+}
+
+add-function-ext () {
+	[[ $# -eq 1 ]] && function_exists "$1" && {
+		echo "$1 already exists."
+		type $1
+		builtin which $1
+		return 1
+	}
+	FUNCTIONS_EXT=$BIN/.functions_ext
+	[[ -n "${2}" ]] && FUNCTIONS_EXT="${2}"
+	echo >> $FUNCTIONS_EXT
+	FUNCTION_NAME=$1
+	builtin which $FUNCTION_NAME >> $FUNCTIONS_EXT
+}
+
+arr4output () {
+	ARRNAME="${1}" 
+	ARRVALUE="${2}" 
+	CMD="${ARRNAME}=( \$(${ARRVALUE}) )" 
+	IFS=$DELIMITER_ENDL 
+	eval "${CMD}"
+}
+
+_links-grep () {
+	{
+        [[ ${#} -gt 1 ]] && SZ_REGEX="${2}${1}${2}" || SZ_REGEX="${1}"
+        isDebug &&  echo "${SZ_REGEX}"
+		grep  -ril . $LINKS | grep  "${SZ_REGEX}"
+	} 2> /dev/null
+}
+
+links-grep() {
+	{
+		case ${#} in
+         1)
+            isDebugLocal && echo "\$# = 1: \$1=$1";
+            SZ_REGEX="${1}";
+            ;;
+         2)
+            isDebugLocal && echo "\$# = 2: \$1=$1, \$2 = $2";
+            SZ_REGEX="${2}${1}${2}";
+            ;;
+         3)
+            isDebugLocal && echo "\$# = 3: \$1=$1, \$2=$2,  \$3=$3";
+            SZ_REGEX="${2}${1}${3}";
+            ;;
+        esac
+        isDebugLocal && echo "${SZ_REGEX}" && which -a grep;
+        grep -ril . $LINKS | grep -E "${SZ_REGEX}"
+    } 2> /dev/null
+}
+
+
+colormap () {
+	for i in {0..255}
+	do
+		print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}
+	done
+}
+
+last• () {
+	COUNT=5 
+	TARGET_DIR="${PWD}" 
+	[[ -n "${1}" ]] && COUNT="${1}" 
+	[[ -n "${2}" ]] && TARGET_DIR="${2}" 
+	cd ${TARGET_DIR}
+	ls -G -lhFAGct1 ${TARGET_DIR} | tail -n ${COUNT}
+	cd "${OLDPWD}"
+}
+
+chh_sed_e () {
+	omz_history -E | grep --color=auto -i "${1}" | sed -E "s/${REGEX_NO_HIST_DATETIME}//g"
+}
+
+
+abbr_it () {
+	IFS=$DELIMITER_ENDL 
+	for i in $(cat $SHELL_VARS | grep -E '^export abbr_')
+	do
+		TMP_KEY=$(e "${i}" | cut -d'=' -f1) 
+		TMP_KEY=${TMP_KEY//export /} 
+		CMD=$(e "addvar $(echo \"${i}\" | grep -oE '\s.*\=')") 
+		CMD="${CMD//abbr_/}'\$${TMP_KEY}'" 
+		EXISTS=$(cat $SHELL_VARS | grep -e "\$${TMP_KEY}") 
+		CMD=${CMD//=/ } 
+		echo "\$CMD = ${CMD}"
+		[[ -z ${EXISTS} ]] && eval ${CMD}
+	done
+}
+
+list2arr () {
+	IFS=$DELIMITER_ENDL 
+	export ARR_LIST=($(eval ${1})) 
+}
+
+list-array-elements () {
+	for el in ${@}
+	do
+		echo "${el}"
+	done
+}
+
+search-history-whole-word () {
+	#omz_history -E | grep --color=auto -E "\b${1}\b"
+	history | grep --color=auto -E "\b${1}\b"
+}

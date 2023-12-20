@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+source /etc/zshrc
+
+_eco () {
+	PTEXT="${3}" 
+	COLORBG=${2} 
+	COLORFG=${1} 
+	XX="$BG[$COLORBG]$FG[$COLORFG]${PTEXT}%{$reset_color%}" 
+	print -P $XX
+}
+_eco ${@}
+
+spectrum_ls

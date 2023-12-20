@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_otmpdir () {
+	open "${TMPDIR}"
+}
+_otmpdir ${@}

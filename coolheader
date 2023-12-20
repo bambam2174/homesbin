@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_coolheader () {
+	REVORNOT=false
+    startsWithDash ${1} && ([[ ${1/-/} = 'r' ]] || [[ ${1/-/} =~ '-rev.*' ]]) && REVORNOT=true && shift
+	echo "$(white2black$(${REVORNOT} && echo '-rev') ${2})${1:-"First Parameter Displayed Here"}$(white2black$(${REVORNOT} || echo '-rev') ${3})"
+}
+_coolheader ${@}

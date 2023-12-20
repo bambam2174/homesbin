@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+cd $BIN
+echo "\$#@ = $#@"
+echo "${@}"
+CNTR=0
+INDEX=$(find-index '-m' $@)
+echo "INDEX=${INDEX}"
+
+INDEX_CMMTMSSG=$(($INDEX+1))
+SZ_ASSIGNMENT="${INDEX_CMMTMSSG}=${@[$INDEX_CMMTMSSG]// /%20}"
+eval $SZ_ASSIGNMENT
+echo "INDEX=${INDEX}\nINDEX_CMMTMSSG=${INDEX_CMMTMSSG}"
+echo "${@[${INDEX_CMMTMSSG}]}"
+
+$(echo $@)
+
+cd "${OLDPWD}"

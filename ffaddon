@@ -1,0 +1,58 @@
+#!/bin/zsh
+
+if [ -z $1  ];then
+    echo "Creates a folder with boilerplate-code inside for an addon suitable for firefox";
+    echo "Usage: $(basename $0) <name of script> [ \"<descripion of script's job>\" ] ";
+    echo "Required script name ";
+    echo "Optional description (use quotes)";
+    exit 1;
+fi
+
+APPNAME="$1"
+#[ $(fileext $APPNAME) = js ] || APPNAME="${APPNAME}.js"
+DESC="WYSIWYG"
+
+if [ -n "$2" ]; then
+    DESC="$2"
+fi
+
+
+
+mkdir $APPNAME
+
+cd $APPNAME
+
+touch "$APPNAME.js"
+echo 'document.body.style.border = "5px solid red";' >>  "$APPNAME.js"
+echo 'document.body.style.margin = "0px";'  >>  "$APPNAME.js"
+cp -r $(dirname $0)/icons ./
+
+read -r -d '' MANIFEST << EOM
+{
+	"manifest_version": 2,
+	"name": "$APPNAME",
+	"version": "1.0",
+	"description": "$DESC",
+	"icons": {
+		"48": "icons/inauguration_48.jpeg",
+		"96": "icons/inauguration_96.jpeg"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+                "*://*/*"
+			],
+			"js": [
+				"$APPNAME.js"
+			]
+		}
+	],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "$APPNAME@sedat.kilinc.de"
+        }
+    }
+}
+EOM
+
+echo $MANIFEST > manifest.json

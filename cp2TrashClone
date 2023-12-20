@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_cp2TrashClone () {
+	cp -i "${1}" ${HOME}/TrashClone/
+}
+_cp2TrashClone ${@}

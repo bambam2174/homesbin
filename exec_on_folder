@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+SOURCEPATH="$1"
+COMMAND="$2"
+[[ -n $OUTPUT_PROTOCOLS_RESPONSES_LOGS ]] && TARGETOUTPUT=$OUTPUT_PROTOCOLS_RESPONSES_LOGS || TARGETOUTPUT=$HOME/tmp/output
+TARGETOUTPUT=$TARGETOUTPUT/$(date +"%s")
+
+mkdir -p $TARGETOUTPUT
+
+for i in $(ls -1 $SOURCEPATH); do 
+	echo "==>$i" | tee -a $TARGETOUTPUT/$i.output; 
+ 	#$(echo $COMMAND) $i | tee -a $TARGETOUTPUT/$i.output;
+ 	$(echo "${COMMAND}$i") | tee -a $TARGETOUTPUT/$i.output;
+ 	cat $TARGETOUTPUT/$i.output >> $TARGETOUTPUT/complete.output
+done
+

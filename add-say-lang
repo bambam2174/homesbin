@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+[[ ${#1} -lt 2 ]] && echo "two letter abbreviation please" > /dev/stderr && exit 0b01
+LANG=${1}
+
+alias say-voices='say -v "?" | grep -i'
+
+VOICE=$(say-voices "${LANG}_" | cut -d' ' -f1  | head -n 1)
+[[ -z ${VOICE} ]] && echo "Language doesn't exist" > /dev/stderr && exit 0b10
+
+if [[ ${#} -gt 1 ]] && [[ $(say-voices  -E "${2}\s+${LANG}_" | wc -l) -gt 0  ]] #  -E "Daniel\s+en_"
+then
+    VOICE=${2}
+fi
+
+
+read -d '' TEMPLATE_ALIAS <<EOT
+say-[lang]='say -v \${CURRENT_SAY_[LANG]:-[VOICE]}'
+say-[lang]-cp='say-[lang] \$(pbpaste)'
+say-[lang]-cp-i='say-[lang]-i \$(pbpaste)'
+say-[lang]-i='say-[lang] --interactive=white/red'
+EOT
+
+NEWALIAS=$(echo ${TEMPLATE_ALIAS} | sed -E "s/\[lang\]/${LANG}/g" | sed -E "s/\[LANG\]/$(uppercase ${LANG})/g" | sed -E "s/\[VOICE\]/${VOICE}/g")
+
+# cat $SHELL_ALIASES | grep "$( add-say-lang tr fuat)"
+for idx in {1..4}
+do
+    line=$(echo $NEWALIAS | head -n ${idx} | tail -n 1)
+    EXISTS=$(cat ${SHELL_ALIASES} | grep "${line}")
+    [[ -z ${EXISTS} ]] && echo "alias ${line}" | tee -a ${SHELL_ALIASES} || echo "${line}\nalready exists"
+done
+

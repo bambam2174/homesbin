@@ -2,6 +2,6 @@
 
 
 _lines () {
-	echo $(($(cat "${1}" | wc -l)))
+    [[ -r "${1}" ]] && echo $(($(cat "${1}" | wc -l))) || echo "${1}" | wc -l
 }
 _lines ${@}

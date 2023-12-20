@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_grep-files () {
+	local OPTS='' 
+	startsWithDash ${1} && OPTS=${1//-/}  && shift
+	CURRINPUT="$(get-stdin &)" 
+	echo ${CURRINPUT} | grep --color=auto -${OPTS}E '.*.(webloc|txt|sh|xml|csv|tar\.gz|pdf|png|json|h|url|html|ico)$'
+}
+_grep-files ${@}

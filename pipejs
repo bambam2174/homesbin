@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+const { exec } = require("child_process");
+
+const myArgs = process.argv.slice(2);
+
+if(myArgs.length > 0) {
+
+    console.log('args ', myArgs);
+
+    console.log('args', myArgs[0]);
+
+    console.log(`args backticks ${myArgs[0]}`);
+
+    if (myArgs.length > 1)
+        console.log('args ', myArgs[1]);
+    exec_shell_cmds(myArgs[0]);
+}
+
+
+//exec(`INPUT_PIPE="$(cat < /dev/stdin)"; [[ -n $INPUT_PIPE ]] &&  echo $INPUT_PIPE || echo foo`,  (err, stdout, stderr) => {
+//exec(`fubar() { INPUT_PIPE="$(cat < /dev/stdin)";[[ -n $INPUT_PIPE ]] && SZ_LISTE="$INPUT_PIPE"; echo "-> $SZ_LISTE"; }; ls -lah | fubar`,  (err, stdout, stderr) => {
+//exec(`INPUT_PIPE="$(cat /dev/stdin)"; [[ -n $INPUT_PIPE ]] &&  echo $INPUT_PIPE || echo foo`,  (err, stdout, stderr) => {
+exec(`INPUT_PIPE="$(cat < /dev/stdin)" && echo $INPUT_PIPE || echo foo`,  (err, stdout, stderr) => {
+    if (err) {
+        console.log(`error: ${err.message}`);
+        return;
+    }
+     if (stderr) {        
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+});
+//# INPUT_PIPE="$(cat < /dev/stdin)"
+//# [[ -n ${INPUT_PIPE} ]] && SZ_LISTE="${INPUT_PIPE}"
+
+function exec_shell_cmds(pArgs) {
+
+    exec(`ls -lahFG ${pArgs[0]}  | rev | cut -d" "  -f1 | rev`, (err, stdout, stderr) => {
+        if (err) {
+            console.log(`PIPE : error: ${err.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`PIPE : stderr: ${stderr}`);
+            return;
+        }
+        console.log(`PIPE : stdout: ${stdout}`);    
+        return;
+    });
+
+
+    exec(`ls -la ${pArgs[0]}`, (err, stdout, stderr) => {
+        if (err) {
+            console.log(`error: ${err.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
+}

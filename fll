@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+for i in ${@}
+do
+    isFile "${i}" && listit "$(file "${i}")" ','
+done
+

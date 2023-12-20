@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_fingeru () {
+	export ARR_FINGERUP=() 
+	for f in `seq 1 2 ${#FINGERUP}`
+	do
+		ARR_FINGERUP+="${FINGERUP[${f},$((${f}+1))]}" 
+	done
+}
+_fingeru ${@}

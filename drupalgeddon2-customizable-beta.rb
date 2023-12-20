@@ -1,0 +1,1 @@
+/Users/sedatkilinc/Projects/InfoSec/CVEs/CVE-2018-7600/Drupalgeddon2/drupalgeddon2-customizable-beta.rb

@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_arrows () {
+	for i in {1..$#ARROWS}
+	do
+		FG=1 
+		BG=11 
+		ecko "	${i}	$ARROWS[$i]	" $FG $BG
+	done
+}
+_arrows ${@}

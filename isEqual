@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+true; return
+false;return
+

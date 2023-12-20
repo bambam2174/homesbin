@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+decrypt2 ~/OneDrive/.ff_bdeutet_fickfehler
+. ~/OneDrive/.ff_bdeutet_fickfehler
+web-ext sign --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET
+
+encrypt2 ~/OneDrive/.ff_bdeutet_fickfehler

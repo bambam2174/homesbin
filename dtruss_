@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+echo ${@}
+echo "${@[1,-1]}"
+OUTPUT_FILE=$(path2string "${@[1,-1]}")
+echo ${OUTPUT_FILE}
+
+_dtruss_ () {
+    dtruss ${@} | tee -a ${OUTPUT_DTRUSS}/$(path2string "${@}").txt
+}
+_dtruss_ ${@}

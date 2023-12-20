@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_getParameterURL () {
+	URL="$(echo "${@}" | grep -oE 'http\S*')" 
+	echo "${URL}" > /dev/stdout
+}
+_getParameterURL ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+([[ ${1/-/} = 'v' ]] || [[ ${1/-/} = '-verbose' ]]) && {
+    #$(echo ${0})
+    echo -n "days passed since 01. January $(date +%Y): "
+}
+date +%j

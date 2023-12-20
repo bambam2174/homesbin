@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+[[ "$#" = "0" ]] && . rts 1
+
+_isDotShellFile () {
+    PARAM="$(filename ${1})" 
+#	( isDebugLocal || isDebugGlobal	) && echo $PARAM
+	startsWith $(filename ${PARAM}) '.shell' # && return 0 || return 1
+}
+_isDotShellFile ${@}

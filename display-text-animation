@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_display-text-animation () {
+	DEBUG=false 
+	startsWithDash ${1} && [ ${1//-/} = 'd' -o ${1//-/} = 'debug' ] && DEBUG=true  && shift
+	SZN=${1:-Sedat} 
+	SZV=${2:-*} 
+	INT_DUR=${3:-0.5} 
+	for i in {1..$(($#SZN*2-1))}
+	do
+		[[ $i -gt $#SZN ]] && SUBST=$((${#SZN}*2-${i}))  || SUBST=$((${i})) 
+		echo "$SZN$(charTimes ${SUBST})${SZV}$(${DEBUG} && e "	i=${i}	SUBST=${SUBST}")"
+		sleep ${INT_DUR}
+	done
+}
+_display-text-animation ${@}

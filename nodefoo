@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+
+function xy() {
+    return 99;
+}
+
+console.log(xy());
+return 55;
+//exit false;

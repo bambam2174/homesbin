@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_list-csv-col () {
+	IDX=0 
+	FILE_CSV="${1}" 
+	COL=${2:-2} 
+	for line in $(cat "${FILE_CSV}")
+	do
+		echo "${IDX} % 3 = $(($IDX%3)) "
+		[[ $(($IDX%3)) -eq ${COL} ]] && ecko " ${line} " 188 88 
+		((IDX++))
+	done
+}
+_list-csv-col ${@}

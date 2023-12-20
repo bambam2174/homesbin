@@ -1,0 +1,47 @@
+#!/bin/zsh
+if [[ ${1} = '-h' ]]
+then
+read -d '' HLP <<EOF
+1.   directory
+2.   symbolic link              
+3.   socket
+4.   pipe
+5.   executable
+6.   block special
+7.   character special
+8.   executable with setuid bit set
+9.   executable with setgid bit set
+10.  directory writable to others, with sticky bit
+11.  directory writable to others, without sticky bit
+
+EOF
+echo ${HLP}
+exit 0
+fi
+
+IDX=1
+PATH2CHECK=/System/Volumes/Data/
+[[ -n ${1} ]] && IDX=$((2*${1}-1)) && shift
+[[ -z ${1} ]] && 1=${PATH2CHECK}
+
+echo $LSCOLORS
+ARRFORECOLOR=( a b c d e f g h A B C D E F G H )
+ARRBGCOLOR=( a b c d e f g h )
+
+_check-lscolors () {
+	for c in ${ARRFORECOLOR[@]}
+	do
+        for b in ${ARRBGCOLOR[@]}
+        do
+        
+            LSCOLORS[${IDX},$((${IDX}+1))]="${c}${b}"
+		
+    #        LSCOLORS=${c}bfxcxdxbxegedabagacad 
+        
+            echo "LSCOLORS=${LSCOLORS}"
+		
+            ls -lGAFd ${@}
+        done
+	done
+}
+_check-lscolors ${@}

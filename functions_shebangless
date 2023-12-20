@@ -1,0 +1,1291 @@
+
+#source $HOME/.debug_state
+{ isDebug && echo "Script name $0" } 2> /dev/null
+
+export CLICOLOR=1
+
+[[ -z "$ALIASES_SET" ]] && source ~/.bash_aliases
+[[ -z "$BASHVARS" ]] && source ~/.bash_vars
+
+scpup2 () 
+{ 
+	if [ ! $1 ]; then
+		echo "Usage: scpup2 sourcefile destinationfile"
+		return 1
+	elif [ ! $2 ]; then
+		DEST=$(basename $1)
+	else
+		DEST=$2
+    fi
+	echo root@vwebsk.kmundp.de:~/$DEST
+	return $?
+    scp -r $1 root@vwebsk.kmundp.de:~/$DEST
+}
+
+# FileSearch
+f() {
+    touch "/var/log/find/$1.log"
+    if [ $# -eq 1 ]; then
+        find . -iname "*$1*" | tee -a "/var/log/find/$1.log"
+    fi
+
+    #find $SEARCHPATH -iname "*$1*" ${@:2}
+    
+    PARAM=$1
+    f_it() {
+        touch "/var/log/find/$PARAM.log"
+        find "$@" -iname "*$PARAM*"  | tee -a "/var/log/find/$PARAM.log"
+    }
+
+    shift
+    for fname in "$@"; do
+        f_it "$fname"
+    done
+
+
+}
+fpx() {
+    SP='./'
+    echo "$1"
+    echo "$2"
+    if [[ -z $1 ]]; then
+        echo "-z $1 true"
+    else
+        echo "-z $1 false"
+    fi
+    if [[ -z $2 ]]; then
+        echo "-z $2 true"
+    else
+        echo "-z $2 false"
+    fi
+    if [[ -n $1 ]]; then
+        echo "-n $1 true"
+    else
+        echo "-n $1 false"
+    fi
+    if [[ -n $2 ]]; then
+        echo "-n $2 true"
+    else
+        echo "-n $2 false"
+    fi
+}
+
+fp() {
+    SP='./'
+    if isDebug; then
+        echo "Parameters: $# arguments";
+    fi
+    # PARAMCOUNT=$(($#+1))
+    PARAMCOUNT=$#
+    # PARAMCOUNT=$(($#-1))
+    if [ -n $2 ]; then
+        SP=$(abspath $2)
+        PARAMCOUNT=3
+    fi
+å
+    if [[ $# -gt 2 ]]; then
+        _OPTION="-name"
+    else
+        _OPTION="-iname"
+    fi
+
+    if isDebug && [ -n "$COLOR_Cyan" ] ; then
+        printf "${COLOR_LightGreen}find ${COLOR_Yellow}$SP ${COLOR_Cyan}$_OPTION ${COLOR_LightCyan}\"*${COLOR_LightGreen}$1${COLOR_LightCyan}*\"${COLOR_NC} ${@:$PARAMCOUNT}"
+    elif isDebug; then
+        echo "find $SP $_OPTION \"*$1*\" ${@:$PARAMCOUNT}"
+    fi
+    RESULT=$(find $SP $_OPTION "*$1*"  | tee -a "/var/log/find/$1.log")
+    printf "${COLOR_Cyan}$RESULT"
+}
+
+param() {
+    PC=2
+    echo "count $#"
+    echo "\$0 $0"
+    echo "0 ${@:0}"
+    echo "1 ${@:1}"
+    echo "2 ${@:2}"
+    echo "3 ${@:3}"
+    echo "$PC ${@:PC}"
+	echo "$1" ${@:2} -R . 
+}
+
+r() {
+#    grep "$1" ${@:2} -R . 
+    PARAM=$1
+    r_it() {
+        grep -irl $PARAM "$@"
+    }
+
+    shift
+    for fname in "$@";
+    do
+        r_it "$fname"
+    done
+
+
+}
+
+#mkdir and cd
+mkcd() { mkdir -p "$@" && cd "$_"; }
+
+opex() {
+    xdg-open $1 &
+}
+
+alldoc() { 
+    fmp_helperx() { 
+        echo "$@"; 
+    }
+
+    for fname in "$@"; do 
+        fmp_helperx "$fname";
+    done  
+
+
+    fmp_helper() { 
+        echo "$@"; 
+    }
+}
+
+fmp ()  {
+
+    fmp2() { 
+        nautilus "$@"; 
+    };
+
+    for fname in "$@";
+    do         
+        fmp2 "$fname";         
+    done; 
+}
+
+
+chparam ()  {
+    chparam2() {
+        echo "$@";
+    };
+      
+    for fname in "$@";
+    do
+        chparam2 "$fname";
+    done;
+}
+
+ 
+chparam_a ()  {
+    echo "$@";
+    echo $1
+    # shift
+    # echo "1: ${@:1}";
+    # echo "2: ${@:2}";
+    echo "####################"
+    chparam_a2() {
+        echo "2: $(abspath $@)";
+    };
+                         
+    # echo "for fname in `ls \"$@\"`";
+    for fname in `ls "$@"`;
+    do
+        echo "$fname"
+        chparam_a2 "$fname";
+        echo "##########"
+    done;
+ }
+
+checkfile() {
+    if [ $# -eq 2 ];then
+        COUNT=$1
+    else
+        COUNT=45
+    fi
+
+    checkfile_it() {
+        while true;
+        do 
+            clear;
+            tail -$COUNT "$@";
+            sleep 1;
+        done
+    }
+
+    if [ $# -eq 2 ];then
+        shift
+    fi
+    for fname in "$@"
+    do
+        checkfile_it "$fname"
+    done
+
+}
+
+sln() {
+     ln -s `pwd`/$1 $2
+}
+
+lns() {
+    OPT=''
+    if [ -n $3 ]; then
+        OPT=$3
+    fi
+    #ln -s$OPT `pwd`/$1 $2;
+    ln -s$OPT "$PWD/$1" $2;
+}
+
+lna() {
+    PARAM1="$1"
+    PARAM2="$2"
+
+    lna_it() {
+        for file in `ls $1`; 
+        do
+            ln -s  $1/$file $2/$file;
+        done
+    }
+
+    lna_it "$PARAM1" "$PARAM2"
+}
+
+show_() { 
+    #cat ~/unutmalist/*$1*;
+    tail -n +1  ~/unutmalist/**/*$1*;
+}
+
+show2() {
+    #cat ~/unutmalist/*$1*;
+tail -n 1  ~/unutmalist/*$1*;
+}
+
+show () {
+	echo foo > "$HOME/unutmalist/foo$1.tmp"
+	tail -n +1 ~/unutmalist/**/*$1* | sed '/foo/d'
+	rm -f "$HOME/unutmalist/foo$1.tmp"
+}
+
+cheat() { 
+    open http://borkware.com/quickies/one?topic=$1; 
+}
+
+gr2() {
+    PARAM=$1
+    r2_it() {
+        grep -irl $PARAM "$@"
+    }
+    shift
+    callfunction r2_it "$@"
+}
+
+callfunction() {
+    $1 $2
+}
+
+testfunc2 ()
+{
+    echo "$# parameters";
+    echo Using '$*';
+    for p in $*;
+    do
+        echo "[$p]";
+    done;
+    echo Using '"$*"';
+    for p in "$*";
+    do
+        echo "[$p]";
+    done;
+    echo Using '$@';
+    for p in $@;
+    do
+        echo "[$p]";
+    done;
+    echo Using '"$@"';
+    for p in "$@";
+    do
+        echo "[$p]";
+    done
+}
+
+opentimedoc() {
+    #echo "PID $$"
+    #echo "\$1.length=${#1}"
+    #[ ${#1} -ne 0 ] && [ -r $1 ]; echo $?
+    export STANDARD_FOLDER=~/Documents/Tätigkeitsnachweis
+    
+    # getting the last edited excel sheet in the folder
+    if [ ${#1} -ne 0 ] && [ -r $1 ]; then
+        CURRENT_PATH=$1;
+    elif [ "$1" == "-h" ]; then
+        echo "usage: $0 [<path to folder containing excel sheets>]"
+        echo "Help: finds the last edited excel sheet in the folder"
+        echo "      if no folder is given, then \"$STANDARD_FOLDER\" is used"
+        return 0
+    else
+        CURRENT_PATH=$STANDARD_FOLDER
+    fi
+    CURRENT_DOC=$(ls -td $CURRENT_PATH/*.xls* 2> /dev/null | head -n 1)
+    
+    # check if there's found at least one
+    NUM=$(ls $CURRENT_PATH/*.xls* 2> /dev/null | wc -l)
+    if [ $NUM -eq 0 ]; then
+    #if [ ! -f $CURRENT_PATH/*.xls* ]; then
+        echo "No Excel Sheet found"
+        echo "usage: $0 [<path to folder containing excel sheet>]"
+        echo
+        return 1
+    fi
+    # when using only the folder without any wildcard expression: CURRENT_DOC=$(ls -td $CURRENT_PATH | head -n 1)
+    # PATH2DOC=$CURRENT_PATH/$CURRENT_DOC
+    # open sheet
+    PATH2DOC=$CURRENT_DOC
+    open /Applications/Microsoft\ Excel.app $PATH2DOC
+}
+
+manx() {
+    echo $*
+    /usr/bin/man $* > ~/temp.txt
+    if [ -s ~/temp.txt ]; then 
+        subl ~/temp.txt
+    fi
+
+}
+
+giturlp() {
+    PATH2REPO='.'
+    if [ $# -eq 1 ]; then
+        PATH2REPO="$@"
+    fi
+
+    cat $PATH2REPO/.git/config | grep -i url | cut -d'=' -f 2
+}
+
+androiddoc () { 
+    open "http://android-docs.local/$1"; 
+}
+timestamp() {   date +"%s"; }
+ymd() { date "+%Y%m%d"; }
+
+# Xcode-Project: execute from the folder with the Assests.xxasset/ folder
+extractImages() { 
+    cp  *.imageset/*.$1 $2; 
+}
+
+# name of branch as parameter
+lsgit() { 
+    if [ ! $1 ]; then
+         echo "Usage: lsgit branchname"
+         return 1
+     else
+        git ls-tree -r $1 --name-only; 
+     fi
+}
+# get a list of all files that ever existed
+lsgitall() { 
+    git log --pretty=format: --name-status | cut -f2- | sort -u; 
+}
+# NixOS
+# https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
+
+yell() { echo "$0: $*" >&2; }
+die() { yell "$*"; exit 111; }
+trying() { "$@" || ([ $0 == "-bash" ] || dying "cannot $*") }
+
+dying() {
+    echo "cannot $*";
+    sleep 1;
+    die "$*"
+}
+function try()
+{
+    [[ $- = *e* ]]; SAVED_OPT_E=$?
+    set +e
+}
+
+function throw()
+{
+    exit $1
+}
+
+function catch()
+{
+    export ex_code=$?
+    (( $SAVED_OPT_E )) && set +e
+    return $ex_code
+}
+
+function throwErrors()
+{
+    set -e
+}
+
+function ignoreErrors()
+{
+    set +e
+}
+
+activate_xcode_commands() {
+    PATH=/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
+}
+
+reverse() {
+    tail -r -n $(cat "$1" | wc -l) "$1"
+}
+
+hexcount() {
+    for i in {0..15};do 
+        if [ $i -eq 10 ]; then 
+            i=A; 
+        elif [ $i -eq 11 ]; then 
+            i=B; 
+        elif [ $i -eq 12 ]; then 
+            i=C; 
+        elif [ $i -eq 13 ]; then 
+            i=D;  
+        elif [ $i -eq 14 ]; then 
+            i=E; 
+        elif [ $i -eq 15 ]; then 
+            i=F;  
+        fi;
+        echo "0x$i"; 
+    done
+}
+    
+realpathf() { 
+    /usr/bin/python -c "import os,sys; print(os.path.realpath(sys.argv[1]))"     "$0"; 
+}
+
+if [ -f .urlencode ]; then
+    . .urlencode
+fi
+
+inform()  { 
+    echo -e "\\033[1;36m[INFO]\\033[0m  $*"; 
+}
+warn()  { 
+    echo -e "\\033[1;33m[WARNING]\\033[0m  $*"; 
+}
+fatal() { 
+    echo -e "\\033[1;31m[FATAL]\\033[0m  $*";
+    echo "shell is about to get closed."
+    echo "Exiting in 3 seconds"
+    echo "CTRL-C to interrupt exiting"
+    sleep 3; 
+    #echo "boom...exit";
+    exit 1 ; 
+}
+
+isNumber() {
+     re='^[0-9]+$'
+     #return  [[ $1 =~ $re ]]
+     if ! [[ $1 =~ $re ]] ; then
+         return 1
+     else
+         return 0
+     fi
+ }
+
+ isNumeric() {
+     #if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+     if [ "$1" -eq "$1" ] 2> /dev/null; then
+         return 0
+     else
+         return 1
+     fi
+ }
+
+ isNaN() {
+      if [ "$1" -le 0 ] 2> /dev/null || [ "$1" -gt 0 ] 2> /dev/null;then
+          return 1
+      else
+          return 0
+      fi
+  }
+ggg() { export fff=vedat; }
+
+exx() {
+        eval "export $1=$2"
+}
+
+lsns() {
+    [ -n "$1" ] && SP="$1" || SP="."
+    [ -n "$2" ] && EXT="$2" || EXT=".*"
+    find "$SP" -maxdepth 1 ! -type l | grep -e "$EXT$" 
+}
+
+first() { 
+    LINECOUNT=5
+    WHERE=$PWD
+    H=''
+
+    if [ -n "$1" ]; then
+        PARAM1="$1";
+        startsWithDash $PARAM1 && H=$PARAM1[2] || LINECOUNT=$PARAM1
+        #LINECOUNT=$1
+    fi
+
+    if [ -n "$2" ]; then
+        PARAM2="$2";
+        startsWithDash $PARAM2 && H=$PARAM2[2] || WHERE=$PARAM2
+        #WHERE="$2"
+    fi
+
+    if [ -n "$2" ]; then
+        PARAM3="$3";
+        startsWithDash $PARAM3 && H=$PARAM3[2] || H="h"
+    fi
+
+    if isDebug; then    
+        echo $LINECOUNT
+        echo $WHERE
+    fi
+
+
+    CMD="ls -l${H}FAGct \"$WHERE\" | head -n $(($LINECOUNT+1))"
+
+    $(echo $CMD[@])
+}
+
+ffirst() {
+    [ -n "$2" ] && H="h" || H=''
+     OPTIONS="-l${H}FAiGctd"
+     ls $OPTIONS * | head -n "$1"
+ }
+
+last() { 
+    LINECOUNT=5
+    WHERE=$PWD
+     if [ -n "$1" ]; then
+         LINECOUNT=$1
+     fi
+
+     if [ -n "$2" ]; then
+          WHERE="$2"
+     fi
+     if isDebug; then
+         echo $LINECOUNT
+         echo $WHERE
+     fi
+ 
+    [ -n "$3" ] && H="h" || H=''
+    
+    ls -l${H}FAGct "$WHERE" | tail -n "$LINECOUNT"
+    #ls -lhFaGtd * | tail -n "$1" 
+}
+members () { 
+    dscl . -list /Users | while read user; do 
+        printf "$user "; 
+        dsmemberutil checkmembership -U "$user" -G "$*"; 
+    done | grep "is a member" | cut -d " " -f 1; 
+} 
+
+FileOrDirectory2 () {
+	for i in "$@"
+	do
+		[ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+	done
+
+#    for i in "${@}/*"
+#    do
+#        [ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+#    done
+}
+
+#for f in $(ls); do echo "bumm $f"; done
+FileOrDirectory () {
+    for i in $(ls $@)
+     do
+         [ -d "$i" ] && echo "$i is directory" || echo "$i is file"
+     done
+ }
+
+isFile () {
+    if [ -d "$1" ]
+    then
+        return 1
+    else
+        return 0
+    fi
+}
+
+ isDirectory () {
+     if [ -d "$1" ]
+     then
+         return 0
+     else
+         return 1
+     fi
+ }
+
+isDir () {
+    return [ -d "$1" ]
+}
+
+dckrh () {
+	COMMAND="$1" 
+	docker $COMMAND --help
+}
+
+listarray() { 
+    # listarray "$ARRAY" ; Don't forget the double quotes like in the sample
+    pARRAY="$1"; 
+    IFS=$'\n'; 
+    echo "${pARRAY[@]}" 
+}
+
+
+listarray2() {
+    pARRAY="$1";
+    IFS=$'\n';
+    echo "${pARRAY[*]}"
+}
+wwhich() { ls -lahF `which "$1"`; }
+
+gituser () {
+	PATH2REPO='.'
+	if [ $# -eq 1 ]
+	then
+		PATH2REPO="$@"
+	fi
+	cat $PATH2REPO/.git/config | grep -i email | cut -d'=' -f 2
+}
+addPath2Places() { 
+    echo "$1" >> /Users/sedatkilinc/__Places/paths.txt
+}
+
+iterm2_print_user_vars() {
+  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
+}
+savelink() { 
+    TARGET='';
+    if [ -n $2 ]; then
+        TARGET="$2";
+        mkdirlinks $(dirname $TARGET);
+    fi
+    createlink "$1" ~/Desktop/LINKS/$TARGET; 
+}
+
+savelink2() {
+    TARGET="$HOME/Desktop/LINKS/";
+    if [ -n "$2" ]; then
+        TARGET="$TARGET/$2"
+        echo $TARGET;
+        if ! [ -d " $TARGET" ]; then
+            mkdir $(dirname $TARGET);
+        fi
+    fi
+    echo "$TARGET"
+    createlink "$1" "$TARGET";
+}
+countchar() { echo "$1" | wc -c; }
+aliasesStartingWith() { LETTER="$1"; alias | grep -e "^$LETTER"; } 
+
+mkdirlinks () {
+	mkdir "$LINKS/$1"
+}
+
+func_tmpdirr ()
+{
+    echo "run"
+    : ${TMPDIR=/Users/sedatkilinc/tmp}
+    {
+        tmp=$TMPDIR
+    }
+}
+
+_debug () {
+	STATE="off"
+	if [ "$DEBUG" = $TRUE ]
+	then
+		STATE="on"
+	fi
+	echo "DEBUG is $STATE"
+}
+
+debug () {
+    echo -n "DEBUGGING is "
+    if isDebug; 
+    then 
+        echo "on"; 
+    else 
+        echo "off";
+    fi
+}
+
+# absolute value
+abs() { 
+    echo "$1" | tr -d - 
+}
+
+# negating command exit status
+# successfully executed command exits with 0 an failed one with 1
+# so here, the negating is not mathematically but in the sense of obtaining the opposite
+# possible that the YAGNI principle will kick my ass
+_negate() {
+    echo $(( ($1 - 1) * -1 ))
+}
+
+negate () {
+    echo $(( $1 * -1  ))
+}
+
+
+_isTrue() {
+    if [ "$1" = $TRUE ]; then
+        return 0
+    else
+        return 1
+    fi
+    #[ $1 = 1 ]
+    #RESULT=$(_negate $?)
+    #echo "Param $1. Result $RESULT"
+}
+
+isDebug() {
+    if [ "$DEBUG" -eq $TRUE ] 2> /dev/null || [ "$DEBUG" = $TRUE ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+setDebug() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$TRUE
+}
+
+unsetDebug() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$FALSE
+}
+
+setProd() {
+#     NEWSTATE=$(lowercase $1)
+     DEBUG=$FALSE
+}
+
+unsetProd() {
+#    NEWSTATE=$(lowercase $1)
+    DEBUG=$TRUE
+}
+
+lowercase() { echo "$1" | tr '[:upper:]' '[:lower:]'; }
+uppercase() { echo "$1" | tr '[:lower:]' '[:upper:]'; }
+
+listGBElements() {
+    DEPTH=1
+    if [ $# -gt 1 ];
+    then
+        DEPTH=$2
+    fi
+
+    du -h -d $DEPTH "$1" | grep '[0-9]G\>'
+}
+
+listGBElements2() {
+    isDebug && echo \$#\ \=\ $#;
+    echo "\$0 = $0, \$1 = $1, \$2 = $2, \$3 = $3, \$4 = $4, \$5 = $5, \$6 = $6"
+    while [[ $# -gt 0 ]];# && [[ "$1" == "--"* ]];
+    do
+        OPT=$1
+        shift;
+        echo $OPT
+    done
+
+ }
+
+webextrun() { 
+    BROWSER=/Applications/Firefox.app
+    if [ -n "$1" ]; then
+        BROWSER="$1"
+    fi
+
+    web-ext run --firefox="$BROWSER/Contents/MacOS/firefox-bin" 
+}
+
+mans2add() { 
+    echo "man $1" >> $mans2read; 
+}
+
+searchFolderForGitRepoX() { for i in $(ls -1 "$1"); do [ -e "$i/.git" ] && echo "$i is a repo" && giturlp $i || echo "$i is a NOT repo"; done }
+
+searchFolderForGitRepo() { 
+    for i in $(ls -1 "$1"); 
+    do 
+        [ -e "$i/.git" ] && 
+            echo "$i is a repo" && 
+            giturlp "$i" || 
+            echo "$i is a NOT repo"; 
+    done 
+}
+
+searchreplace() { 
+    SOURCETEXT="$1"
+    DELIMITER="$2"
+    REPLACER=$([ -n "$3" ] && $(echo "$3") || echo ";")
+    echo "$1" | perl -pe "s/$2{1,}/$REPLACER/g" 
+}
+
+addalias () {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: $(basename "$0") alias command"
+        return 1
+    fi
+    ALIASESFILE=$HOME/.bash_aliases
+    WC_ORIG=$(cat $ALIASESFILE | wc -l)
+    TMPFOLDER=$HOME/tmp/.bashstuff
+    mkdir -p $TMPFOLDER
+    TMPFILE=$TMPFOLDER/bash_aliases.prev
+    \cp -f $ALIASESFILE $TMPFILE
+
+    echo "alias $1='$2'" >> $ALIASESFILE
+
+    WC_NEW=$(cat $ALIASESFILE | wc -l)
+    if [[ $WC_NEW -lt $WC_ORIG ]]; then
+        echo "Error: New aliases-file didn't get extended"
+        echo "Number of lines of previous aliases-file $WC_ORIG"
+        echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
+        echo "Backing up new aliases-file $ALIASESFILE to ${TMPFILE}.backup\! for further analysis."
+        \cp -f $ALIASESFILE "${TMPFILE}.backup\!"
+        [[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
+        echo "Restoring previous aliases-file..."
+        \cp -f $TMPFILE $ALIASESFILE
+        [[ $? -eq 0 ]] && echo "...previous aliases-file $TMPFILE got restored to $ALIASESFILE" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
+    fi
+
+
+
+}
+
+useOfTripple_Chevrons_LeftArrows() {
+    CMD='ccat < $(echo $PWD)';
+    echo "Executing $CMD";
+    eval "$CMD"
+    
+    CMD='ccat << $(echo $PWD)';
+    echo "Executing $CMD";
+    eval "$CMD"
+
+    CMD='ccat <<< $(echo $PWD)';
+    echo "Executing $CMD";
+    ccat <<< $(echo $PWD);
+}
+
+find_aliasi_by_whole_word() {
+    CMD="alias | grep -i \\\'\\\b$1\\\b\\\'"
+    echo $CMD
+    CMD="alias | grep -i '\b$1\b'"
+    echo "$CMD"
+    $(echo $CMD)
+}
+
+strip_protocol () {
+	echo ${$(echo $1 | cut -d ":" -f2)/\/\//}
+}
+
+string_contains() {
+	if [[ $1 == *"$2"* ]] || [[ $2 == *"$1"* ]]; then
+		return 0; 
+	else 
+		return 1; 
+	fi 
+}
+
+get_subtitle_all () {
+	pVIDEO="$1"
+	pFORMATS="$3"
+
+	[[ -z $pFORMATS ]] && sub_formats=('vtt' 'srv1' 'srv2' 'srv3' 'ttml' ) || sub_formats=( "${pFORMATS[@]}" );
+	[[ -n $2 ]] && LANG=$2  || LANG="de" 
+	string_contains $pVIDEO "youtube" && URL="$pVIDEO" || URL="https://www.youtube.com/watch\?v\=$pVIDEO";
+	for f in $sub_formats
+	do
+		CMD="youtube-dl --skip-download --write-auto-sub --no-check-certificate --sub-lang $LANG --sub-format $f https://www.youtube.com/watch\?v\=$1"
+		if isDebug; then
+			echo $f;
+			echo $CMD;
+		fi
+	done
+}
+
+write_img_2_storage() {
+	IMG="$1"
+	DISKNR="$2"
+	FUNCNAME=$0
+	isDebug && echo $@ 
+	if [ $# -eq 2 ] && string_contains "$(file $IMG)" "MBR boot sector" &&  [[ $(hdiutil imageinfo -format $IMG) == "RAW*" ]] && isNumeric "$DISKNR"; 
+	then        
+        CMD="sudo dd if=${IMG} of=/dev/rdisk${DISKNR} bs=1m"
+        isDebug && echo $CMD
+        $(echo $CMD)
+    elif [ "$1" = "-h" ] || [ "$1" = "--help" ]
+	then
+		_print_usage
+        return 0
+    else
+    	echo "Errors: look up usage with $FUNCNAME --help"
+        [ $# -lt 2 ] && echo "arguments missing"
+        [ $# -gt 0 ] && ! string_contains "$(file $IMG)" "MBR boot sector" && echo "MBR boot sector is missing in $IMG"
+        [ $# -gt 0 ] && ! [[ $(hdiutil imageinfo -format $IMG) == "RAW*" ]] && echo "do the conversion with echo \"hdiutil convert -format UDRW -o $IMG source.iso\""
+        ! isNumeric "$DISKNR" && echo "$DISKNR should be a number: execute \"diskutil list\" again and look for the right number"
+        return 1
+    fi
+
+    _print_usage() {
+    	echo "usage: $FUNCNAME <path to bootable disk image> <disk-nr of removable storage device (e.g. USB-Stick)"
+		echo "To find out the disk number execute diskutil list w/ and w/o the storage device plugged in"
+		echo "Look for an entry like \"/dev/disk4 (external, physical)\""
+		echo "the example above would lead to the disk-nr »4«"
+		echo "Create the diskimage-file with"
+		echo "hdiutil convert -format UDRW -o target.img source.iso"
+		echo ""
+    }
+    
+}
+
+mancat () {
+    MAN_OUTPUT_FOLDER="$TMP/manoutput"
+    [ -d $MAN_OUTPUT_FOLDER ] || mkdir -p "$MAN_OUTPUT_FOLDER"
+    TARGET_MAN_FILE="$MAN_OUTPUT_FOLDER/man_${1}.txt"
+    [ -f $TARGET_MAN_FILE ] || man "$1" > "$TARGET_MAN_FILE"
+	cat "$MAN_OUTPUT_FOLDER/man_${1}.txt"
+}
+
+update_video_content () {
+	cd $MOVIESe;
+	#ls -G -1 ./**/*.(mp4|mkv|webm|mov) > $MOVIESe/TOC.txt;
+	cd $OLDPWD;
+}
+
+phpserve() {
+    URL=$([ -n "$1" ] && echo "$1" || echo "localhost")
+    PORT=$([ -n "$2" ] && echo "2" || echo "8080")
+    DOCROOT=$([ -n "$3" ] && echo "3" || echo ".")
+    php -S "$URL:$PORT" -t $DOCROOT
+}
+
+chhE () {
+	CMD='history | grep -i -E "[^a-zA-Z0-9_]{1}'$1'[^a-zA-Z0-9_]{1}"';
+	echo $CMD;
+	eval $CMD;
+}
+
+allcommands () {
+	for i in $(list_path)
+	do
+		echo "==> $i <=="
+		for cmd in $(ls -1 $i)
+		do
+			echo "$cmd"
+			isDebug && echo "$i/$cmd"
+		done
+	done
+}
+
+all_commands () {
+    for i in $(list_path)
+    do
+        echo "==> $i <=="
+        ls -1l $i
+        #for cmd in $(ls -1 $i)
+        #   do
+        #       echo "$cmd"
+        #       isDebug && echo "$i/$cmd"
+        #   done
+    done
+}
+
+pink2() { echo "\033[1;35m$1\033[00m"; }
+pink() { echo "${COLOR_Purple}${1}${W}"; }
+red() { echo "${COLOR_Red}${1}${W}"; }
+blue() { echo "${COLOR_Blue}${1}${W}"; }
+green() { echo "${COLOR_Green}${1}${W}"; }
+
+
+Pink() { echo "${COLOR_Purple}${1}${W}"; }
+
+startsWithDash () {
+	PARAM="$1"
+	isDebug && echo $PARAM
+	[[ $PARAM[1] = "-" ]] && return 0 || return 1
+}
+
+
+_progressed () {
+    DOWNLOAD_FILE="$1"
+    [[ -f $DOWNLOAD_FILE ]] || { echo "usage $0 <path 2 file getting downloaded>"; return 1 }
+    TMP_FILE=$TMP/.byte_counter.txt
+	CURRENT=$(ls -s $DOWNLOAD_FILE | cut -d ' ' -f1)
+    [[ -f $TMP_FILE ]] || echo $CURRENT > $TMP_FILE
+	PREVIOUS=$(cat  $TMP_FILE)
+	PROGRESS=$(($CURRENT-$PREVIOUS))
+    echo "$CURRENT B - $PREVIOUS B"
+	echo "$PROGRESS Bytes"
+	echo "$(($PROGRESS/1024)) KiloBytes"
+	echo $CURRENT > $TMP_FILE
+}
+
+getSymlinks () {
+	FOLDER='.'
+	[[ -d "$1" ]] && FOLDER="$1"
+	ls -G -lAct $FOLDER/ | grep --color=auto -E ^l
+}
+
+exists () {
+	[[ -n "$1" ]] && return 0 || return 1
+}
+
+
+add-function () {
+	function_exists "$1" && { echo "$1 already exists."; which $1; return 1 }
+	FUNCTIONS=$BIN/.functions
+	echo >> $FUNCTIONS
+	FUNCTION_NAME=$1
+	which $FUNCTION_NAME >> $FUNCTIONS
+}
+
+isFunction () {
+	WHICHRESULT=$(which "$1")
+    if isDebug; then
+        echo "1: $1"
+        echo "WHICHRESULT: \n$WHICHRESULT"
+        echo "wc -l = $(echo $WHICHRESULT | wc -l)"
+        echo -n "greater than 1 " && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && echo "return 0/true" || echo "return 1/false" 
+        echo -n "not containing 'not found' (exists) AND greater than 1 " && ! string_contains $WHICHRESULT 'not found' && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && echo "return 0/true" || echo "return 1/false"
+    fi
+	! string_contains $WHICHRESULT 'not found' && [[ $(echo $WHICHRESULT | wc -l) -gt 1 ]] && return 0 || return 1
+}
+
+function_exists() {
+    FUNC="$1"
+    FUNC_HEAD1="${FUNC}()"
+    FUNC_HEAD2="${FUNC} ()"
+    [[ $(cat $BIN/.functions | grep $FUNC_HEAD2 | wc -l) -eq 1 ]] || [[ $(cat $BIN/.functions | grep $FUNC_HEAD1 | wc -l) -eq 1 ]] && return 0 || return 1
+}
+
+secho () {
+	echo "Number of args ${#}"
+}
+
+createTOC-Video () {
+	IFS=$DELIMITER_ENDL
+	for i in $(ls -G -1 ./**/*.(mp4|mkv|webm|mov))
+	do
+		TMP_ROW="EXT-Movies,$(dirname $i),$(basename $i)"
+		echo $TMP_ROW | tee -a TOC-Tabelle2.csv
+	done
+}
+
+print_usage() {
+IFS=''
+read -r -d '' USAGE << EOT
+What does it do?
+The option "-D" opens a SOCKS port and tunnels it to the machine you are connected to.
+How can i use it?
+Go to the settings in your browser and look for proxy settings.
+Set as proxy server (Socks 5): 127.0.0.1 and port the port you defined with option "-D", 7070 in above example.
+
+That's all, all your traffic from your browser is now tunneled though your SSH connection!
+EOT
+echo $USAGE
+}
+
+ssh-proxy () {
+    usage "$0" "$#" 1 'user@your-server.com' "$(print_usage)" || return $?
+
+    ssh -D 7070 -p22 $1;
+
+}
+
+_command_exists() {
+	WHICHRESULT=$(which "$1" | head -n 1)
+	if string_contains $WHICHRESULT 'not found'
+	then
+		return 1
+	else
+		return 0
+	fi
+
+}
+
+video_audio_merge () {
+    usage "$0" "$#" 2 '<videofile> <audiofile> [<filetype>]' "merges videofile with audiofile to avi or other videofile" || return $?
+	MP4="$1" 
+	M4A="$2" 
+	EXT=avi
+    FILEEXT1=$(fileext $MP4)
+    FILEEXT2=$(fileext $M4A)
+    OUTPUT=${MP4//$FILEEXT/$EXT}
+	[[ -n $3 ]] && EXT="$3" 
+	ffmpeg -i $MP4 -i $M4A -acodec copy -vcodec copy $(timestamp).$OUTPUT
+}
+
+startsWith () {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack starts with needle" || return $?
+    HAYSSTACK="$1"
+    NEEDLE="$2"
+    isDebug && echo "HAYSSTACK = $HAYSSTACK"
+    isDebug && echo "NEEDLE = $NEEDLE"
+    [[ "$HAYSSTACK" = "$NEEDLE"* ]] && return 0 || return 1
+}
+
+endsWith () {
+    usage "$0" "$#" 2 '<HAYSSTACK> <NEEDLE>' "checks if haystack ends with needle" || return $?
+    HAYSSTACK="$1"
+    NEEDLE="$2"
+    isDebug && echo "HAYSSTACK = $HAYSSTACK"
+    isDebug && echo "NEEDLE = $NEEDLE"
+    [[ "$HAYSSTACK" = *"$NEEDLE" ]] && return 0 || return 1
+}
+
+_list_user_groups () {
+	IFS=$DELIMITER_ENDL 
+	listit $(groups $1) $" "
+	IFS=$IFS_ORIG 
+}
+
+isText () {
+	string_contains "$(file $1)" ASCII && return 0 || return 1
+}
+
+lsd () {
+    setIFS
+	isDebug && echo "Number of Parameters $#"
+    POPT='-F'
+	[[ $# -gt 1 ]] && {
+		POPT+=${1/-/} 
+		PPATH=$2 
+	} || PPATH=$1 
+	isDebug && echo "PPATH=$PPATH"
+	isDebug && echo "POPT=$POPT"
+	for i in $(ls -l $POPT $PPATH | grep -oE "^d{1}.*")
+	do
+		[[ $# -gt 1 ]] && echo $i || {
+			echo $i | rev | cut -d " " -f1 | rev
+		}
+	done
+    resetIFS
+}
+
+lsd2 () {
+    setIFS
+	isDebug && echo "Number of Parameters $#"
+    POPT='-F'
+	[[ $# -gt 1 ]] && {
+		POPT+=${1/-/} 
+		PPATH=$2 
+	} || PPATH=$1 
+	isDebug && echo "PPATH=$PPATH"
+	isDebug && echo "POPT=$POPT"
+	for i in $(ls -lt $POPT $PPATH  | grep -oE "^d{1}.*")
+	do
+		[[ $# -gt 1 ]] && echo $i || {
+			[[ $i =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]] && {
+				isDebug && echo "# of matches $#match\n $match"
+				echo $match[2]
+			}
+		}
+	done
+    resetIFS
+}
+
+
+parrram () {
+	isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
+	POPT=() 
+	PPATH=() 
+	for i in $@
+	do
+		echo ">> $i"
+		[[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
+	done
+    echo $POPT $PPATH
+    ls $POPT $PPATH
+}
+
+lsd3 () {
+    setIFS
+    isDebug && echo "Number of Parameters \$#=$# or \$#@=$#@"
+    POPT=() 
+    PPATH=() 
+    
+    for i in $@
+    do
+        isDebug && echo ">> $i"
+        [[ -d "$i" ]] && PPATH+="$i"  || POPT+="$i" 
+    done
+
+    isDebug && echo "PPATH=$PPATH #PPATH=$#PPATH"
+    isDebug && echo "POPT=$POPT #POPT=$#POPT"
+    for i in $(ls -lt $POPT $PPATH)
+    do
+        isDebug && echo "## $i ##"
+        echo $i | grep -E "^\s*.*[/]{0,1}:$"
+        CURRENT_FOLDER=$(echo $i | grep -E "^d{1}.*")
+        isDebug && echo "CURRENT_FOLDER=$CURRENT_FOLDER"
+        if [[ -z $CURRENT_FOLDER ]]; then 
+            isDebug && echo "CURRENT_FOLDER empty"
+            continue
+        fi
+        if [[ $#POPT -gt 0 ]]; then 
+            echo $i | grep -E "^d{1}.*";
+        else
+            if [[ $CURRENT_FOLDER =~ (.+)" [0-9]{2}:[0-9]{2} "(.+) ]]; then
+                isDebug && echo "# of matches $#match\n $match"
+                echo $match[2]
+            fi
+        fi
+        
+    done
+    resetIFS
+}
+
+lsd4 () {
+    #setIFS
+    isDebug && echo "Number of Parameters $# PARAMS $@"
+    POPT='-F'
+    PPATH='.'
+
+    [[ -d "$1" ]] && STARTIDX=1 || { STARTIDX=2; POPT+=${1/-/} }
+
+    # also possible but ugly result set
+    #CMD="ls $POPT $@[$STARTIDX,$#@]"
+    #$(echo $CMD) | grep -E ".*/$"
+    #return 0
+    for x in $@[$STARTIDX,$#@]; do
+        echo "$x:"
+        ls $POPT $x | grep -E ".*/$"  # Why haven't I came up with that idea in the first place? (calling ls -F and grepping the trailing slash '/')
+    done
+    #resetIFS
+}
+
+setPromptTime () {
+	PROMPT=${PROMPT/\%\#/%T %#};
+}
+
+# https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository
+git_sparse_clone () {
+	rurl="$1" localdir="$2" && shift 2;
+	mkdir -p "$localdir";
+	cd "$localdir";
+	git init;
+	git remote add -f origin "$rurl";
+	git config core.sparseCheckout true;
+	for i;
+	do
+		echo "$i" >> .git/info/sparse-checkout;
+	done;
+	git pull origin master;
+}
+
+
+scriptStartsWith () {
+	TILL=$#@ 
+	isNumber "$@[$#@]" && { A="$@[$#@]"; TILL=$(($TILL-1)) } || A=1
+	isNumber "$@[$(($#@-1))]" && { B="$@[$(($#@-1))]"; TILL=$(($TILL-1)) }  || B=1 
+    echo "\$# $#"
+    szstart=$(echo $@[2,$TILL])
+    rgx_start=${szstart//\ /\|}
+    echo $szstart
+    echo $rgx_start
+
+    ccat "$1" | grep --color=auto -E "^($rgx_start)" -A $A -B $B
+    isDebug && echo "ccat \"$1\" | grep --color=auto -E \"^($rgx_start)\" -A $A -B $B"
+}

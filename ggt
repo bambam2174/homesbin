@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var processor = process.argv.shift();
+
+var path2script = process.argv.shift();
+
+function ggT(pA, pB) {
+    let rest;
+    /*if (pA > pB) {
+        a = pA;
+        b = pB;
+        console.log('pA > pB', a, b, rest);
+    } else {
+        b = pA;
+        a = pB;
+    }*/
+    do {
+        /*if (rest != undefined) {
+            b = rest;
+            console.log('rest', a, b, rest);
+        }*/
+        rest = a % b;
+        a = b;
+        b = rest;
+        console.log(a, b, rest);
+    } while(rest != 0);
+        console.log('fertig', a, b, rest);
+}
+
+let a = process.argv[0];
+let b = process.argv[1];
+ggT(a, b);
+

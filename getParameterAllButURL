@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_getParameterAllButURL () {
+	OPTS="$(echo "${@}" | sed -E 's/http[^ ]+//g')" 
+	echo "${OPTS}" > /dev/stdout
+}
+_getParameterAllButURL ${@}

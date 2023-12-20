@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+PROTOCOLX='https://'
+URL="$(echo "${@}" | grep -oE '\bhttp\S*\b')"
+OPTS="$(echo "${@}" | sed -E 's/http[^ ]+//g')"
+
+curl_ ${OPTS} ${URL}'/' ${COOKIE_FILE} \
+  -H 'authority: '${URL}'' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'accept-language: de-DE,de;q=0.9,en-GB;q=0.8,en;q=0.7,fr-FR;q=0.6,fr;q=0.5,tr-TR;q=0.4,tr;q=0.3,ru-RU;q=0.2,ru;q=0.1,it-IT;q=0.1,it;q=0.1,en-US;q=0.1,ja;q=0.1,zh-TW;q=0.1,zh;q=0.1' \
+  -H 'cache-control: no-cache' \
+  -H 'cookie: sb=C1k6Ye1PD_94xyM4c6VSTwsK; datr=C1k6YXVh5SDEffeLPwSc4PcI; fr=1u25x21m9VStG28ux..BizvPf.JT.AAA.0.0.Bi-6f3.AWUmXXugN5Q' \
+  -H 'pragma: no-cache' \
+  -H 'referer: '${PROTOCOLX}${URL}'/' \
+  -H 'sec-ch-prefers-color-scheme: light' \
+  -H 'sec-ch-ua: "Chromium";v="104", " Not A;Brand";v="99", "Google Chrome";v="104"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36' \
+  -H 'viewport-width: 1440' \
+  --compressed 

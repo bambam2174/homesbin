@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_get-voice-for-language-country () {
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	export ARR_VOICES=($(say-voices ${1} 0> /dev/null | list-col -d '  ' 1)) 
+	[[ -n ${2} ]] && echo "${ARR_VOICES[${2}]}" || {
+		CNT=1 
+		for voice in "${ARR_VOICES[@]}"
+		do
+			echo "${CNT}: ${voice}"
+			((CNT++))
+		done
+	}
+}
+_get-voice-for-language-country ${@}

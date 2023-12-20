@@ -1,0 +1,21 @@
+#!/bin/zsh
+source $BASHALIASES
+
+CMD="${@}"
+
+REPEAT_CMD_LOCK="$HOME/tmp/.repeatcmd.lock"
+
+CURRENT_STATE="TRUE"
+
+echo "$CURRENT_STATE" > $REPEAT_CMD_LOCK
+
+while [[  $CURRENT_STATE = "TRUE"  ]]
+do
+    echo "${CMD}"
+    eval "${CMD}"
+    #$(echo "${CMD}"); getresult_v
+    [[ -f $REPEAT_CMD_LOCK  ]] && CURRENT_STATE=$(cat $REPEAT_CMD_LOCK) || CURRENT_STATE="FALSE"
+
+    echo $CURRENT_STATE
+    sleep 1
+done

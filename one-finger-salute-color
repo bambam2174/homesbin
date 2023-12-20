@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_one-finger-salute-color () {
+	eval "echo \"\${UC_ONE_FINGER_SALUTE}\${UC_COLOR_${1}}\""
+}
+_one-finger-salute-color ${@}

@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+iteratearr_() { 
+    while [[ ${#} -gt 0 ]]
+    do 
+        isNumeric ${1} && CC=${1} && shift 
+        startsWithDash ${1} && OPTS=${1} && shift 
+        [[ -f ${1} ]] && CURRENT_FILE=${1} && shift 
+    done
+    echo "\$CC=$CC; \$OPTS=$OPTS; \$CURRENT_FILE=$CURRENT_FILE"; 
+}
+
+iteratearr_ ${@}
+
+

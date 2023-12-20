@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+realpath_inline() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+realpathi_inline() "$0"

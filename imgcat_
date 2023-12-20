@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+IFS=$DELIMITER_ENDL
+
+for i in "${@}"
+do
+    imgcat $i
+    #imgcat "${i// /\ }"
+    #echo "${i// /\ }"
+    #echo "${i}"
+done
+

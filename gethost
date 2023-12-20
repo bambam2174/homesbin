@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_gethost () {
+	SZ_URL="${1}" 
+	COL=3 
+	(
+		startsWith ${SZ_URL} http || startsWith ${SZ_URL} '//'
+	) || COL=1 
+	echo $SZ_URL | cut -d '/' -f${COL}
+}
+_gethost ${@}

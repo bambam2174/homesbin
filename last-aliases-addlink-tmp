@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+CURR_SHELL_ALIASES="${SHELL_ALIASES}"
+startsWithDash ${1} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_ALIASES="${2}" && source ${CURR_SHELL_ALIASES} && shift 2
+
+#local COUNT_ENTRIES=''
+
+[[ -n ${1} ]] && COUNT_ENTRIES="-n ${1}"
+
+tail ${COUNT_ENTRIES} "${SHELL_ALIASES_ADDLINK}"
+

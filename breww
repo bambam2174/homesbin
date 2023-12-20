@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+source ${HOME}/.debug_state
+
+isDebug && echo "DEBUG ON"
+
+if [[ -z "${BREW_TEMP}" ]]
+then
+    export BREW_TEMP="${HOME}/tmp/brew_output"
+fi
+mkdir -p "${BREW_TEMP}"
+
+TIMESTAMP="$(date +%s)"
+
+BREWCOMMAND="${1}"
+shift
+
+BREW_FILE="${BREW_TEMP}/brew.${BREWCOMMAND}.${@}_${TIMESTAMP}.txt"
+BREW_FILE="${BREW_FILE// /_}"
+    
+isDebug && echo "\$TIMESTAMP = $TIMESTAMP\n\${BREW_FILE} = ${BREW_FILE}\n\${BREW_TEMP} = ${BREW_TEMP}"
+
+brew "${BREWCOMMAND}" "${@}" --verbose --debug | tee "${BREW_FILE}"
+

@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+source ${SHELL_VARS}
+
+SCRIPTNAME=$(filename ${0})
+
+_mount_ () {
+	CNT=$(($(ls -1 ${TMPDIR}/mount* | wc -l))) 
+	((CNT++))
+	original mount ${@} | tee ${TMPDIR}/mount_${CNT}
+}
+_mount_ ${@}
+
+
+if [[ ${SHLVL} -gt 1 ]] && [[ -z ${ADD_ALIAS_MOUNT} ]]
+then
+    echo "\${ADD_ALIAS_MOUNT}  ${ADD_ALIAS_MOUNT}"
+    ecko -n "How about " 2 16
+    ecko "alias mount='. ${SCRIPTNAME}'" 1 15
+    ecko -n "Add alias? (y/N) " 2 16
+    read ADD_ALIAS_MOUNT
+    ([[ -z ${ADD_ALIAS_MOUNT} ]] || [[ $(lowercase ${ADD_ALIAS_MOUNT}) = 'n' ]] ) && ADD_ALIAS_MOUNT=false || ADD_ALIAS_MOUNT=true
+    ${ADD_ALIAS_MOUNT} && addalias mount "'. ${SCRIPTNAME}'" && { 
+        ecko "\tAlias added\t\t" 4 18
+            ecko "\tExecute…\t\t" 4 18
+            ecko "\tua\t\t\t" 18 4
+            ecko "\tupdate_aliases\t\t" 18 4
+            ecko "\tsource \${SHELL_ALIASES}\t" 18 4
+    }
+    addvar ADD_ALIAS_MOUNT ${ADD_ALIAS_MOUNT}
+fi

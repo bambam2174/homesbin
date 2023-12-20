@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-char-merman () {
+	char-merman ${@} | pbcopy
+}
+_pb-char-merman ${@}

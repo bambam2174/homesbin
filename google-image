@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_google-image () {
+    IMGS='tbm=isch&'
+    startsWithDash "${1}" && [ "${1//-/}" = 'all' -o "${1//-/}" = 'a' ] && { 
+        IMGS=''
+        shift 
+        QRY="${1}"
+        [[ -n "${2}" ]] && QRY+="+filetype:${2}" && 2=''
+    } || QRY="${1}"
+	${BROWSER} "https://www.google.com/search?${IMGS}q=${QRY}&tbs=ift:${2}"
+}
+_google-image ${@}

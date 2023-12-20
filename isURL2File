@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+_isURL () {
+	[[ ${1} =~ ${REGEX_URL2FILE} ]]
+}
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_URL in "${@}"
+    do
+        isDebug && echo "URL Nr.$((CNT+=1)) ${TMP_URL}"
+        ARR_URL=("${TMP_URL}")
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && ARR_URL=($(echo ${INPUT_PIPE}))
+fi
+
+for CURR_URL in ${ARR_URL}
+do
+    _isURL ${CURR_URL}
+done
+# _isURL ${@}

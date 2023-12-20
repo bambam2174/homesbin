@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-char-arrow-left () {
+	char-arrow-left ${@} | pbcopy
+}
+_pb-char-arrow-left ${@}

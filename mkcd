@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_mkcd () {
+    FOLDER_NEW="$(echo ${1} | sed -E 's/\/$//g')"	
+    mkdirp "${FOLDER_NEW}"    
+    cd "${FOLDER_NEW}"
+}
+_mkcd ${@}

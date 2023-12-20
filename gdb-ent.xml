@@ -1,0 +1,2 @@
+export MACOS_CERTID=frida-cert
+export IOS_CERTID=frida-cert

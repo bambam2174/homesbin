@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_white2black () {
+    echo -n "${1:-${UC_THUMBS_UP}}"
+	for idx in {$((0x1f3fb))..$((0x1f3ff))}
+	do
+		HEX=$(convert-number -x ${idx}) 
+		echo -n "${1:-${UC_THUMBS_UP}}\U${HEX[3,-1]}"
+	done
+	echo
+}
+_white2black ${@}

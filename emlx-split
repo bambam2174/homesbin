@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+_emlx-split () {
+	CLINES=$(cat "${1}" | wcl) 
+	cat "${1}" | head -n 123 > "${2:-${TMP}}/infected_mail_$(filename ${1}).header.txt"
+	cat "${1}" | tail -n $(($CLINES-123)) > "${2:-${TMP}}/infected_mail_$(filename ${1}).html"
+}
+_emlx-split ${@}

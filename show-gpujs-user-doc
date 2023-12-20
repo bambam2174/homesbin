@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+cd $GITHUB/javascript/GPUJS/usr-docs
+http-server --cors source &
+sleep 2
+open -a /Applications/Firefox\ Developer\ Edition.app http://127.0.0.1:8080

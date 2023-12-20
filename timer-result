@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_timer-result () {
+    VERBOSE=false
+    startsWithDash ${1:-NoParam} && [ ${1/-/} = 'v' -o ${1/-/} = '-verbose' ] && VERBOSE=true && shift
+    START=$(cat ${TMPDIR}/timer-start-${1:-default}.txt)
+	STOP=$(cat ${TMPDIR}/timer-stop-${1:-default}.txt) 
+	TIME_TOTAL=$((${STOP}-${START})) 
+	${VERBOSE} && ecko " ⟹   The Timer \"${1:-default}\" took ${TIME_TOTAL} seconds to complete  ⟸   " 188 88 ||  echo "${TIME_TOTAL}"
+}
+_timer-result ${@}

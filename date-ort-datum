@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_date-ort-datum () {
+	date +"${1}, den %d.%B %Y"
+}
+_date-ort-datum ${@}

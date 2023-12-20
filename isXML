@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+xmllint "${1}" &> /dev/null
+exit $?

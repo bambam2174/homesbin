@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+[[ -z ${FOLDER_TMP} ]]          && addvar FOLDER_TMP '$HOME/tmp'                    && addvar TMP '${FOLDER_TMP}'
+[[ -z ${FILE_SCHMIERZETTEL} ]]  && addvar FILE_SCHMIERZETTEL '${TMP}/Schmierzettel' && addvar SCHMIERZETTL '${FILE_SCHMIERZETTEL}' 
+vi ${SCHMIERZETTL}

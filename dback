@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_dback () {
+	TARGET_DIR="$(. d | list-col -1 | get ${1})" 
+	echo "${TARGET_DIR}"
+}
+_dback ${@}
+#cd $(_dback ${@})

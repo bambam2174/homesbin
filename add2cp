@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_add2cp () {
+	ARRPB=(ruler find font) 
+	SZ_ADD='' 
+	contains "${ARRPB}" "${2}" && PB="${2}"  || PB="find" 
+	CNT2SAVE="$(pbpaste -pboard ${PB})" 
+	[[ -n ${CNT2SAVE} ]] && startsWith ${CNT2SAVE} 'ARRCP=(' || CNT2SAVE="ARRCP=(); ${CNT2SAVE}" 
+	[[ -n ${1} ]] && SZ_ADD="${CNT2SAVE};ARRCP+=\"${1}\"" 
+	echo -n "${SZ_ADD:-ARRCP=()}" | pbcopy -pboard ${PB}
+}
+_add2cp ${@}

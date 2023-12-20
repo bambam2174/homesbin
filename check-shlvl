@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+if [[ ${1} -gt 1 ]]
+ then
+    SCRIPT=$(filename ${2})
+    shift 2
+    echo "${SCRIPT} needs to run by sourcing "
+    echo "source ${SCRIPT} ${@} "
+    echo "it's recommended to create an alias"
+    echo "alias ${SCRIPT}='source ${SCRIPT}'"
+fi

@@ -1,0 +1,69 @@
+#!/bin/zsh
+
+ARR_SOURCES=()
+FUNC_NAME=''
+
+while [[ $# -gt 0 ]]
+do
+    case "${1}" in
+        --*=* || -*=*)
+            optarg=$(echo "${1}" | sed -e 's/[-_a-zA-Z0-9]*=//')
+            echo "--*=* : \$1=$1 \$2=$2 optarg = $optarg"
+            #echo "$1 optarg1 $optarg"
+            ;;
+        --* || -*)
+            #optarg=$(echo "${2}" | sed -e 's/[-_a-zA-Z0-9]*=//')
+            echo "1) --* : \$1=$1 \$2=$2 optarg2 = $optarg"
+            [[ -n "${2}" ]] && startsWith ${2} '-' || optarg=${2}
+            echo "2) --* : \$1=$1 \$2=$2 optarg2 = $optarg"
+            ;;
+        *)
+            optarg=${1}
+            echo "1: $1 optarg- $optarg"
+            echo "2: $2 optarg- $optarg"
+            ;;
+    esac
+
+    case "${1}" in
+         --function-name=* || --func-name=* || -f=* || --function-name || --func-name || -f)
+             #FUNC_NAME=$optarg
+             [[ -z $FUNC_NAME ]] && FUNC_NAME="${optarg}"
+             SRCH_TYPE=users
+             ;;
+         --source=* || -s=* || --source || -s)
+             ARR_SOURCES+=( "source \"${optarg}\"" )
+             ;;
+         --aliases || --ua || -a)
+             ARR_SOURCES+=( "source \"${SHELL_ALIASES}\"" )
+             ;;
+        --functions || --ufunc || -F)
+            ARR_SOURCES+=( "source \"${SHELL_FUNCTIONS}\"" )
+             ;;
+         *)
+             [[ -z $FUNC_NAME ]] && FUNC_NAME="${optarg}"
+             [[ -n $FUNC_NAME ]] && [[ -z $SRCH_TYPE ]] && SRCH_TYPE="${optarg}"
+             ;;
+     esac
+     shift
+     echo "shift"
+done
+
+source $SHELL_FUNCTIONS
+
+FUNCBLOCK=$(which ${FUNC_NAME})
+
+[[ $(echo ${FUNCBLOCK} | wc -l) -gt 1 ]] || { echo "Function ${1} doesn't exist, lan" > /dev/stderr; exit 1; }
+
+shebang-bin ${FUNC_NAME}
+for s in ${ARR_SOURCES}
+do
+    echo "${s}"
+    echo "${s}" >> $BIN/${FUNC_NAME}
+done
+
+echo -n '_' >> $BIN/${FUNC_NAME}
+
+echo ${FUNCBLOCK}  >> $BIN/${FUNC_NAME}
+
+echo '_'${FUNC_NAME}' ${@}' >> $BIN/${FUNC_NAME}
+

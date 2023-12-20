@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_size-offset () {
+	SIZE_OFFSET=$(otool -l $(which ${1}) | grep -oE '(size 0x|offset )[0-9a-fA-F]+') 
+	CURRSIZE_HEX=0 
+	CURROFFSET=0 
+	IFS=$DELIMITER_ENDL 
+	for line in $(e $SIZE_OFFSET)
+	do
+		echo ${line}
+		[[ ${line} =~ '^size' ]] && CURRSIZE_HEX=${line//size /} 
+		CURRSIZE=$(convert-number -u ${CURRSIZE_HEX}) 
+		[[ ${line} =~ '^offset' ]] && CURROFFSET=${line//offset /} 
+		echo "Current size ${CURRSIZE_HEX//0x0000000000/0x} dec ${CURRSIZE}	Current Offset ${CURROFFSET}"
+	done
+}
+_size-offset ${@}

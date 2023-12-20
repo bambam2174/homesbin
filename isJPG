@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_isJPEG () {
+	WCL=$(file "${1}" | grep -E "JPEG" | wc -l) 
+	[[ ${WCL} -gt 0 ]]
+}
+_isJPEG ${@}

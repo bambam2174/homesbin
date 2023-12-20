@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+local SUBST=${SLASH_DIVISION}
+local SUBST_SPACE='-'
+local NO_LEADING_SLASH=true
+
+_rename-webloc () {
+	SZ_WEBLOC_DIR=$(dirname "${1}") 
+	SZ_WEBLOC_NAME=$(basename "${1}") 
+	source ekko "Link-folder = ${SZ_WEBLOC_DIR}" 11 1
+	source ekko "webloc = ${SZ_WEBLOC_NAME}" 1 11
+	SZ_WEBLOC_FILE_ROOT=$(fileroot "${SZ_WEBLOC_NAME}") 
+	SZ_WEBLOC_FILE_EXT=$(fileext "${SZ_WEBLOC_NAME}") 
+	source ekko "Webloc-Root = ${SZ_WEBLOC_FILE_ROOT}" 11 111
+	source ekko "Webloc-Extension = ${SZ_WEBLOC_FILE_EXT}" 111 11
+	SZ_WEBLOC_FILE_ROOT_NEW="${2//\//${SUBST}}" 
+	SZ_WEBLOC_NEW_PATH="${SZ_WEBLOC_DIR}/${SZ_WEBLOC_FILE_ROOT_NEW}.${SZ_WEBLOC_FILE_EXT}"
+    mv "${1}" "${SZ_WEBLOC_NEW_PATH}"
+	source ekko "New path ${SZ_WEBLOC_NEW_PATH}" 87 200
+
+}
+_rename-webloc ${@}

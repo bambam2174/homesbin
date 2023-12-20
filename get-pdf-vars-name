@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_get-pdf-vars-name () {
+	cat ${SHELL_VARS} | grep --color=auto -o '.*PDF.*=' | sed -E "s/=/${SUBSTITUTE_CHARS}/g" | list-col -1
+}
+_get-pdf-vars-name ${@}

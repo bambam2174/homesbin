@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_create-TLD-to-FLAG-Sheet () {
+	OUTPUTFILE="${1:-${TMP}/Language/AA-ZZ-FLAGS.csv}" 
+    echo '"TLD",,"Flag"' > "${OUTPUTFILE}"
+	for letter1 in {A..Z}
+	do
+		for letter2 in {A..Z}
+		do
+			echo -n "${letter1}${letter2}, $ARROWR[2], "
+			echo "${letter1}${letter2}" | tr-ascii2unicode
+		done
+	done >> "${OUTPUTFILE}"
+	cat "${OUTPUTFILE}" | sed -E 's/, /    /g'
+}
+_create-TLD-to-FLAG-Sheet ${@}

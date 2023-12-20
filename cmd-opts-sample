@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+
+set -e
+
+verbose=""
+name_arg=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --verbose)
+    verbose=1
+    ;;
+  --name)
+    name_arg="$2"
+    shift
+    ;;
+  -h|--help)
+    echo "Add help text here."
+    exit 0
+    ;;
+  esac
+  shift
+done
+
+if [ -z "$name_arg" ]
+then
+  echo "You haven't told us your name."
+elif [ -z "$verbose" ]
+then
+  echo "Hi $name_arg"
+else
+  echo "Hello and welcome, $name_arg"
+fi

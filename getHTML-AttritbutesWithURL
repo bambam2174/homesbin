@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_getHTML-AttritbutesWithURL () {
+	getXML-AttritbutesWithURL "${1}" | tee ${TMPDIR}/attributesWithURL.csv
+	noduplicate ${TMPDIR}/attributesWithURL.csv ${TMP}/attributesWithURL.csv
+}
+_getHTML-AttritbutesWithURL ${@}

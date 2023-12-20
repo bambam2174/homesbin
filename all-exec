@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+[[ -z $BASHFUNCTIONS ]]  && source ~/bin/.functions || echo "$BASHFUNCTIONS already sourced"
+
+source $SHELL_ALIASES
+e "==> \$SHELL_ALIASES <=="
+alias | grep -oE "^[-a-zA-Z_]+"
+e "==> functions <=="
+functions | grep -oE "^\S*\s?\(\)"
+allcommands

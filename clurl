@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_clurl () {
+	URL=${1:-$(pbpaste)} 
+   path2string ${URL//https?\/\//} | pbcopy
+	createlink "${URL}" "$(pbpaste)"
+}
+_clurl ${@}

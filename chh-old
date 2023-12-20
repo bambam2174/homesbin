@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_chh-old () {
+    startsWithDash "${1}" && [ ${1/-/} = 'n' -p ${1/-/} = '-new' ] && history-extract-old-tars2tmpdir && shift
+    QUERY="${1}"
+    shift
+    [[ -d "${TMPDIR}/all-histfiles/" ]] || history-extract-old-tars2tmpdir
+    #for histfile in $(ls -1Ut ${TMP}/histfile_*.txt)
+    for histfile in $(list-histfiles)
+    do
+        cp ${histfile} "${TMPDIR}/all-histfiles/"
+    done
+	tail -n +1 ${TMPDIR}/all-histfiles/* | grep --color=auto -E "(^==>.*|${QUERY})" ${@}
+}
+_chh-old ${@}

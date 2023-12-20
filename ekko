@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+usage $0 $# 1 '<Text> <Color> [<BG-Color>]' 'echoing with Text and Background Color'
+
+_ekko () {
+	local PTEXT="${1}"
+    local COLORFG=001
+    if [[ -n ${2} ]]
+    then
+        COLORFG=$(printf "%03d" ${2})
+    fi
+    COLORBG=$(printf "%03d" ${3})
+	local XX="$BG[$COLORBG]$FG[$COLORFG]${PTEXT}%{$reset_color%}" 
+	print -P $XX
+}
+_ekko ${@}

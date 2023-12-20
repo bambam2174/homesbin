@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+OPTS=()
+[[ ${#} -gt 0 ]] && startsWithDash ${1} && OPTS+="${1}" && shift
+
+IDX=${1:-}
+
+#. ${SHELL_VARS}
+. fingerr # more performant than sourcing the complete set of exported variables again.
+
+[[ ${IDX} -gt ${#ARR_FINGERR} ]] && . rts 69 #${SHLVL}
+_finger-right () {
+	[[ ${#} -gt 0 ]] && echo ${OPTS} ${ARR_FINGERR[${1}]} || echo ${ARR_FINGERR[@]}
+}
+_finger-right ${@}
+
+
+# PS: why aren't exported arrays not available in scripts as the other variable are
+

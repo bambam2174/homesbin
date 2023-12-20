@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_chain-layout () {
+	ARRPATH=($(list-path)) 
+	MAX=0 
+	for l in $ARRPATH
+	do
+		CTABS=$(((72-${#l})/8+4/${#l})) 
+		echo "${#l} ${CTABS} 	$(printf "${UC_CHAIN} %.0s" {1..${1:-4}}) $(printf '	%.0s' {1..${CTABS}}) ${l} $(printf '	%.0s' {1..$((${CTABS}/4))}) $(printf "${UC_CHAIN} %.0s" {1..${1:-4}}) "
+		[[ ${#l} -gt ${MAX} ]] && MAX=${#l} 
+	done
+	echo $MAX
+}
+_chain-layout ${@}

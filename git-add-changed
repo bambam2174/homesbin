@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_git-add-changed () {
+	for file in $(gst | grep -E 'geändert.*' | sed -E 's/geändert:[ ]+//g')
+	do
+		git add $file
+	done
+}
+_git-add-changed ${@}

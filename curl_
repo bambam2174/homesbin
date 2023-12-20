@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+LIBCURL="--libcurl ${OUTPUT_CURL}/getfile-$(date +%s).c"
+
+curl__ () {
+	contains-link ${@} && original curl ${LIBCURL} ${@} || original curl ${LIBCURL} ${@} $(pbpaste) -O
+}
+curl__ ${@}

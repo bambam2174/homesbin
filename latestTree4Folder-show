@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_latestTree4Folder-show () {
+	CURRCMD=$(eval "which -a less | tail -n 1") 
+	${2:-${CURRCMD}} "$(latestTree4Folder ${1})"
+}
+_latestTree4Folder-show ${@}

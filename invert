@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+IFS=$DELIMITER_ENDL
+
+CURRLIST=() 
+
+for e in $(eval "${@}")
+do
+	CURRLIST+="$e"
+done
+
+for i in {$#CURRLIST..1}
+do 
+    echo $CURRLIST[$i]
+done

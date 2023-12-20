@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_latest-output-brew.outdated () {
+	ls -G -1AF -r $OUTPUT_BREW/brew.outdated._* | head -n ${1:-1}
+}
+_latest-output-brew.outdated ${@}

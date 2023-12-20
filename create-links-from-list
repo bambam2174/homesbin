@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_create-links-from-list () {
+	for l in $(cat "${1}")
+	do
+		COUNT=$(($COUNT+1)) 
+		FR=$(printf %02d $COUNT) 
+		createlink ${l//&t=0s/} "Chapter ${FR}"
+	done
+}
+_create-links-from-list ${@}

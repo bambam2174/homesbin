@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+#local COUNT_ENTRIES=''
+
+[[ -n ${1} ]] && COUNT_ENTRIES="-n ${1}"
+
+tail ${COUNT_ENTRIES} "${SHELL_ALIASES_ADDLINK}"
+

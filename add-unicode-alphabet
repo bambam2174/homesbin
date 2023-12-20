@@ -1,0 +1,31 @@
+#!/bin/zsh
+SCRIPTNAME="$(filename ${0})"
+
+if [[ ${#} -lt 3 ]]
+then
+    ecko -n "$(fingerr 6) usage " 1 15
+    ecko " ${SCRIPTNAME} <from> <to> <prefix-varname> " 15 1
+    ecko " ${SCRIPTNAME} 0x1D656 0x1D66F BOLD_ITALIC_SMALL " 16 13
+fi
+
+_add-unicode-alphabet () {
+	FROM="$((${1}))" 
+	TO="$((${2}))" 
+	ARR_AB=() 
+	for i in {A..Z}
+	do
+		ARR_AB+=${i} 
+	done
+	IDX=1 
+	for uc in {${FROM}..${TO}}
+	do
+		HEX=$(convert-number -x $uc) 
+		#[[ $#FROM -gt 4 ]] && U="U"  || U="u" 
+        # apparently capital U works for both/all
+        # while small only for the 4-digit hex-numbers
+        # -> 'U' instead of ${U} like before
+		addvar UNICODE_${3}_${ARR_AB[$IDX]} ${HEX//0x/U}
+		((IDX++))
+	done
+}
+_add-unicode-alphabet ${@}

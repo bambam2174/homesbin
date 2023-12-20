@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CURRENT_ED=subl
+
+PATH_COMMAND=$(which "$1")
+
+if [[ $# -gt 1 ]]
+then 
+    CURRENT_ED=${1}
+    PATH_COMMAND=$(which "$2")
+fi
+
+if [[ -z $(which $CURRENT_ED) ]]
+then
+    CURRENT_ED=vi
+fi
+$CURRENT_ED $PATH_COMMAND

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SCRIPTNAME="$(filename ${0})"
+#while true;
+#do 
+    clear
+    tail -45 ${1}
+    echo "\$\$=${$}"
+    sleep 1
+    ${SCRIPTNAME} ${1}
+#done

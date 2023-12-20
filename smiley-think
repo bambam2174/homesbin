@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_smiley-think () {
+	echo ${1} ${UC_THINK}
+}
+_smiley-think ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_setIFSto () {
+	IFS="${1}" 
+}
+_setIFSto ${@}

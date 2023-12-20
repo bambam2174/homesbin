@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+git branch -M main
+git remote add origin ${1:-"https://github.com/bambam2174/$(pwd | list-col -d '/' -1).git"}
+git push -u origin main

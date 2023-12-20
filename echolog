@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_echolog () {
+	echo "\$@=${@}"
+	CNTR=0 
+	export ARRXY=() 
+	for el in ${ARR2ITERATE:-${@}}
+	do
+		CURR_ELEMENT="\${$((++CNTR))} ${ARROWS[1]} ${el}" 
+		echo ${CURR_ELEMENT}
+		ARRXY+=${CURR_ELEMENT} 
+	done
+}
+_echolog ${@}

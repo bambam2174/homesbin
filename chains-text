@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_chains-text () {
+	END=${2:-4} 
+	SZDISPLAY=${1:-${USER}} 
+	for i in {1..${END}}
+	do
+		[ ${i} -eq 1 -o ${i} -eq ${END} ] && {
+			printf "${UC_CHAIN} %.0s" {1..70}
+			echo
+		} || echo "$(printf  "${UC_CHAIN} %.0s" {1..$((34-${#SZDISPLAY}/2))}) ${SZDISPLAY} $(printf  "${UC_CHAIN} %.0s" {1..$((34-${#SZDISPLAY}/2))})"
+	done
+}
+_chains-text ${@}

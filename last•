@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_last• () {
+	COUNT=5 
+	TARGET_DIR="${PWD}" 
+	[[ -n "${1}" ]] && COUNT="${1}" 
+	[[ -n "${2}" ]] && TARGET_DIR="${2}" 
+	cd ${TARGET_DIR}
+	ls -G -lhFAGct1 ${TARGET_DIR} | tail -n ${COUNT}
+	cd "${OLDPWD}"
+}
+_last• ${@}

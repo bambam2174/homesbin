@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+_chrome-ext-manifest () {
+    MANIFEST_JSON=$(cat $CHROME_EXT/${1}/*/manifest.json)
+    REGEX_II='.'
+    [[ ${#} -gt 1 ]] && REGEX_II="${2}"
+
+    echo ${MANIFEST_JSON} | grep --color=auto -E "(\"default_title\"|\"name\"|\"${REGEX_II}\")\s?:\s?.+.?\""
+}
+ID_EXT="${1}" && shift
+_chrome-ext-manifest $(chrome-ext-folder ${ID_EXT}) ${@}

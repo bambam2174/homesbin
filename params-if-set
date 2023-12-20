@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+ROOTPATH="${1:PWD}"
+
+PORT=${2:8080}
+
+ecko "ROOTPATH = ${ROOTPATH}"
+ecko "PORT     = ${PORT}"

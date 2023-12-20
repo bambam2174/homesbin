@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+startsWithDash ${1} && OPTS="${1//-/}" && shift
+
+_ls-filter () {
+	ls -G1AFlh${OPTS}t ${1:-${PWD}} | grep --color=auto -iE "${2:-.*}" | sed -E "s/[-ldrwx].*([0-9]{2}:[0-9]{2}|[0-9]{4}) //g"
+}
+_ls-filter ${@}

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+SEPARATOR=' '
+
+startsWithDash ${1} && [[ ${1//-/} = 's' ]] &&  SEPARATOR="${2}" && shift 2
+
+_concat () {
+	ALL="${@}" 
+	echo ${ALL// /${SEPARATOR}}
+}
+_concat ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_git-add-deleted () {
+	for file in $(gst | grep -E 'gelöscht.*' | sed -E 's/gelöscht:[ ]+//g')
+	do
+		git add $file
+	done
+}
+_git-add-deleted ${@}

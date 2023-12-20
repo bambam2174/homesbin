@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+# execute it using source: source $(which $0) [ /path/to/dir/ ]
+# better…create an alias, e.g. alias add-new-path="source $(which add2path)"
+# or
+# make sure that script is executable and lies in one of the path in the $PATH-variable
+# an uncomment following line
+# setup-call-by-sourced-alias ${0}
+##echo 'alias add-new-path="source ${0}"' >> "$HOME/.${SHELLNAME}rc" # deprecated
+# echo 'alias add2path='source add2path' >> "~/.$(basename ${SHELL})rc"
+# or have a script prepared to add aliases permanenty, e.g.  `addalias add2path 'source add2path'`
+
+NEWPATH=${PWD}
+
+[[ -n ${1} ]] && NEWPATH=${1}
+
+export PATH=${NEWPATH}:${PATH}

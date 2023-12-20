@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_list-gitexludes-foldernames () {
+	list-array-elements $GIT_EXCLUDES_FOLDERNAMES
+}
+_list-gitexludes-foldernames ${@}

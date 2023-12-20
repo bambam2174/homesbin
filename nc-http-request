@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+HOST="${1}"
+
+PORT=80
+
+[[ -n ${2} ]] && isNumber ${2} && PORT=${2}
+
+echo -n "GET / HTTP/1.0\r\n\r\n" | nc ${HOST} ${PORT}

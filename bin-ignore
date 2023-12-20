@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+GITFOLDER="$BIN"
+
+[[ $# -gt 1 ]] && GITFOLDER="${2}"
+
+FILE_GITIGNORE="${GITFOLDER}/.gitignore"
+
+FILE2IGNORE="${1//${GITFOLDER}/}"
+echo "${FILE2IGNORE}"
+FILE2IGNORE="${1//\$${GITFOLDER}/}"
+echo "${FILE2IGNORE}"
+
+echo "${FILE2IGNORE}" >> ${FILE_GITIGNORE}
+
+

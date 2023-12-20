@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+for i in {a..z}
+do 
+    echo -n "-> ${i} <–"; date "+%${i}"
+    I="$(uppercase $i)"
+    echo -n "-> ${I} <–"; date "+%${I}"
+done

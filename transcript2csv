@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_transcript2csv () {
+    LINES=$(($(cat "${1}" | wc -l) / 2))
+    CONTENT="$(cat "${1}")"
+
+	for i in {0..$LINES}
+	do
+		CTIME="$(echo "${CONTENT}" | get-line $((${i}*2+1)))" 
+		CLINE="$(echo "${CONTENT}" | get-line $((${i}*2+2)))" 
+		echo "${CTIME}, ${CLINE}" >> "${2:-${1}.formatted}"
+	done
+}
+_transcript2csv ${@}

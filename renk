@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+COLORBG=000
+COLORFG=000
+
+print -P "$BG[025]$FG[0]

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+OPTION='1'
+
+[[ ${1[1]} = '-' ]] && { OPTION+="${1}"; shift }
+
+CURRENT_PATH=$(dirname $(which ${1})) 2> /dev/null || echo "usage: $(basename $0) cmd"
+[[ -d ${CURRENT_PATH} ]] && cd ${CURRENT_PATH} || return $?
+pwd
+ls -${OPTION//-/}
+cd "${OLDPWD}"

@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_links-foldername () {
+	OPTS=1GF 
+	[[ -d "${1}" ]] && {
+		FOLDERNAME="${1}" 
+		ADD_OPT="${2}" 
+	} || {
+		FOLDERNAME="${2}" 
+		ADD_OPT="${1}" 
+	}
+    echo "${OPTS}${ADD_OPT//-/} ${LINKS}/**/${FOLDERNAME}/"
+	original ls -${OPTS}${ADD_OPT//-/} ${LINKS}/**/${FOLDERNAME}/
+}
+_links-foldername ${@}

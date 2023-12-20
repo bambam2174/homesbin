@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const myArgs = process.argv.slice(2);
+let basis = myArgs[0];
+let potenz = 1/myArgs[1];
+
+let result = Math.pow(basis, potenz)
+console.log(result);

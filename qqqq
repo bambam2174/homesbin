@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+[[ -z $SHELL_DEBUGSTATE ]]  && source ~/.debug_state        || echo "$SHELL_DEBUGSTATE already sourced"
+[[ -z $SHELL_FUNCTIONS ]]   && source ~/bin/.functions      || echo "$SHELL_FUNCTIONS already sourced"
+[[ -z $SHELL_VARS  ]]       && source ~/.bash_vars          || echo "$SHELL_VARS already sourced"
+[[ -z $SHELL_ALIASES  ]]    && source ~/.bash_aliases       || echo "$SHELL_ALIASES already sourced"
+[[ -z $DEBUG ]]             && echo "\$DEBUG zero"          || echo "\$DEBUG is set"
+isFunction isDebug          && echo "isFunction isDebug()"  && getresult_v
+
+_checkk() {
+    echo "alias setIFS"
+    alias setIFS
+    echo "\$SHELL_VARS=$SHELL_VARS"
+    echo "\$SHELL_FUNCTIONS=$SHELL_FUNCTIONS"
+    echo "\$SHELL_ALIASES=$SHELL_ALIASES"
+    echo "\$SHELL_DEBUGSTATE=$SHELL_DEBUGSTATE"
+    echo "________________________________"
+}
+
+_checkk
+
+#echo "sourcing ~/.bash_aliases"
+#source ~/.bash_aliases
+
+#_checkk

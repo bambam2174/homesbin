@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+export LINK_CATS=( $(list-link-categories) )
+# _get-link-cats () {
+	[[ -n $1 ]] && 1+=($(list-link-categories))  || export LINK_CATS=( $(list-link-categories) ) ; 
+#}
+#_get-link-cats ${@}

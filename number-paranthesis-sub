@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+char-digit-sub -n ${UC_SUB_PARANTHESIS_LEFT} ${@} ${UC_SUB_PARANTHESIS_RIGHT}
+
+#_number-paranthesis-sub () {
+	#SZ_FORMAT="echo -n \${UC_SUB_PARANTHESIS_LEFT}\${UC_SUB_${1}}\${UC_SUB_PARANTHESIS_RIGHT}" 
+	#isDebug && echo "${SZ_FORMAT}" > /dev/stdin 
+	#eval "${SZ_FORMAT}"
+#}
+#_number-paranthesis-sub ${1}

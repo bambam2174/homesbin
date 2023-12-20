@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ifconfig-devices () {
+	ifconfig | grep --color=auto -oE "^\S+:" | sed -E "s/:[  ]*$/${SUBSTITUTE_CHARS}/g"
+}
+_ifconfig-devices ${@}

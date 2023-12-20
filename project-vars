@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_project-vars () {
+	source ${SHELL_VARS_PROJECTS}
+	set | grep --color=auto -${1}E "PROJECTS_[_0-9A-Z]+" | sort
+}
+_project-vars ${@}

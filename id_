@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+#startsWithDash "${1}" && { id ${@}; echo $? } && . retexit $?
+
+_id_ () {
+	id "${1:-${USER}}" | grep --color=auto -oE "${2:-(uid|gid|groups)}=[0-9]+\([.a-z]+\),?([0-9]+\([._0-9a-z]+\),?)*"
+}
+startsWithDash "${1}" && id ${@} || _id_ ${@}

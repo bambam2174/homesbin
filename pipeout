@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+INPUT_PIPE="$(cat < /dev/stdin)"
+
+echo ${INPUT_PIPE} | rev | cut -d ' ' -f1 | rev

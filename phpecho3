@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+//$input = fgets(STDIN);
+//$output = fgets(STDOUT);
+//$error = fgets(STDERR);
+
+echo "$argv[1]";
+//echo "$input";
+//echo "$output";
+//echo "$error";
+fwrite(STDIN, "$argv[1] > /dev/stdin ".$argv[1]);
+fwrite(STDOUT, "$argv[1] > /dev/stdout ".$argv[1]);
+fwrite(STDERR, "$argv[1] > /dev/stderr ".$argv[1]);
+// 
+//fwrite(STDIN, "$input  /dev/stdin ");
+//fwrite(STDOUT, "$output  /dev/stdout ");
+//fwrite(STDERR, "$error  /dev/stderr ");
+?>

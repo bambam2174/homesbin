@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+CNT_CHAR=$#FINGERL
+CNT_FINGER_BW=2                                         # Black & White finger  : one char each  —> 2 chars
+CNT_FINGER_COLORED=$((($CNT_CHAR+1-$CNT_FINGER_BW)/2))    # Colored fingers       : two chars each —> ()all chars - 2) / 2
+CNT_FINGER=$(($CNT_FINGER_BW+$CNT_FINGER_COLORED))
+#echo "Number of fingers ${CNT_FINGER}"
+
+_fingerl () {
+IDX=${1}
+[[  ${IDX} -gt $(($CNT_FINGER)) ]] && { echo "no more than ${CNT_FINGER} fingers". retexit 1 }
+	if [[ ${IDX} -gt 2 ]]    
+    then
+        ((IDX-=2))
+        IDX=$((2*${IDX}+1))
+        echo ${FINGERL[$(($IDX)),$(($IDX+1))]} 
+    else 
+        echo "${FINGERL[$(($IDX))]} "
+    fi
+}
+_fingerl ${@}

@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+timestamp () {
+	date +"%s"
+}
+
+TL=10
+
+[[ -n $1 ]] && TL=$1
+
+local TARGET_FOLDER=Vedat-Chronicles
+
+local TARGET_HOST=linux.pc
+
+local TARGET_MOVIES=${HOME}/Movies
+
+[[ -d "${MOVIESe}" ]] && TARGET_MOVIES=${MOVIESe}
+
+TARGET_FOLDER_FINAL=${TARGET_MOVIES}/${TARGET_FOLDER}
+
+mkdir -p "${TARGET_FOLDER_FINAL}"
+
+
+ssh -YC vedat@${TARGET_HOST} 'source ~/.bashrc;/home/vedat/bin/getvidnull '$TL && scp vedat@${TARGET_HOST}:~/Videos/.out.mpg "${TARGET_FOLDER_FINAL}/out$(timestamp).mpg"

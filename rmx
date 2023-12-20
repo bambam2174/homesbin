@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+get-stdin() {
+	INPUT_PIPE="$(cat < /dev/stdin)" 
+
+    [[ -n ${INPUT_PIPE} ]] && ecko "${INPUT_PIPE}" 12 122
+    [[ -n ${INPUT_PIPE} ]] && echo "${INPUT_PIPE}"
+}
+
+INPUT_STDIN=$(get-stdin &)
+
+_rmx () {
+	ARROPT=() 
+	ARRVAL=() 
+	for o in {1..$#@}
+	do
+        [[ ${#@[$((${o}]))} -gt 1 ]] && 
+            startsWithDash ${@[$((${o}))]} && 
+            ARROPT[$((${o}))]="${@[$((${o}))]}" ||  
+            ARRVAL[$((${o}))]="${@[$((${o}))]}"	
+    done
+	if [[ -n ${INPUT_STDIN} ]]
+	then
+		# /bin/rm ${ARROPT} "${INPUT_STDIN}"
+		CMD="/bin/rm ${ARROPT} ${INPUT_STDIN}"
+	else
+		#/bin/rm ${ARROPT} ${@}
+		CMD="/bin/rm ${ARROPT} ${ARRVAL}"
+	fi
+    $(echo "${CMD}")
+}
+_rmx ${@}
+
+# /bin/rm ${@} $(cat < /dev/stdin &)

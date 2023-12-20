@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_cat-all-links-to () {
+	cat * | grep --color=auto -Eo "$(regex-all-links-to ${1})"
+}
+_cat-all-links-to ${@} 2> /dev/null

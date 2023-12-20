@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+IFS=${DELIMITER_ENDL}
+
 _filename() {
     echo "${1}" | rev  | cut -d '/' -f1  | rev
 }
@@ -11,11 +13,16 @@ then
     for TMP_PATH in "${@}"
     do
         isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
-        _filename "${TMP_PATH}"
+        ARR_PATH=("${TMP_PATH}")
     done
 else
     INPUT_PIPE="$(cat < /dev/stdin)"
-    [[ -n ${INPUT_PIPE} ]] && _filename "${INPUT_PIPE}"
+    [[ -n ${INPUT_PIPE} ]] && ARR_PATH=($(echo ${INPUT_PIPE}))
 fi
+
+for currPath in ${ARR_PATH}
+do
+    _filename ${currPath}
+done
 
 

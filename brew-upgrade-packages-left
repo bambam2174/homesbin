@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo $(($(cat ${CSV_BREW_OUTDATED} | wc -l)-$(cat ${CSV_BREW_PACKAGES_UPGRADING} | wc -l)))

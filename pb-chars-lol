@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-chars-lol () {
+	chars-lol ${1} | pbcopy
+}
+_pb-chars-lol ${@}

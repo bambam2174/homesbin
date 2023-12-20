@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+source "/Users/sedatkilinc/bin/.functions"
+source "/Users/sedatkilinc/.shell_aliases"
+_last-command () {
+	[[ $# -gt 0 ]] && LINENR=${1}  || LINENR=2 
+	LASTCMD=$(tail -n ${LINENR} $HISTFILE | head -n 1) 
+	TO_REPLACE=$(echo $LASTCMD |  cut -d ';' -f1) 
+	echo ${LASTCMD/${TO_REPLACE};/}
+}
+_last-command ${@}

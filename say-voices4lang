@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+IFS=${DELIMITER_ENDL}
+
+ARR_VOICES4LANG=($(say-voices ${1} | cut -d ' ' -f 1))
+
+    
+list-array-elements ${ARR_VOICES4LANG}
+

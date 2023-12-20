@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+
+__f () {
+	OPTS=() 
+	PARAM_PATH="${PWD}" 
+	CNT=5 
+	CORRECT_LIST=0 
+    FULL_PATH=false
+
+	isPositive ${#} && startsWithDblDash ${1} && FULL_PATH=true && shift
+	isPositive ${#} && startsWithDash ${1} && OPTS+=${1}  && shift && isContaining "${OPTS}" "l" && ! ${FULL_PATH} && ((CORRECT_LIST++))
+	isPositive ${#} && [[ -e ${1} ]] && PARAM_PATH="${1}"  && shift
+	isPositive ${#} && isNumeric ${1} && CNT=${1} && shift
+	${FULL_PATH} && 
+        ls -1d ${OPTS} ${PARAM_PATH}/(\.*|*) | head -n $((CNT+=${CORRECT_LIST})) ||
+        ls -1 ${OPTS} ${PARAM_PATH} | head -n $((CNT+=${CORRECT_LIST}))
+    return $?
+    # rather unnecessary stuff for cases where `_f -l $TMP 10 -AUt 99` work…but doesn't make sense… :/
+    isNumeric ${@[2]} && COUNT=${@[2]} || COUNT=$((CNT+=${CORRECT_LIST}))
+	ls -G -1 ${OPTS} ${@[1]} ${PARAM_PATH} | head -n ${COUNT}
+
+}
+__f ${@}

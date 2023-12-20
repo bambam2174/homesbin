@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+TARGET=/var/log/find
+mkdir -p $TARGET
+touch $TARGET/cmdra.log
+
+CC=$(cat $TARGET/cmdra.log)
+
+echo $((CC+1))
+
+

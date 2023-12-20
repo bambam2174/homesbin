@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isContaining () {
+	[[ "${1}" =~ "${2}" ]]
+}
+_isContaining ${@}

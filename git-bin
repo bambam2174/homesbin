@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+cd $BIN
+$(echo "${@}")
+cd "${OLDPWD}"

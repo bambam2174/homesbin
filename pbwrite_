@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+ADD=false
+
+while startsWithDash ${1}
+do
+    CURROPT="${1//-/}"
+    case "${CURROPT}"
+        in
+        'a' || 'add')
+            ADD=true
+            ;;
+        'm' || 'mkdir')
+            mkdir -p "$(dirname ${@[-1]})"
+            ;;
+    esac
+    shift
+done
+
+case "${ADD}"
+    in
+    true)
+        pbpaste >> ${1};     
+        echo >> ${1};
+        ;;
+    *)
+        pbpaste > ${1};
+        echo >> ${1};
+        ;;
+esac

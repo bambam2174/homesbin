@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_lettercase () {
+	[[ $(charCode "${1}") -ge $(charCode 'A') ]] && [[ $(charCode "${1}") -le $(charCode 'Z') ]] && echo "${2:-UPPERCASE}" || echo "${3:-LOWERCASE}"
+}
+_lettercase ${@}

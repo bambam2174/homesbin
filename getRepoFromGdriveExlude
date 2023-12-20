@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_getRepoFromGdriveExlude () {
+	FOLDER=$(basename ${1}) 
+	FOLDER=${FOLDER//${SLASH_DIVISION}/\/} 
+	FOLDER=${FOLDER//\[SPACE\]/ } 
+	echo "/${FOLDER}"
+}
+_getRepoFromGdriveExlude ${@}

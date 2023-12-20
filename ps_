@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+ps ${@} | grep --color=auto -vE '\-zsh' | tee "${OUTPUT_PROCESS_STATUS}/ps_$(echo ${@} | sed -E 's/ /_/g')_$(date +%s).txt"

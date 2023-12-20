@@ -1,0 +1,142 @@
+#!/bin/zsh
+
+f-Black () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Black $CNTNT
+}
+
+f-Blue () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Blue $CNTNT
+}
+
+f-BrownOrange () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe BrownOrange $CNTNT
+}
+
+f-Cyan () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Cyan $CNTNT
+}
+
+f-DarkGray () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe DarkGray $CNTNT
+}
+
+f-Green () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Green $CNTNT
+}
+
+f-LightBlue () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightBlue $CNTNT
+}
+
+f-LightCyan () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightCyan $CNTNT
+}
+
+f-LightGray () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightGray $CNTNT
+}
+
+f-LightGreen () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightGreen $CNTNT
+}
+
+f-LightPurple () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightPurple $CNTNT
+}
+
+f-LightRed () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe LightRed $CNTNT
+}
+
+f-NC () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe NC $CNTNT
+}
+
+f-Purple () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Purple $CNTNT
+}
+
+f-Red () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Red $CNTNT
+}
+
+f-White () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe White $CNTNT
+}
+
+f-Yellow () {
+	CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT " 
+	farbe Yellow $CNTNT
+}
+
+addspace() {
+	local CNTNT="${1}" 
+	#LC=$CNTNT[$#CNTNT] 
+	#CNTNT="$CNTNT "
+	echo $CNTNT
+}
+
+# Beispiel/Example:
+#
+#  f-LightGreen "Sedat ";f-LightPurple "ist "; f-Red "ein Trödler \n"
+#
+#  Maybe use aliases to make function calls shorter in order to make those texts readable more fluentlye
+#  -> alias f-lg=f-LightGreen; alias f-lp=f-LightPurple; alias f-r=f-Red
+#
+#  f-lg "Sedat ";f-lp "ist "; f-r "ein Trödler \n""
+
+farbe () {
+	#OPT="\b " 
+	OPT="n" 
+	echo -${OPT} "$(eval echo\ \$COLOR_${1})${2}"
+}

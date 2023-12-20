@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_trees () {
+	ls -G -1AF -Ut ${@} ${OUTPUT_TREES}
+}
+_trees ${@}

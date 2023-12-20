@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_chainsx () {
+	for i in {1..${1:-6}}
+	do
+		printf "${UC_CHAIN} %.0s" {1..70}
+		echo
+	done
+}
+_chainsx ${@}

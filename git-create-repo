@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+git-init-add-commit
+git-addremote-main-push ${1}

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+NEEDLE="${1}"
+shift
+#echo "NEEDLE = ${NEEDLE}"
+#echo "\$#@ = $#@"
+#echo "${@}"
+#echo "––––––––––––––––––––––––"
+CNTR=0
+for i in $@;
+do
+    CNTR=$(($CNTR+1))
+    [[ "${i}" = "${NEEDLE}" ]] && echo "${CNTR}"
+done

@@ -1,0 +1,57 @@
+#!/bin/zsh
+
+FOLDER="${PWD}"
+NTH=1
+
+LOPTIONS="-1tFG"
+
+while [[ $# -gt 0 ]]
+do
+    case "${1}" in
+        --*=* || -*=*) 
+            optarg=$(echo "${1}" | sed -e 's/[-_a-zA-Z0-9]*=//') 
+            #echo "$1 optarg1 $optarg"
+            ;;
+        --* || -*)
+            optarg=$(echo "${2}" | sed -e 's/[-_a-zA-Z0-9]*=//')
+            #echo "$2 optarg2 $optarg"
+            ;;
+        *) 
+            optarg=
+            #echo "1: $1 optarg- $optarg"
+            #echo "2: $2 optarg- $optarg"
+            ;;
+    esac
+
+    case "${1}" in
+         --directory=* || -d=* || --directory || -d)
+             #echo "dir2 $optarg"
+            FOLDER=$optarg
+              ;;
+         --rank=* || -n=* || --rank || -n)
+             #echo "nth $optarg"
+             NTH=$optarg
+             ;;
+        --all)
+            LOPTIONS+=A
+            ;;
+        --created)
+            LOPTIONS+=U
+            ;;
+        --changed)
+            LOPTIONS+=c
+            ;;
+        --accessed)
+            LPTIONS+=u
+            ;;
+         *) 
+            LOPTIONS+=U
+            #echo "\$1=$1"
+            #echo "\$@=$@"
+            ;;
+     esac
+     shift
+done
+#echo "FOLDER ${FOLDER}"
+#echo "NTH $NTH"
+echo ${FOLDER}/$(ls ${LOPTIONS} ${FOLDER} | head -n ${NTH} | tail -n 1)

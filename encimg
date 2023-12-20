@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+F2C="${1}"
+KII="out-bame.jpg"
+shift
+
+FCD="${F2C}"
+isNaN "${1}" && FCD="${1}" && shift
+
+F2C_D=$(dirname "${FCD}")
+F2C_F=$(filename "${FCD}")
+
+convert -append $(bam ${@}) "${KII}"
+encrypt3 "${F2C}" "${KII}" "${F2C_D}/$(fileroot enc-${F2C_F})-$(($(date +%s)%10000)).png"
+rm -f "${KII}"

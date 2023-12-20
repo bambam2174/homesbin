@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+log-write "com.googlecode.iterm2" "$0 :"
+log-write "com.googlecode.iterm2" "\$SHELL_FUNCTIONS = ${SHELL_FUNCTIONS}"
+log-write "com.googlecode.iterm2" "functions | wc -l : $(functions | wc -l)"
+[[ -z $SHELLFUNCTIONS ]]  && source ~/bin/.functions || echo "$BASHFUNCTIONS already sourced"
+
+CAT_NEW_LOWER=$(lowercase ${1//[^a-zA-Z]/-})
+CAT_NEW_UPPER=$(uppercase ${1//[^a-zA-Z]/-})
+
+BASE_PATH="LINKS"
+[[ -n "${2}" ]] && BASE_PATH="${2}"
+
+CAT_LINKS_NAME="LINKS_${CAT_NEW_UPPER//[^a-zA-Z]/_}"
+CAT_LINKS_VALUE="\${${BASE_PATH}}/${1}"
+[[ -d "${BASE_PATH}" ]] && CAT_LINKS_VALUE="\$$(get-varname ${BASE_PATH})/${1}"
+CAT_LINK_PATH_NAME="LINK_PATH_${CAT_NEW_UPPER//[^a-zA-Z]/_}"
+CAT_LINK_PATH_VALUE="\${${CAT_LINKS_NAME}//\${LINKS}\\//}"
+echo ${CAT_NEW_LOWER}
+echo ${CAT_NEW_UPPER}
+echo ${CAT_LINKS_NAME}
+echo ${CAT_LINKS_VALUE}
+echo ${CAT_LINK_PATH_NAME}
+echo ${CAT_LINK_PATH_VALUE}
+
+addvar "${CAT_LINKS_NAME}" "${CAT_LINKS_VALUE}"
+addvar -k "${CAT_LINK_PATH_NAME}" "${CAT_LINK_PATH_VALUE}"
+# addvar LINKS_3D '$LINKS_GAMEDEV/3D'
+# addvar LINK_PATH_3D '${LINKS_3D//$LINKS\//}'
+
+source  /Users/sedatkilinc/.shell_vars
+eval "mkdir -p \$${CAT_LINKS_NAME}"
+addalias_addlink addlink-${CAT_NEW_LOWER} "'addlink \"\${${CAT_LINK_PATH_NAME}}\"'"
+#  addalias_addlink addlink_3D 'addlink $LINK_PATH_3D'

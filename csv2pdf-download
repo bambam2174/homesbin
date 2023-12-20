@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_csv2pdf-download () {
+	LINES=$(cat "${1}" | wc -l) 
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	for line in $(cat "${1}" | tail -n $((--LINES)) )
+	do
+		szTitle=$(echo $line | cut -d ',' -f1 | trim) 
+		szHREF=$(echo $line | cut -d ',' -f2 | trim) 
+		original curl "${szHREF}" -o "${szTitle}.pdf"
+	done
+}
+_csv2pdf-download ${@}

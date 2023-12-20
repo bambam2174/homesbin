@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+
+IMG="${1}"
+TARGET_IMG="${2}"
+
+isExecutable $(ww decimg)
+
+echo -n "executable…"
+read EXE
+echo "1) \$@=$@"
+
+echo -n "Na los "
+read NMBRZ
+
+echo "2) \$@=$@"
+echo "#NMBRZ=${#NMBRZ}"
+echo "NMBRZ=${NMBRZ}"
+
+ARR_PARAMS=()
+
+for i in {1..$#NMBRZ}
+do
+    echo "${i}: ${NMBRZ[$i]}"
+    isNumber ${NMBRZ[$i]} &&  ARR_PARAMS+=${NMBRZ[$i]}
+done
+
+echo "ARR_PARAMS=${ARR_PARAMS}"
+echo "$(basename $0) ${IMG} ${ARR_PARAMS}"
+echo "$(basename ${EXE}) ${IMG} ${TARGET_IMG} ${ARR_PARAMS}"

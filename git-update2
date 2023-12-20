@@ -1,0 +1,14 @@
+#!/bin/bash
+echo ${@};
+for i in ${@:-$(ls -1)}; do 
+    ecko -n  "-> $i" 11 1
+    [[ -d "$i" ]] && [[ -d "$i/.git" ]] && echo || { 
+        ecko " not a repo " 8 9 > /dev/stderr
+            continue
+        }
+	cd $i
+    ecko "   branch" 1 11
+	git branch | cat 
+	git pull
+	cd ../
+done;

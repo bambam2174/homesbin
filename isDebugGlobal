@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_isDebugGlobal () {
+	DEBUG=$(cat ${DEBUG_STATE_FILE}) 
+	source isDebugLocal && true || false
+}
+_isDebugGlobal ${@}

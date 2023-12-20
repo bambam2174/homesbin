@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+set-global-vars ALIVE true
+export FOOBAR=''
+doit() {
+    sleep 4 
+    [[ -n ${FOOBAR} ]] && ecko "…GOOD" 100 222 || { 
+        ${ALIVE} && echo "…now" 
+        echo "1 FOOBAR=$FOOBAR  ALIVE=$ALIVE"
+    }  
+    echo "2 FOOBAR=$FOOBAR  ALIVE=$ALIVE"
+}
+echo "${0}"
+echo "${@}"
+PARAM_PATH1="${1}"
+shift
+echo "${@}"
+shift
+echo "${@}"
+
+echo $PWD
+#ls -lct $PWD
+ecko -n "Enter some shit and/or press [RETURN]: " 111 222
+doit &
+read FOOBAR
+echo $FOOBAR
+ALIVE=false
+echo "FOOBAR=$FOOBAR  ALIVE=$ALIVE"

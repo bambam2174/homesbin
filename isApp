@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_isApp () {
+	[[ -d ${1} ]] && endsWith ${1} ".app" && return 0 || return 1
+}
+_isApp ${@}

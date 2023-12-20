@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+_addlink-quran_ () {
+    if [[ ${#} -eq 2 ]] && isNumeric ${1} && isNumeric ${2}
+    then
+        addlink ${LINK_PATH_QURAN}  "$(quran.com ${1} ${2})" "Quran ${1}:${2}"
+    else
+	    addlink ${LINK_PATH_QURAN} "${1}"
+    fi
+}
+_addlink-quran_ ${@}

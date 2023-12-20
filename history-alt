@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_history-alt () {
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	for line in $(cat "${1}")
+	do
+		TMPDATE="$(echo $line | list-col -d ':' 2 | timestamp2date)" 
+		echo -n "$TMPDATE "
+		echo $line | sed -E "s/${REGEX_HISTFILE_TIMESTAMP}//g"
+	done
+}
+_history-alt ${@}

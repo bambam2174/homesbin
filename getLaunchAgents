@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+. $BIN/.functions
+
+SEARCHED_LAUNCHAGENT="$1"
+isDebug && echo "SEARCHED_LAUNCHAGENT = \"$SEARCHED_LAUNCHAGENT\""
+
+for i in $launch[@]; do 
+    echo "==>   $i";
+    ls -1 $i; 
+    TMPFILE=$([ $#SEARCHED_LAUNCHAGENT -ne 0 ] && ls -1 $i | grep -i $SEARCHED_LAUNCHAGENT)
+    [ $#TMPFILE -ne 0 ] && echo "${i}/${TMPFILE}"
+done
+

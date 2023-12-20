@@ -1,0 +1,48 @@
+#!/bin/zsh
+
+_getlink() {
+
+    BOOKMARK_FILE="$1"
+
+
+    EXT=$(fileext $BOOKMARK_FILE)
+
+
+#    if [ $# -gt 1 ]; then
+#        BOOKMARK_FILE="$2"
+#        OPTION="$1"
+#    fi
+
+
+    if [ $EXT = "url" ]
+    then
+        URL=$(cat $BOOKMARK_FILE | cut -d "=" -f2)
+    else
+
+        URL_NODE=$(cat "$BOOKMARK_FILE" | grep -E '<.+string>')
+
+        URL1=${URL_NODE//<string>/ }
+
+        URL2=${URL1//<\/string>/ }
+
+        URL=${URL2// /}
+
+    fi
+
+    echo -n ${URL} | pbcopy
+    [[ ${SHLVL} -gt 1 ]] && 
+        echo "• $(basename ${BOOKMARK_FILE})\n\t${URL}" || 
+        { 
+            ecko "• $(basename ${BOOKMARK_FILE})" $((90+${2})) 15
+            ecko "\t${URL}" 15 $((90+${2}))
+        }
+
+
+#
+}
+CNT=0
+for i in "${@}"
+do
+    [[ -f "${i}" ]] && _getlink "${i}" ${CNT}
+    ((CNT++))
+done

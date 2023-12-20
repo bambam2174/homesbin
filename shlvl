@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_shlvl () {
+	local IS_SILENT=false 
+	startsWithDash "${1}" && [ ${1/-/} = 's' -o ${1/-/} = '-silent' ] && IS_SILENT=true  && shift
+	${IS_SILENT} || echo "\$SHLVL=${SHLVL}"
+    source rts $((100+${SHLVL})) ${SHLVL}
+    #rts $((100+${SHLVL})) ${SHLVL}
+    #return $((100+${SHLVL}))
+}
+_shlvl ${@}
+
+#
+#echo "\$?=${?}"
+
+source rts ${?} ${SHLVL}

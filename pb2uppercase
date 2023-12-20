@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb2uppercase () {
+	pbpaste | uppercase | pbcopy
+}
+_pb2uppercase ${@}

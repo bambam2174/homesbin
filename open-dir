@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_open-dir () {
+	open "$(dirname $_)"
+}
+_open-dir ${@}

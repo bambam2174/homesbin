@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+QTS="\""
+startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
+
+[[ ${SHLVL} -gt 1 ]] && source ~/bin/.functions
+
+SCRIPTNAME="$(basename $0)"
+
+CURR_SHELL_VARS=${${3}:-${SHELL_VARS}}
+# add alias like
+# alias addvar='source addvar'
+
+[[ ${SHLVL} -eq 1  ]] && [[  -z $(alias ${SCRIPTNAME}) ]] && addalias ${SCRIPTNAME} "source ${SCRIPTNAME}" && update_aliases
+
+_addvar() {
+    SZ_EXPORT='export '
+
+    if [ $# -eq 0 ] ||  [ $# -lt 2 ]; then
+        echo "$# is $((2-$#)) too few"
+        echo "Usage: ${SCRIPTNAME} name value"
+        echo "addalias ${SCRIPTNAME} 'source ${SCRIPTNAME}'"
+        return 1
+    else
+        PNAME="${1//-/_}"
+        PNAME=$(uppercase ${PNAME})
+        PVALUE="${2}"
+        ! string_contains $PVALUE "(" && ! startsWith $PVALUE '"' && ! endsWith $PVALUE '"' && PVALUE=${PVALUE// /\\ }
+    fi
+
+    LASTCHAR=${PNAME[$#PNAME]}
+
+    [[ "$LASTCHAR" = "+" ]] && SZ_EXPORT=''
+
+    echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
+    source $CURR_SHELL_VARS
+}
+
+_addvar ${@}
+

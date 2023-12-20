@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_get () {
+    
+    ARR_STDIN=$(. ${BIN}/get-stdin)
+    echo ${ARR_STDIN}| head -n ${1} | tail -n ${2:-1}
+}
+_get ${@}

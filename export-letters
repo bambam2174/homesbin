@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_export-letters () {
+	cat $SHELL_VARS | grep --color=auto --color=auto -E "${1}_[A-Z]+=\".+\"" | sed -E "s/${1}_/${2}/g"
+}
+_export-letters ${@}

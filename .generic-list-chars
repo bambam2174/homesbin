@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+
+CMD="$(echo ${0##*/})" 
+CMD="${CMD/list-/}" 
+eval "list-array-index-value \$(${CMD})"

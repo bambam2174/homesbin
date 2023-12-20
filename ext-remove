@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ext-remove () {
+	mv -i "${1}" $(fileroot "${1}")
+}
+_ext-remove ${@}

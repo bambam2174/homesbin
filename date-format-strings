@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+
+_date-format-strings () {
+	for xy in {a..z}
+	do
+		echo -n " date +%${xy} -> "
+		date +%${xy}
+		echo -n " date +%$(uppercase ${xy}) -> "
+		date +%$(uppercase ${xy})
+		echo "-----------------"
+	done
+}
+_date-format-strings ${@}

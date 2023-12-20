@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+$HOME/.iterm2/imgcat "$(get-nth-file-in-folder -n ${1} -d $SCREENSHOTS)"

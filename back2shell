@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+[[ ${SHLVL} -gt 1 ]] && exit 123 || return 123

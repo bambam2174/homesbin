@@ -1,0 +1,8 @@
+#!/usr/sbin/dtrace -qs
+
+proc:::exec-success
+
+{
+    printf("%s(pid=%d) started by uid - %d\n",execname, pid, uid); 
+}
+

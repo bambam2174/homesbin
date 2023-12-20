@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_digits-date () {
+	printf "%0${1}u" "$(($(date +%s)%(10**${1})))"
+}
+_digits-date ${@}

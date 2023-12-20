@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+
+process.argv.shift();
+
+var script = process.argv.shift();
+console.log("script", script);
+console.log("1st param", process.argv[0]);

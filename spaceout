@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_spaceout () {
+    INPUT="${1}" 
+    SEP="${2:- }"
+	SZ_RESULT='' 
+	for idx in {1..${#INPUT}}
+	do
+		letter="${INPUT[${idx}]}" 
+		SZ_RESULT+="${letter}${SEP}" 
+	done
+	echo ${SZ_RESULT[1,-$((${#SEP}+1))]}
+}
+_spaceout ${@}

@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_get-tag-attr-value-of-url () {
+	usage "$0" "$#" 3 "<url> <tag-name> <attribute-name>" "obtains the attribute value of the html-documents's concerned tags" || return 1
+	IFS=$DELIMITER_ENDL 
+	TAG=$2 
+	TAG_ATTRIBUTE=$3 
+	[[ $# -eq 3 ]] && SZ_REGEX="<${TAG}.*>.*</${TAG}>"  || SZ_REGEX="<${TAG}.*>" 
+	get-content-of-url "${1}" | grep --color=auto --color=auto -oE "$SZ_REGEX" | sed -e "s/<${TAG}/\\${IFS}<${TAG}/g" | sed -e "s/<\/${TAG}>/<\/${TAG}>\\${IFS}/g" | grep --color=auto --color=auto -oE "${TAG_ATTRIBUTE}=\"[^ ]*\""
+}
+_get-tag-attr-value-of-url ${@}

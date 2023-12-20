@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+alias sed-remove-ls-l-prolog='sed -E "s/${REGEX_LS_L_PROLOG}/${SUBSTITUTE_CHARS}/g"'
+
+_compDirs () {
+	source difff --side-by-side "ls -lah ${1//\ /\\ } | sed-remove-ls-l-prolog" "ls -lah ${2//\ /\\ } | sed-remove-ls-l-prolog"
+}
+_compDirs ${@}

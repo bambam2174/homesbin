@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+
+_boxyhq/jackson not found
+_boxyhq/jackson ${@}

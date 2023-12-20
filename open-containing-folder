@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_open-containing-folder () {
+    open "$(dirname ${1:-$(pbpaste)})"
+}
+_open-containing-folder ${@}

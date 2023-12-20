@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+TICKER_IT=false
+
+startsWithDash "${1}" && [ ${1/-/} = 't' -o  ${1/-/} = '-ticker' ] && TICKER_IT=true && shift
+
+unicode-it-tickering () {
+	for i in {1..${#1}}
+	do
+		UC=$(uppercase ${1[${i}]})
+		[[ "${1[${i}]}" = ' ' ]] && echo -n ' ' || eval "echo -n \"\\\\\$${2:-UNICODE_DOUBLE_STRUCK_SMALL}_${UC}\""
+	done
+	echo
+}
+
+unicode-it-at_once () {
+    SZ_OUTPUT=''
+    FONT=-UNICODE_DOUBLE_STRUCK_SMALL
+    [[ -n ${2} ]] && FONT=$(handle-font ${2})
+	for i in {1..${#1}}
+	do
+		UC=$(uppercase ${1[${i}]}) 
+        SZ_OUTPUT+=$([[ "${1[${i}]}" = ' ' ]] && echo -n ' ' || eval "echo -n \"\\\\\$${FONT}_${UC}\"")
+	done
+	echo ${SZ_OUTPUT}
+}
+
+handle-font() {
+    XX=$(get-varname ${1})
+    [[ -n ${XX} ]] && echo $XX | sed -E 's/_[A-Z]$//g' || echo ${1}
+}
+
+${TICKER_IT} && unicode-it-tickering ${@} || unicode-it-at_once ${@}

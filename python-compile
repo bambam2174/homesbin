@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_python-compile () {
+    cython "${1}" --embed
+	PYTHONLIBVER=python$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')$(python3-config --abiflags) 
+    gcc -Os $(python3-config --includes) "${1/\.py/.c}" -o "${2:-output_bin_file}" $(python3-config --ldflags) -l$PYTHONLIBVER
+}
+_python-compile ${@}

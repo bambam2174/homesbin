@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+source ${DEBUG_STATE_FILE//_value/}
+
+_lsd () {
+	IFS=${DELIMITER_ENDL}
+	(isDebugLocal || isDebugGlobal) && echo "Number of Parameters $#"
+	POPT='-1dAF'
+	[[ -n "${1}" ]] && [[ ${1[1]} = '-' ]] && POPT+=${1//-/}  && shift
+	[[ -n "${1}" ]] && PPATH="${1}" || PPATH="."
+	(isDebugLocal || isDebugGlobalc) && echo "PPATH=${PPATH}\nPOPT=${POPT}"
+IFS=${DELIMITER_ENDL}
+	for i in $(ls ${POPT} "${PPATH}/"* | grep -oE ".*\/$")
+	do
+		TMP_FILE=$(echo "${i}" | rev | cut -d "/" -f2 | rev)
+		ls -G -G ${POPT} ${PPATH}/${i}
+	done
+	IFS=${IFS_ORIG}
+}
+
+_lsd ${@}

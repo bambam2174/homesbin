@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_clearUpPath () {
+	ARRXX=($(listit ${1// /[SDT]} '/')) 
+	ARRNEW=() 
+	for i in {1..$#ARRXX}
+	do
+		[[ $ARRXX[$i] = '..' ]] && {
+			ARRNEW=($ARRNEW[1,-2]) 
+		} || {
+			ARRNEW+=$ARRXX[$i] 
+		}
+	done
+	NEWPATH="/$(arrjoin -c '\/' $ARRNEW)" 
+	echo "${NEWPATH//\[SDT\]/ }" # > /dev/stdout
+}
+_clearUpPath ${@}

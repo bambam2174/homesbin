@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+DEL=true
+
+[[ -f ${1} ]] || { DEL=false; shift }
+
+_decem () {
+    read XY
+    TMP_ARR=( ${@} ${XY} )
+	CPATH=$(decimg ${TMP_ARR}) 
+	/Users/sedatkilinc/.iterm2/imgcat $CPATH
+	${DEL} && rm -i -i -f $CPATH
+}
+_decem ${@}

@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+
+process.argv.shift()
+
+var script = process.argv.shift()
+
+var SZPARAM = process.argv[0]
+
+var SZ_UNESCAPED = escape(SZPARAM)
+
+console.log(SZ_UNESCAPED)

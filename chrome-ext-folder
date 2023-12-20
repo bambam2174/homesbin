@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_chrome-ext-folder () {
+	ls -G -1AF $CHROME_EXT | grep --color=auto -oE "^${1}[a-z]+"
+}
+_chrome-ext-folder ${@}

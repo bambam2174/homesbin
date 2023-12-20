@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+encrypt2 $TMP/bambam2174.path.txt
+
+

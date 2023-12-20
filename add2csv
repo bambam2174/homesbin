@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_add2csv () {
+	CSV_TARGET="${TMPDIR}/default.csv" 
+	pbwrite ${@[1,-2]} ${@[-1]:-${CSV_TARGET}}
+}
+_add2csv ${@}

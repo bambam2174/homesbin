@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+RET_VALUE=true
+
+_isNumeric () {
+    [[ ${1} =~ $REGEX_IS_NUMERIC ]] 2> /dev/null
+}
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_NUMERIC in "${@}"
+    do
+        isDebug && echo "URL Nr.$((CNT+=1)) ${TMP_NUMERIC}"
+        ARR_NUMERIC=("${TMP_NUMERIC}")
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && ARR_NUMERIC=($(echo ${INPUT_PIPE}))
+fi
+
+for CURR_NUMERIC in ${ARR_NUMERIC}
+do
+    _isNumeric ${CURR_NUMERIC} && echo "RET_VALUE = $RET_VALUE" || RET_VALUE=false
+done
+
+echo "before rts: RET_VALUE = $RET_VALUE"
+. rts ${RET_VALUE}

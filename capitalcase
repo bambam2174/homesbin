@@ -10,8 +10,9 @@ else
     [[ -n ${INPUT_PIPE} ]] && SZ_INPUT="${INPUT_PIPE}"
 fi
 
-ARRINPUT=($(echo ${SZ_INPUT//[^a-z]/ }))
-ARRSEP=($(echo ${SZ_INPUT} | grep -oE '[^a-z]'))
+#ARRINPUT=($(echo ${SZ_INPUT//[^a-z]/ }))
+ARRINPUT=($(echo ${SZ_INPUT}))
+ARRSEP=($(echo ${SZ_INPUT} | grep -oE '[^a-zA-Z]'))
 
 SZ_OUTPUT=""
 

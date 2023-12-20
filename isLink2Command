@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+
+readlink $(www "${1}") > /dev/null
+

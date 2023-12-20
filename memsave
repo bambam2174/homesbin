@@ -13,7 +13,15 @@ PBBOARD=font
 startsWithDash ${1} && [ ${1/-/} = 'h' -o ${1/-/} = '-help' ] && shift 1 && usage
 startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-pboard' ] && PBBOARD="${2}" && shift 2
 
-[[ ${PBBOARD} = "general" ]] && { ecko -n "Don't use the PBoard" 132 123; ecko -n  " \"general\" " 123 132; ecko " in order not to overwrite standard clipboard " 132 123  > /dev/stderr && usage }
+if [[ ${PBBOARD} = "general" ]] 
+then 
+    ARR_ERROR=()
+    ARR_ERROR+=$(ecko -n "Don't use the PBoard" 132 123)
+    ARR_ERROR+=$(ecko -n  " \"general\" " 123 132)
+    ARR_ERROR+=$(ecko " to prevent overwriting standard clipboard " 132 123)
+    echo ${ARR_ERROR} > /dev/stderr
+    usage
+fi
 
 if isNumeric ${PBBOARD} 
 then

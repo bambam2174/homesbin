@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+
+_csAll2File () {
+	TARGET_FILE="${TMPDIR}/scripts-named-${1}.txt"
+    echo "Scripts  containing the ${1} in their filename" > "${TARGET_FILE}"
+	for script in $(find-scripts-named "${1}")
+	do
+        [[ -x "${script}"  ]] && string_contains "$(file ${script})" "${SCRIPT_TEXT_EXECUTABLE}" || continue
+		[[ -e ${TARGET_FILE} ]] && add-horizontal-separator "${TARGET_FILE}"
+		echo "# ⟹     $(echo ${script} | filename)   ⟸  " >> ${TARGET_FILE}
+		cat ${script} >> ${TARGET_FILE}
+		echo >> ${TARGET_FILE}
+	done
+    echo -n "$(ecko "Sourcecodes are collected in " 188 88)" > /dev/stdin
+    echo "${TARGET_FILE}"
+    echo "'${TARGET_FILE}'" | pbcopy
+}
+_csAll2File ${@}

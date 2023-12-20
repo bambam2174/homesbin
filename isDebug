@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_isDebug () {
+	DEBUG=$(cat $DEBUG_STATE_FILE) 
+	if [[ "$DEBUG" -eq $TRUE ]] || [[ "$DEBUG" = $TRUE ]]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+_isDebug ${@}

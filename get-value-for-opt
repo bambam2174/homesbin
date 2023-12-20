@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+
+_get-value-for-opt () {
+	SEARCHEDITEM="${1}" 
+	shift
+	ARGS=(${@}) 
+	CNT=1 
+	for el in ${ARGS}
+	do
+		#echo $el
+		[[ ${el} = "${SEARCHEDITEM}" ]] && TARGET=${ARGS[$((CNT+1))]} 
+		((CNT++))
+	done
+	echo $TARGET
+}
+_get-value-for-opt ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_add-extension () {
+	CURRENT_PATH="${1}" 
+	CURRENT_EXT="${2}" 
+	CURRENT_FILENAME="$(filename ${CURRENT_PATH})" 
+	rename-file "${CURRENT_PATH}" "${CURRENT_FILENAME}.${CURRENT_EXT}"
+}
+_add-extension ${@}

@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+
+_ytdc-debug-heavy () {
+    OPTS=()
+    while startsWithDash ${1}
+    do
+        OPTS+="${1}"
+        shift
+    done
+    # debug stuff
+    ecko "\$OPTS=${OPTS}" 2 17
+    ecko "\$@=${@[1]}" 1 11
+    ecko "\$@=${@[-1]}" 4 15
+    #source retexit 123
+    LOG_FILE="${OUTPUT_YOUTUBE_DL}/$(echo "${@[-  1]}" | grep -oE "v[\=0-9a-zA-Z]+\&?" | sed -E "s/(^v=|&$)//g")-$(date +%s).txt"
+    ecko ${LOG_FILE} 1 18
+    #source retexit 123
+
+    youtube-dl --net --no-mark-watched --no-check-certificate -v --dump-pages --write-pages --print-traffic ${OPTS} ${@} | tee ${LOG_FILE}
+
+    mv *.dump ${OUTPUT_YOUTUBE_DL}/
+}
+_ytdc-debug-heavy ${@}

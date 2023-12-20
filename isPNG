@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_isPNG () {
+	WCL=$(file "${1}" | grep -E "PNG" | wc -l) 
+	[[ ${WCL} -gt 0 ]]
+}
+_isPNG ${@}

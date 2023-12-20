@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_setSUBSTITUTE_CHARS () {
+	export SUBSTITUTE_CHARS="${1}" 
+}
+_setSUBSTITUTE_CHARS ${@}

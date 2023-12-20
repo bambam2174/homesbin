@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+_filename() {
+    echo "${1}" | rev  | cut -d '/' -f1  | rev
+}
+isDebug && echo ${@}
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    ARR_PARAM=()
+    ARR_OPTS=()
+    ARR_FORMATS=()
+    for TMP_PARAM in "${@}"
+    do
+        isDebug && echo "Param Nr.$((CNT+=1)) ${TMP_PARAM}"
+        startsWithDash ${TMP_PARAM} && ARR_OPTS+="${TMP_PARAM}"
+        startsWithPlus ${TMP_PARAM} && ARR_FORMATS+="${TMP_PARAM}"
+        [[ ${TMP_PARAM} =~ '^[^-\+]' ]] && ARR_PARAM+="${TMP_PARAM}"
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && ARR_PARAM=($(echo ${INPUT_PIPE}))
+fi
+
+for CURR_PARAM in ${ARR_PARAM}
+do
+    _filename ${CURR_PARAM}
+done
+
+

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_find-scripts-named () {
+	find $BIN/ -name "${1}" -maxdepth ${2:-1}
+}
+_find-scripts-named ${@}

@@ -1,0 +1,55 @@
+##
+# Bsp.:
+# CL_Blue "Hi Leute, "; CL_LightGreen "was geht?\n";CL_Cyan "Aber jetzt ne Kippe"
+
+CL_NC () { 
+ echo -n ${COLOR_NC}${1}${COLOR_NC}
+}
+CL_Black () { 
+ echo -n ${COLOR_Black}${1}${COLOR_NC}
+}
+CL_DarkGray () { 
+ echo -n ${COLOR_DarkGray}${1}${COLOR_NC}
+}
+CL_Red () { 
+ echo -n ${COLOR_Red}${1}${COLOR_NC}
+}
+CL_LightRed () { 
+ echo -n ${COLOR_LightRed}${1}${COLOR_NC}
+}
+CL_Green () { 
+ echo -n ${COLOR_Green}${1}${COLOR_NC}
+}
+CL_LightGreen () { 
+ echo -n ${COLOR_LightGreen}${1}${COLOR_NC}
+}
+CL_BrownOrange () { 
+ echo -n ${COLOR_BrownOrange}${1}${COLOR_NC}
+}
+CL_Yellow () { 
+ echo -n ${COLOR_Yellow}${1}${COLOR_NC}
+}
+CL_Blue () { 
+ echo -n ${COLOR_Blue}${1}${COLOR_NC}
+}
+CL_LightBlue () { 
+ echo -n ${COLOR_LightBlue}${1}${COLOR_NC}
+}
+CL_Purple () { 
+ echo -n ${COLOR_Purple}${1}${COLOR_NC}
+}
+CL_LightPurple () { 
+ echo -n ${COLOR_LightPurple}${1}${COLOR_NC}
+}
+CL_Cyan () { 
+ echo -n ${COLOR_Cyan}${1}${COLOR_NC}
+}
+CL_LightCyan () { 
+ echo -n ${COLOR_LightCyan}${1}${COLOR_NC}
+}
+CL_LightGray () { 
+ echo -n ${COLOR_LightGray}${1}${COLOR_NC}
+}
+CL_White () { 
+ echo -n ${COLOR_White}${1}${COLOR_NC}
+}

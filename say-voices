@@ -6,12 +6,12 @@ _say-voices () {
 
     if [[ ${#} -eq 0 ]]
     then
-        ecko " Use language code and or coutry code as parameter,… " 9 97 > /dev/stdin
+        ecko " Use language code and or coutry code as parameter,… " 9 97 > /dev/stderr
     
-        echo > /dev/stdin
-        ecko -n " e.g. " 197 99 > /dev/stdin; ecko -n " en " 99 197 > /dev/stdin; ecko -n " or " 197 99 > /dev/stdin; ecko -n " GB " 99 197 > /dev/stdin; ecko  " for a country " 197 99 > /dev/stdin
-        echo > /dev/stdin
-        ecko -n " e.g. " 1 19 > /dev/stdin; ecko -n " en_US " 19 1 > /dev/stdin; ecko  " for a country's language " 1 19 > /dev/stdin
+        echo > /dev/stderr
+        ecko -n " e.g. " 197 99 > /dev/stderr; ecko -n " en " 99 197 > /dev/stderr; ecko -n " or " 197 99 > /dev/stderr; ecko -n " GB " 99 197 > /dev/stderr; ecko  " for a country " 197 99 > /dev/stderr
+        echo > /dev/stderr
+        ecko -n " e.g. " 1 19 > /dev/stderr; ecko -n " en_US " 19 1 > /dev/stderr; ecko  " for a country's language " 1 19 > /dev/stderr
     fi
 }
 _say-voices ${@}

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+_pbadd () {
+    TARGET_FILE="${1:-${CSV_EMAILS}}"
+    IS_IN_LIST=$(cat ${TARGET_FILE} | grep "$(pbpaste)")
+	[[ -n ${IS_IN_LIST} ]] || echo $(pbpaste) | tee -a "${TARGET_FILE}"
+}
+_pbadd ${@}
