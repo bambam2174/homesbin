@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_cd-Project4ProjectStuff () {
+	cd "$(getProject4ProjectStuff)"
+}
+_cd-Project4ProjectStuff ${@}

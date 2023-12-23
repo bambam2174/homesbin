@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+OPTS=()
+startsWithDash ${1} && OPTS+=${1} && shift
+
+_hs-flags () {
+	hs ${OPTS} "$(flag ${1}) " "$(flag ${2})"
+}
+_hs-flags ${@}

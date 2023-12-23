@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+ecko "\t SHLVL $SHLVL outside function \t" 88 118
+
+_fufu () {
+ecko "\t SHLVL $SHLVL inside function \t" 118 88
+	echo "GOes to stdin" > /dev/stdin
+	echo "GOes to stderr" > /dev/stderr
+	echo "GOes to stdout"
+    return 99
+ecko "\t after return 99 inside function \t" 118 88
+    
+}
+_fufu ${@}
+return 66
+ecko "\t after return 66 outside function \t" 118 88

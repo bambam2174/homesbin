@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_open-ProjectStuff4Projectf () {
+    open "$(getProjectStuff4Project)"
+}
+_open-ProjectStuff4Projectf ${@}

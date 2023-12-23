@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_projectStuffFolder () {
+	source ${SHELL_VARS_PROJECTS}
+	PROJECT_FOLDER=$(echo ${PWD} | rev | cut -d '/' -f1-2 | rev | sed -E "s/${PROJECTS//\//\/}//g") 
+	echo ${PROJECTS_STUFF}/${PROJECT_FOLDER}
+}
+_projectStuffFolder ${@}

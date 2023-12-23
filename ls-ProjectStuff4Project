@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ls-ProjectStuff4Project () {
+	ls -AFlhG "$(getProjectStuff4Project)"
+}
+_ls-ProjectStuff4Project ${@}

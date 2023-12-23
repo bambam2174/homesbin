@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+HELP=false
+N=2         # digits
+M=1000      # iterations
+
+[[ -z ${ARR_DISTRIBUTION} ]] && ARR_DISTRIBUTION=()
+
+[[ $# -gt 0 ]] && startsWithDblDash ${1} && HELP=true && shift
+
+if ${HELP} || ([[ ${SHLVL} -gt 1 ]] && [[ $# -eq 0 ]])
+then
+    ecko " \t\t\t\t\t\t\t\t\t\t\t\t " 118 88
+    ecko " call ${0##*/} like\t\t\t\t\t " 118 88
+    echo -n "$(ecko '    ' 118 88)"
+    echo "ARR_DISTRIBUTION+=\$(${0##*/} [N] [M])" | ccat
+    ecko " \t\t\t\t\t\t\t\t\t\t\t\t " 118 88
+    ecko " …or just source it like…  \t\t\t\t\t\t\t\t\t " 118 88
+    echo -n "$(ecko '    ' 118 88)"
+    echo "source ${0##*/} [N] [M]" | ccat
+    ecko " \t\t\t\t\t\t\t\t\t\t\t\t " 118 88
+    ecko " $(chars-arrows -n -1) to keep track of the results in the array ARR_DISTRIBUTION\t\t\t\t\t " 118 88
+    ecko " \t\t\t\t\t\t\t\t\t\t\t\t " 118 88
+    #. rts 69 $SHLVL
+    return $SHLVL
+fi
+
+_checkRandomDistributionFor-N-DigitsBy-M-Iterations () {
+	ARR_NUMBER=() 
+	for i in {1..${2:-${M}}}
+	do
+		CURR_NUMBER=$((${RANDOM}%${1:-${N}}+1)) 
+		echo "${i} ${CURR_NUMBER}" > /dev/stdin
+		[[ ${CURR_NUMBER} -gt ${#ARR_NUMBER} ]] && ARR_NUMBER[${CURR_NUMBER}]=1  || ARR_NUMBER[${CURR_NUMBER}]=$((${ARR_NUMBER[${CURR_NUMBER}]}+1)) 
+	done
+	echo ${ARR_NUMBER} > /dev/stdin
+	ARR_DISTRIBUTION+=($ARR_NUMBER) 
+	echo ${ARR_DISTRIBUTION}
+    
+}
+_checkRandomDistributionFor-N-DigitsBy-M-Iterations ${@}

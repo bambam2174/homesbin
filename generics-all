@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_generics-all () {
+	ls -lAhFG $BIN | grep --color=auto generic | sed -E "s/${REGEX_LS_L_PROLOG}/${1}/g" | sed -E "s/->/$(chars-arrows -n 9)/g" | ccat
+}
+_generics-all ${@}

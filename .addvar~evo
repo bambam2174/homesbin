@@ -1,7 +1,6 @@
 #!/bin/zsh
 
-echo \$SHLVL\ $SHLVL
-. rts 5
+
 QTS="\""
 KEEP=false
 startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
@@ -16,7 +15,8 @@ startsWithDash ${1} && ([[ ${1/-/} = 't' ]] || [[ ${1/-/} = '-target' ]]) && [[ 
 # add alias like
 # alias addvar='source addvar'
 
-[[ ${SHLVL} -eq 1  ]] && [[  -z $(alias ${SCRIPTNAME}) ]] && addalias ${SCRIPTNAME} "source ${SCRIPTNAME}" && update_aliases
+#[[ ${SHLVL} -eq 1  ]] && [[  -z $(alias ${SCRIPTNAME}) ]] && addalias ${SCRIPTNAME} "source ${SCRIPTNAME}" && update-aliases
+alias-exists -a ${SCRIPTNAME}
 
 _addvar() {
     SZ_EXPORT='export '
@@ -50,4 +50,4 @@ _addvar() {
 
 _addvar ${@}
 
-#    source $CURR_SHELL_VARS
+source $CURR_SHELL_VARS

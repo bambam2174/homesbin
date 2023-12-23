@@ -2,6 +2,10 @@
 
 
 _find-scripts-named () {
-	find $BIN/ -name "${1}" -maxdepth ${2:-1}
+    SCRIPTNAME="${1}"
+    shift
+    DEPTH=${1:-1}
+    shift
+	find $BIN/ -name "${SCRIPTNAME}" -maxdepth ${DEPTH} ${@}
 }
 _find-scripts-named ${@}

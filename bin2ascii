@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_bin2ascii () {
+	print $(convert-number -x ${1} | sed -E 's/0x/\\x/g')
+}
+_bin2ascii ${@}

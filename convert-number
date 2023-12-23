@@ -1,14 +1,22 @@
 #!/bin/zsh
 
-
 _convert-number () {
-    NL='\n'
-    startsWithDash ${1} && [[ ${1/-/} = 'n' ]] && NL='' && shift
-	startsWithDash ${1} && NF=${1//-/}  && shift || NF=x 
+	NL='\n'
+    DIGITS=2
+    FILLER=0
+    VO_DIGITS=8
+	startsWithDash ${1} && [[ ${1/-/} = 'n' ]] && { NL=', '; VO_DIGITS='' } && shift
+	startsWithDash ${1} && NF=${1//-/}  && shift || NF=x
+    [[ $(lowercase ${NF}) = 'b'  ]] && DIGITS=8
+    [[ $(lowercase ${NF}) = 'o'  ]] && DIGITS=3
+	[[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}" || DIGITS=1
+	startsWithDash ${1} && [[ ${1/-/} = 'f' ]] && FILLER=${2} && shift 2
+	startsWithDash ${1} && [[ ${1/-/} = 'fc' ]] && DIGITS=${2} && shift 2
+	startsWithDash ${1} && [[ ${1/-/} = 'v' ]] && VEBOSE_OUTPUT="%${VO_DIGITS}d ➔ "  && shift
 	for VALUE in ${@}
 	do
-		[[ $(lowercase ${NF}) != 'd' ]] && [[ $(lowercase ${NF}) != 'u' ]] && PREFIX="0${NF}" 
-		perl -e "printf \"${PREFIX}%${NF}${NL}\", $VALUE"
+		perl -e "printf \"${VEBOSE_OUTPUT}${PREFIX}%${FILLER}${DIGITS}${NF}${NL}\", ${VALUE}, ${VALUE}"
 	done
 }
-_convert-number ${@}
+
+_convert-number ${@} | sed -E "s/, $//g"

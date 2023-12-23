@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+ADD_IF_NECESSARY=false
+
+startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-add-if-necessary' ] && ADD_IF_NECESSARY=true && shift
+
+_set-or-written() {
+    echo ${2} | grep  --color=auto -E "(alias )*${1}=[\"\'](source|\.) ${1}[\"\']"
+}
+
+_isAliasPersistent() {
+    WCL=`cat ${SHELL_ALIASES} | grep  --color=auto -E "alias ${1}=[\"\'](source|\.) ${1}[\"\']" | wc -l`
+    [[ ${WCL} -gt 0 ]]
+}
+
+_addalias() {
+    addalias ${1} "'source ${1}'"
+}
+
+_alias-exists () {
+    SZ_ALIAS=`[[ ${SHLVL} -eq 1 ]] && _set-or-written ${1} "$(alias ${1})" ||  _set-or-written ${1} "$(cat ${SHELL_ALIASES})"`
+    ${ADD_IF_NECESSARY} && ! _isAliasPersistent ${1} && _addalias "${1}"
+    echo ${SZ_ALIAS} | ccat
+}
+_alias-exists ${@}

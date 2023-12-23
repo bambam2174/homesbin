@@ -1,7 +1,10 @@
 #!/bin/zsh
 
-
-_find-scripts-named () {
-	find $BIN/ -name "*${1}*"
+_find-scripts-name-containing () {
+    SCRIPTNAME="${1}"
+    shift
+    DEPTH=1
+    [[ ${#} -ge 1 ]] && DEPTH=${1} && shift
+	find $BIN -name "*${SCRIPTNAME}*" -maxdepth ${DEPTH} ${@} #| sed -E "s/${REGEX_TOO_MANY_SLASHES}/\//g"
 }
-_find-scripts-named ${@}
+_find-scripts-name-containing ${@}
