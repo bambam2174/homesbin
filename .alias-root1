@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_alias-root () {
+	RES="$(alias "${1}" | grep -oE '=.+' | sed -E 's/^=//g')" 
+	echo "${RES}"
+	[[ -n $RES ]] && alias-root "${RES}"
+}
+_alias-root ${@}

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_thinking-hurts () {
+	ccat "${THINKING_HURTS}"
+}
+_thinking-hurts ${@}

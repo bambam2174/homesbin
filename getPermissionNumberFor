@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+# variables to set to make this script work
+export PERM_READ="2"
+export PERM_WRITE="1"
+export PERM_EXECUTE="0"
+export PERM_OTHER="0"
+export PERM_GROUP="3"
+export PERM_USER="6"
+
+# getPermissionNumberFor -b $PERM_USER $PERM_READ $PERM_USER $PERM_WRITE $PERM_USER $PERM_EXECUTE $PERM_GROUP $PERM_READ $PERM_GROUP $PERM_EXECUTE $PERM_OTHER $PERM_READ $PERM_OTHER $PERM_EXECUTE
+# ➔ 
+PREFIX=false
+
+_getPermissionNumberFor () {
+    NUMBERFORMAT='-o'
+    startsWithDash ${1} && [ ${1/-/} = 'p' -o  ${1/-/} = '-prefix' ] && PREFIX=true && shift
+    startsWithDash ${1} && NUMBERFORMAT=${1} && shift
+	PERM=0 
+	for idx in {1..$(($#/2))}
+	do
+		((PERM|=(1<<${@[$(($idx*2))]}<<${@[$(($idx*2-1))]})))
+	done
+    SZ_PREFIX=0${NUMBERFORMAT[-1]}
+    RES_PERM=$(convert-number ${NUMBERFORMAT} $PERM | sed -E "s/${SZ_PREFIX}//g")
+    if ${PREFIX}
+    then
+        echo ${SZ_PREFIX}${RES_PERM}
+    else
+        echo -n "$(ecko ${SZ_PREFIX} 118 88)" > /dev/stdin
+        echo ${RES_PERM}
+    fi
+}
+_getPermissionNumberFor ${@}

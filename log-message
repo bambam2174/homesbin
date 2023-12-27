@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_log-message () {
+	RED=$(tput setaf 1) 
+	GREEN=$(tput setaf 2) 
+	NORMAL=$(tput sgr0) 
+	MSG="$1" 
+	STATUS="[OK]" 
+	STATUSCOLOR="$GREEN${STATUS}$NORMAL" 
+	let COL=$(tput cols)-${#MSG}+${#STATUSCOLOR}-${#STATUS}
+	echo -n $MSG
+	printf "%${COL}s
+" "$STATUSCOLOR"
+}
+_log-message ${@}

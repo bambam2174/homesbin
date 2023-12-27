@@ -1,9 +1,30 @@
 #!/bin/zsh
 
+SIMPLE=false
 #OPTION=o
+
+IFS=${DELIMITER_ENDL}
 
 #[[ -n ${1} ]] && { OPTION="${1}"; shift }
 
 #env | grep -${OPTION}E "LINKS_[A-Z]*[_A-Z]*"
 #env | grep -${OPTION}E "^LINKS(_[0-9A-Z]*)*" ${@}
-env | grep -E "^LINKS_[-_0-9A-Z]*" -$(echo ${@} | sed -e 's/[- ]*//g')
+REGEX_ALL='^LINKS_[-_0-9A-Z]*'
+echo "REGEX_ALL ${REGEX_ALL}"
+echo "REGEX-REST ${1:-${REGEX_ALL}}"
+
+if ${SIMPLE}
+then
+    env | grep --color=auto -E "^LINKS_[-_0-9A-Z]*" | grep --color=auto -E "${1:-${REGEX_ALL}}"
+else
+
+    ARR=($(env | grep --color=auto -E "^LINKS_[-_0-9A-Z]*" | grep --color=auto -E "${1}"))
+    ARR2=( '-' )
+    ARR2+=($(env | grep --color=auto -E "^LINKS_[-_0-9A-Z]*" | grep --color=auto -E "${1}" | sed -E "s/LINKS_.*=${1//\//\\/}//g"))
+
+    for idx in {1..${#ARR}}
+    do
+        echo -n "${ARR[$idx]}\t\t"
+        ecko "${ARR2[$idx]}" 118 88
+    done
+fi

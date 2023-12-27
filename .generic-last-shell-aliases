@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+SCRIPT="${0##*/}" 
+POSTFIX="$(uppercase ${SCRIPT/last-shell-aliases-/})" 
+CMD="last-shell-aliases -t \${SHELL_ALIASES_${POSTFIX}} ${@}"
+ecko "${CMD}" 118 88 > /dev/stdin
+eval "${CMD}"

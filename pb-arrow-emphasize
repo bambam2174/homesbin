@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-arrow-emphasize () {
+	arrow-emphasize -2 "$(pbpaste)" | pbcopy
+}
+_pb-arrow-emphasize ${@}

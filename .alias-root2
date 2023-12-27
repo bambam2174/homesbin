@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+SCRIPTNAME="${0##*/}"
+
+if [[ ${SHLVL} -gt 1 ]] 
+then 
+    echo "$(ecko ' add ' 118 88)" > /dev/stdin
+    ecko "alias ${SCRIPTNAME}=\"source ${SCRIPTNAME}\"" 118 88 #> /dev/stdout
+    #ecko " execute " 118 88 > /dev/stdin 2> /dev/null
+    echo "$(ecko ' execute ' 118 88)" > /dev/stdin
+#    ecko "\$(echo ${SCRIPTNAME}\"" 121 88
+    exit 0
+fi
+
+_alias-root2 () {
+	SZ_FUNC="_foo() { ${1} }" 
+	eval "${SZ_FUNC}"
+	which _foo | head -n 2 | tail -n 1
+}
+_alias-root2 ${@}

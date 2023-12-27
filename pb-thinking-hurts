@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-thinking-hurts () {
+	thinking-hurts | pbcopy
+}
+_pb-thinking-hurts ${@}

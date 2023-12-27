@@ -20,6 +20,6 @@ _addalias() {
 _alias-exists () {
     SZ_ALIAS=`[[ ${SHLVL} -eq 1 ]] && _set-or-written ${1} "$(alias ${1})" ||  _set-or-written ${1} "$(cat ${SHELL_ALIASES})"`
     ${ADD_IF_NECESSARY} && ! _isAliasPersistent ${1} && _addalias "${1}"
-    echo ${SZ_ALIAS} | ccat
+    #echo ${SZ_ALIAS} | ccat
 }
 _alias-exists ${@}

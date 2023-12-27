@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+ # variables to set to make this script work
+ export PERM_READ="2"
+ export PERM_WRITE="1"
+ export PERM_EXECUTE="0"
+ export PERM_OTHER="0"
+ export PERM_GROUP="3"
+ export PERM_USER="6"
+
+_hasPermissionFor () {
+    CURR_PERM=$(convert-number -b ${1})
+	RESULT=$(((${CURR_PERM}&(1<< ${2}<<${3}))>>${2}>>${3}))
+    [[ ${RESULT} -eq 1 ]]
+}
+_hasPermissionFor ${@}

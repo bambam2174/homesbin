@@ -16,10 +16,12 @@ OPTS='-nIRS'
 startsWithDash ${1} && [ ${1/-/} = 'k' -o ${1/-/} = '-kill-opts' ] && OPTS='' && shift
 
 _grep-folder () {
-ecko "\${TMP_EXCLUDES} ${TMP_EXCLUDES}" 118 88 > /dev/stdin
-ecko "\${OPTS} ${OPTS}" 118 88 > /dev/stdin
-ecko "\${@} ${@}" 118 88 > /dev/stdin
-ecko "grep  --exclude-dir '\.git' ${TMP_EXCLUDES} --color=auto ${OPTS} ${@}" 188 88  > /dev/stdin
-	grep  --exclude-dir '\.git' ${TMP_EXCLUDES} --color=auto ${OPTS} ${@}
+	ecko "\${TMP_EXCLUDES} ${TMP_EXCLUDES}" 118 88 > /dev/stdin
+	ecko "\${OPTS} ${OPTS}" 118 88 > /dev/stdin
+	ecko "\${@} ${@}" 118 88 > /dev/stdin
+	ecko "grep  --exclude-dir '\.git' ${TMP_EXCLUDES} --color=auto ${OPTS} ${@}" 188 88 > /dev/stdin
+	grep --color=auto --exclude-dir '\.git' ${TMP_EXCLUDES} --color=auto ${OPTS} ${@}
 }
-_grep-folder ${@}
+
+isDebug && _grep-folder ${@} || _grep-folder ${@} 2> /dev/null
+

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_list-array-elements-io () {
+	for el in ${@}
+	do
+		echo "${el}"
+	done
+}
+_list-array-elements-io ${@}
