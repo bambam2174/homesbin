@@ -1,12 +1,15 @@
 #!/bin/zsh
 
-
 _add-foldername () {
-    VARNAME="FOLDERNAME_$(uppercase ${1// /_})"
-	FOLDERNAME="${VARNAME}=" 
-	RES=$(cat ${SHELL_VARS_FOLDERNAME} | grep ${FOLDERNAME}) 
-	[[ -n ${RES} ]] && { echo "${FOLDERNAME} already exists"; return 321; }
-	CMD_ADDFOLDERNAME="addvar -t ${SHELL_VARS_FOLDERNAME} ${VARNAME//[^a-zA-Z]/_} \"${1}\"" 
+	VARNAME="FOLDERNAME_$(uppercase ${1// /_})"
+	FOLDERNAME="${VARNAME}="
+	RES=$(cat ${SHELL_VARS_FOLDERNAME} | grep ${FOLDERNAME})
+	[[ -n ${RES} ]] && {
+		echo "${FOLDERNAME} already exists"
+		return 321
+	}
+	CMD_ADDFOLDERNAME="addvar -t ${SHELL_VARS_FOLDERNAME} ${VARNAME//[^a-zA-Z]/_} \"${1}\""
 	eval ${CMD_ADDFOLDERNAME}
 }
+
 _add-foldername ${@}

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_browserFor () {
+	BROWSER="$(find $APPLICATIONS -iname "${1}.app" -maxdepth 1)" 
+	[[ -z ${BROWSER} ]] && BROWSER="$(find $APPLICATIONS -iname "${1}*.app" -maxdepth 1)" 
+	[[ -z ${BROWSER} ]] && BROWSER="$(find $APPLICATIONS -iname "*${1}*.app" -maxdepth 1)" 
+	[[ ${SHLVL} -gt 1 ]] && echo "${BROWSER}"
+}
+_browserFor ${@}

@@ -2,8 +2,14 @@
 
 
 _add-unicode-chars () {
-	FROM="${1};TO="${2} 
-	ARR_AB=() 
+	FROM="${1}"
+    TO="${2}"
+    OPTS=()
+    [[ -n ${3} ]] && {
+        OPTS+='-t'
+            OPTS+="${3}"
+        }
+    ARR_AB=() 
 	for i in {A..Z}
 	do
 		ARR_AB+=${i} 
@@ -13,7 +19,7 @@ _add-unicode-chars () {
 	do
 		HEX=$(convert-number -x $uc) 
 		[[ $#FROM -gt 4 ]] && U="U"  || U="u" 
-		source addvar UNICODE_${3}_${ARR_AB[$IDX]} ${HEX//0x/${U}}
+		source addvar ${OPTS} UNICODE_${3}_${ARR_AB[$IDX]} ${HEX//0x/${U}}
 		((IDX++))
 	done
 }

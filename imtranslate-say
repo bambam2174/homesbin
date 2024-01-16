@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+ARR_VOICES=($(say-voices4lang ${3}))
+VOICE=${ARR_VOICES[${4:-1}]}
+
+_imtranslate-say () {
+    TRANSLATION="$(im-translate "${1}" ${2} ${3})"
+    ecko " ${TRANSLATION} " 118 88
+    say -v ${VOICE} "${TRANSLATION}"
+}
+_imtranslate-say ${@}

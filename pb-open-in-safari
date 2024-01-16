@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-open-in-safari () {
+	browser -b safari "$(pbpaste)"
+}
+_pb-open-in-safari ${@}

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_check-date-formats () {
+	for letter in {A..z}
+	do
+		[[ $letter =~ '[a-zA-Z]' ]] && {
+			echo -n "${letter}	"
+			date +%${letter}
+		}
+	done
+}
+_check-date-formats ${@}

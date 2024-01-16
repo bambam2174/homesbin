@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+
+_count-to () {
+	if startsWithDblDash ${1}
+	then
+		jobs -l &
+		shift
+	fi
+	for i in {1..${1}}
+	do
+		echo -n "${i}$([[ $i -eq 10000 ]] || echo -n ',') "
+	done
+}
+_count-to ${@}

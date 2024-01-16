@@ -2,14 +2,14 @@
 
 
 _timer-output () {
-TIME_TOTAL=$(timer-result ${@})
-startsWithDash ${1:-NoParam} && shift
+    TIME_TOTAL=$(timer-result ${@})
+    startsWithDash ${1:-NoParam} && shift
 	CNT=${#1:-7} 
 	CNT_T=$(($CNT/4)) 
 	CNT_R=$(($CNT%4)) 
 #	echo "CNT=$CNT <-> CNT_T=$CNT_T <-> CNT_R=$CNT_R"
-	ARRWR=$(char-arrow-right 2) 
-	ARRWL=$(char-arrow-left 13) 
+	ARRWR='⟹ '      # $(char-arrow-right 2) 
+	ARRWL='⟸ '      # $(char-arrow-left 13) 
 #	echo "	1	2	3	4	5	6	7	8	9	0"
 #	ecko "	1	2	3	4	5	6	7	8	9	0" 11 1
 	R1=$((5+${CNT_T}*2)) 

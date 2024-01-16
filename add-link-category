@@ -29,6 +29,6 @@ addvar -k "${CAT_LINK_PATH_NAME}" "${CAT_LINK_PATH_VALUE}"
 # addvar LINK_PATH_3D '${LINKS_3D//$LINKS\//}'
 
 source  /Users/sedatkilinc/.shell_vars
-eval "mkdir -p \$${CAT_LINKS_NAME}"
+mkdir -p "${CAT_LINKS_VALUE}"
 addalias_addlink addlink-${CAT_NEW_LOWER} "'addlink \"\${${CAT_LINK_PATH_NAME}}\"'"
 #  addalias_addlink addlink_3D 'addlink $LINK_PATH_3D'

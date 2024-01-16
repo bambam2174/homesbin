@@ -1,7 +1,21 @@
 #!/bin/zsh
 
+# displays the given number of digits of current timestamp starting from the right end
+# since the left end isn't changing much 
+# the alternative function _date-digits2 does the same 
+# but without any preceding zeros 
+# when a number is given that exceeds the timestamp's number of digits  
+# looking at it  explains it the best
+#
+COUNT_DIGITS=${1:-15}
 
 _date-digits () {
-	printf "%0${1}u" "$(($(date +%s)%(10**${1})))"
+	printf "%0${COUNT_DIGITS}u" "$(($(date +%s)%(10**${COUNT_DIGITS})))"
 }
+
+_date-digits2 () {
+	TS=$(date +%s)
+	echo $TS[-${1},-1]
+}
+
 _date-digits ${@}

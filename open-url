@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_open-url () {
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	open "${1}" 2> ${TMPDIR}/ToStdErr.txt
+	ARR_OUTPUT=(`cat ${TMPDIR}/ToStdErr.txt`) 
+	URL="$(echo $ARR_OUTPUT[-1] | list-col -1)" 
+	isDebug && echo $URL
+	URL=${URL[2,-3]} 
+	isDebug && echo $URL
+    open "${URL}"
+}
+_open-url ${@}

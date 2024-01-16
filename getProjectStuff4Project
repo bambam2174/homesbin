@@ -5,4 +5,4 @@ _getProjectStuff4Project () {
 	source ${SHELL_VARS_PROJECTS}
 	find ${PROJECTS_STUFF}/ -name "$(basename ${1:-${PWD}})"
 }
-_getProjectStuff4Project ${@}
+_getProjectStuff4Project ${@} | sed -E "s/${REGEX_TOO_MANY_SLASHES}/\//g"

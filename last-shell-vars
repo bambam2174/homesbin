@@ -2,7 +2,7 @@
 
 #local COUNT_ENTRIES=''
 CURR_SHELL_VARS="${SHELL_VARS}"
-startsWithDash ${1} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_VARS="${2}" && shift 2
+startsWithDash ${1:-NoOpts} && [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && [[ -w "${2}" ]] && CURR_SHELL_VARS="${2}" && shift 2
 
 [[ -n ${1} ]] && COUNT_ENTRIES="-n ${1}"
 

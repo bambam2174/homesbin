@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+
+_get-func-body () {
+	ARR_WW=(`which ${1}`) 
+	list-array-elements $ARR_WW[2,-2]
+}
+_get-func-body ${@}

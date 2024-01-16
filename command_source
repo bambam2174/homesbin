@@ -6,15 +6,12 @@ SHOW_PATHNAME=false
 STRIP_COMMENTS=false
 
 [[ -e "$(which ccat)" ]] || { CAT1=cat; CAT2=cat }
-startsWithDash ${1} && [ ${1/-/} = 's' -o ${1/-/} = '-strip-comments' ] && STRIP_COMMENTS=true && shift
-startsWithDash ${1} && [ ${1/-/} = 'n' -o ${1/-/} = '-number' ] && CAT1='cat' && OPTS='-n' && shift
-startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-pathname' ] && SHOW_PATHNAME=true && shift
-
-read -d '' QRYTERM <<EOF
-script
-text
-text
-EOF
+if startsWithDash ${1}
+then
+    [ ${1/-/} = 's' -o ${1/-/} = '-strip-comments' ] && STRIP_COMMENTS=true && shift
+    [ ${1/-/} = 'n' -o ${1/-/} = '-number' ] && CAT1='cat' && OPTS='-n' && shift
+    [ ${1/-/} = 'p' -o ${1/-/} = '-pathname' ] && SHOW_PATHNAME=true && shift
+fi
 
 _cs_() {
     PATH_COMMAND=($(which -a "${1}" | egrep '^/.*' ))

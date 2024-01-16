@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+_addUnicodeCharFromTo2 () {
+	OPTS=()
+	startsWithDash ${1} && [ ${1/-/} = 't' -o ${1/-/} = '-target' ] && OPTS+=${1}  && OPTS+="${2}"  && shift 2
+	ARR_00=()
+	PREFIX="${1}"
+	NAME="$(uppercase ${2})"
+	FROM=${3}
+	TO=${4}
+	for idx in {${FROM}..${TO}}
+	do
+		CURRNR=$(convert-number -x $idx)
+		echo $CURRNR
+		ARR_00+=$CURRNR
+		CURRNR2=${CURRNR/0x/}
+		CURRNR1=$(uppercase ${CURRNR2})
+		echo "export UC_${NAME}_${CURRNR1}=\"$(echo \\U${PREFIX}${CURRNR2})\"" >> "${OPTS[2]}"
+	done
+}
+
+_addUnicodeCharFromTo2 ${@}

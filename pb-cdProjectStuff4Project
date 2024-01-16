@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_pb-cdProjectStuff4Project () {
+	source cd-ProjectStuff4Project "$(pbpaste)"
+}
+_pb-cdProjectStuff4Project ${@}

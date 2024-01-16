@@ -2,6 +2,6 @@
 
 SCRIPT="${0##*/}" 
 POSTFIX="$(uppercase ${SCRIPT/addalias-/})" 
-CMD="addalias -t \${SHELL_ALIASES_${POSTFIX}} '${1}' '${2}' " 
+CMD="addalias -t \${SHELL_ALIASES_${POSTFIX}} ${1} \"${2//$/\\$}\" " 
 ecko "${CMD}" 118 88 > /dev/stdin
 eval "${CMD}"

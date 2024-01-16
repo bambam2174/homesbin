@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+_open-dir-of-file () {
+	DIR2OPEN="$(dirname ${1})" 
+	open "${DIR2OPEN}"
+}
+_open-dir-of-file ${@}

@@ -1,9 +1,10 @@
 #!/bin/zsh
 
-
 _add-output-folder () {
-	VARNAME="OUTPUT_$(echo "${1//-/_}"| uppercase)" 
-	addvar -t ${SHELL_VARS_OUTPUT} ${VARNAME} "\${OUTPUT}/${1}"
-    mkdir -p "${OUTPUT}/${1}"
+	source ${SHELL_VARS_OUTPUT}
+	VARNAME="OUTPUT_$(echo "${1//-/_}"| uppercase)"
+	source addvar -t ${SHELL_VARS_OUTPUT} ${VARNAME} "\${OUTPUT}/${1}"
+	mkdir -p "${OUTPUT}/${1}"
 }
+
 _add-output-folder ${@}

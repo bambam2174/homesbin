@@ -8,32 +8,31 @@ fi
 
 CURR_SHELL_ALIASES="${SHELL_ALIASES}"
 startsWithDash ${1} && 
-    [ ${1//-/} = 't' -o ${1//-/} = 'target' ] && 
+    [ ${1/-/} = 't' -o ${1/-/} = '-target' ] && 
     [[ -w "${2}" ]] && CURR_SHELL_ALIASES="${2}" && 
-    source ${CURR_SHELL_ALIASES} && 
     shift 2
 
 _addalias () {
-#	ALIASESFILE=$HOME/.bash_aliases 
+#	ALIASESFILE=${HOME}/.bash_aliases 
 	WC_ORIG=$(cat ${CURR_SHELL_ALIASES} | wc -l) 
-	TMPFOLDER=$HOME/tmp/.shellstuff 
-	mkdir -p $TMPFOLDER
-	TMPFILE=$TMPFOLDER/shell_aliases.prev 
-	original cp -f ${CURR_SHELL_ALIASES} $TMPFILE
+	TMPFOLDER=${HOME}/tmp/.shellstuff 
+	mkdir -p ${TMPFOLDER}
+	TMPFILE=${TMPFOLDER}/shell_aliases.prev 
+	original cp -f ${CURR_SHELL_ALIASES} ${TMPFILE}
 	echo "alias ${1}=${2}" >> ${CURR_SHELL_ALIASES}
 	WC_NEW=$(cat ${CURR_SHELL_ALIASES} | wc -l) 
-	if [[ $WC_NEW -lt $WC_ORIG ]]
+	if [[ ${WC_NEW} -lt ${WC_ORIG} ]]
 	then
 		echo "Error: New aliases-file didn't get extended"
-		echo "Number of lines of previous aliases-file $WC_ORIG"
-		echo "BUT number of lines of newly extended aliases-file $([[ $WC_NEW -eq $WC_ORIG  ]] && echo "STILL" || echo "ONLY") $WC_NEW"
+		echo "Number of lines of previous aliases-file ${WC_ORIG}"
+		echo "BUT number of lines of newly extended aliases-file $([[ ${WC_NEW} -eq ${WC_ORIG}  ]] && echo "STILL" || echo "ONLY") ${WC_NEW}"
 		echo "Backing up new aliases-file ${CURR_SHELL_ALIASES} to ${TMPFILE}.backup\! for further analysis."
 		cp -f ${CURR_SHELL_ALIASES} "${TMPFILE}.backup\!"
 		[[ $? -eq 0 ]] && echo "Backup Successful" || echo "BackUp failed! Check path, destination directory for permissions or even existence"
 		echo "to restore previous aliases-file..."
 		echo "Execute"
-        echo "cp -f $TMPFILE ${CURR_SHELL_ALIASES}"
-		[[ $? -eq 0 ]] && echo "...previous aliases-file $TMPFILE got restored to ${CURR_SHELL_ALIASES}" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
+        echo "cp -f ${TMPFILE} ${CURR_SHELL_ALIASES}"
+		[[ $? -eq 0 ]] && echo "...previous aliases-file ${TMPFILE} got restored to ${CURR_SHELL_ALIASES}" || echo "This is some bullshit\nfailed! Check path, destination directory for permissions or even existence"
 	fi
 }
 _addalias "${@}"

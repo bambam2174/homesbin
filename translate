@@ -1,5 +1,8 @@
 #!/bin/bash
 
-curl 'https://webmail.smartlinkcorp.com/dotrans_20160909.php' -H 'Referer: https://www.google.de/' -H 'Origin: chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' -H 'Content-type: application/x-www-form-urlencoded' --data 'dir=en/de&provider=microsoft&text='"$1" --compressed
+ecko " MS " 118 88 > /dev/stdin
+curl 'https://webmail.smartlinkcorp.com/dotrans_20160909.php' -H 'Referer: https://www.google.de/' -H 'Origin: chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' -H 'Content-type: application/x-www-form-urlencoded' --data 'dir='${2:-en}'/'${3:-de}'&provider=microsoft&text='"$1" --compressed
 
-curl 'https://webmail.smartlinkcorp.com/dotrans_20160909.php' -H 'Referer: https://www.google.de/' -H 'Origin: chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' -H 'Content-type: application/x-www-form-urlencoded' --data 'dir=en/de&provider=translator&text='"$1" --compressed
+echo
+ecko " translator " 118 88 > /dev/stdin
+curl 'https://webmail.smartlinkcorp.com/dotrans_20160909.php' -H 'Referer: https://www.google.de/' -H 'Origin: chrome-extension://noaijdpnepcgjemiklgfkcfbkokogabh' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' -H 'Content-type: application/x-www-form-urlencoded' --data 'dir='${2:-en}'/'${3:-de}'&provider=translator&text='"$1" --compressed

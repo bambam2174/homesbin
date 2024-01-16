@@ -13,7 +13,7 @@ _arrow-emphasize () {
                     # ecko "11${@}" 88 188; ecko "${TMPINPUT}" 188 88
 	IDX_ARROW=${1}  && shift
     [[ ${IDX_ARROW} -lt 0 ]] && IDX_ARROW=$(($(arrow-emphasize -c)+${IDX_ARROW}+1))
-	CONTENT="${1}" # && shift
+    CONTENT="${1:-$(pbpaste)}" # && shift
                     # ecko "12${@}" 88 188 ;  ecko "${TMPINPUT}" 188 88;  
                     # ecko "char-arrow-left-right -n -${IDX_ARROW} \"  ${CONTENT}\" ${IDX_ARROW} '   '"
     char-arrow-left-right -n -${IDX_ARROW} "  ${CONTENT} " ${IDX_ARROW} '   '

@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+ARR_PATH=()
 
 _giturlp () {
 	PATH2REPO='.' 
@@ -12,4 +13,23 @@ _giturlp () {
 		[[ -r "${folder}/.git/config" ]] && cat "${folder}/.git/config" | grep --color=auto -i url | cut -d'=' -f 2
 	done
 }
-_giturlp ${@}
+
+if [[ ${#} -gt 0 ]]
+then
+    local CNT=0
+    for TMP_PATH in "${@}"
+    do
+        isDebug && echo "Pfad Nr.$((CNT+=1)) ${TMP_PATH}"
+        ARR_PATH+="${TMP_PATH}"
+    done
+else
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && ARR_PATH=($(echo ${INPUT_PIPE}))
+fi
+
+#for currPath in ${ARR_PATH}
+#do
+#    _giturlp ${currPath}
+#done
+
+_giturlp ${ARR_PATH}

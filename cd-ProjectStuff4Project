@@ -2,6 +2,6 @@
 
 
 _cd-ProjectStuff4Project () {
-	cd "$(getProjectStuff4Project)"
+	cd "$(getProjectStuff4Project ${@})"
 }
 _cd-ProjectStuff4Project ${@}

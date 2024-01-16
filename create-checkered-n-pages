@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+
+_create-checkered-n-pages () {
+	[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+	IFS_PREV+=${IFS} 
+	IFS=${DELIMITER_ENDL} 
+	CHECKERED="$(ls -1 "${PICTURES_CHECKERED}/"* | tail -n 1)" 
+	ARR_CHECKERED=() 
+	for n in {1..${1}}
+	do
+		ARR_CHECKERED+="${CHECKERED}" 
+	done
+	convert -append ${ARR_CHECKERED} "${2:-checkered}.${1}-pages.jpg"
+}
+_create-checkered-n-pages ${@}

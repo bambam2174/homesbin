@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_list-browser-extensions () {
+	ls -G -1AF ${LIBRARY_APPLICATION_SUPPORT_USER}/(Google|)/*/*/Extensions
+}
+_list-browser-extensions ${@}

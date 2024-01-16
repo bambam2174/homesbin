@@ -1,27 +1,33 @@
 #!/bin/zsh
 
-SCRIPTNAME="$(filename ${0})"
+#SCRIPTNAME="$(filename ${0})"
+SCRIPTNAME="${0##*/}"
 
 usage() {
     ecko "${SCRIPTNAME} [ -p|--pboard  { (1|ruler) | (2|find) | (3|font) } ] " 254 1 && . retexit ${$}
+    echo "Testing retexit"
 }
 
-# [[ ${#} -eq 0 ]] && usage
-
-PBBOARD=font
-
-startsWithDash ${1} && [ ${1/-/} = 'h' -o ${1/-/} = '-help' ] && shift 1 && usage
-startsWithDash ${1} && [ ${1/-/} = 'p' -o ${1/-/} = '-pboard' ] && PBBOARD="${2}" && shift 2
-
-if [[ ${PBBOARD} = "general" ]] 
-then 
+error-message() {
     ARR_ERROR=()
     ARR_ERROR+=$(ecko -n "Don't use the PBoard" 132 123)
     ARR_ERROR+=$(ecko -n  " \"general\" " 123 132)
     ARR_ERROR+=$(ecko " to prevent overwriting standard clipboard " 132 123)
     echo ${ARR_ERROR} > /dev/stderr
     usage
+}
+
+PBBOARD=font
+
+if startsWithDash ${1}
+then
+    [ ${1/-/} = 'h' -o ${1/-/} = '-help' ] && shift 1 && usage
+    [ ${1/-/} = 'p' -o ${1/-/} = '-pboard' ] && PBBOARD="${2}" && shift 2
+
+    [[ ${PBBOARD} = "general" ]] && error-message
+
 fi
+
 
 if isNumeric ${PBBOARD} 
 then
@@ -43,7 +49,11 @@ then
 fi
 
 _memsave () {
+#ecko "2 \$@ $@" 118 78
+    echo -n "Enter to save in ${PBBOARD} "
 	read ${@} A
 	echo -n "${A}" | pbcopy -pboard ${PBBOARD}
+    unset A
 }
+#ecko "1 \$@ $@" 118 88
 _memsave ${@}

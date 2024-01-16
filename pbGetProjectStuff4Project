@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_pbGetProjectStuff4Project () {
+    PROJECT_FOLDER_NAME="${1:-$(pbpaste)}"
+    echo -n `getProjectStuff4Project "${PROJECT_FOLDER_NAME}"` | tee $(pbcopy)
+#	pbpaste
+}
+_pbGetProjectStuff4Project ${@}

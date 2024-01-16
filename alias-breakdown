@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+_alias-breakdown () {
+	CURRENT_FUNCTION="curr-foo() { ${1} }" 
+	eval ${CURRENT_FUNCTION}
+	WHICH_CURRENT_FUNCTION="$(which curr-foo)" 
+	echo "${WHICH_CURRENT_FUNCTION}" | head -n 2 | tail -n 1
+}
+_alias-breakdown ${@} | sed -E "s/^[^ ]//g"

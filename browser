@@ -5,9 +5,8 @@ DEFAULT_BROWSER="Google Chrome"
 
 if startsWithDash ${1} && 
     [ ${1//-/} = 'b' -o ${1//-/} = 'browser' ] && 
-    [[ -d "${APPLICATIONS}/$(capitalcase ${2}).app" ]]
 then 
-    CURR_BROWSER="$(capitalcase ${2})"
+    [[ -x "${1}" ]] && BROWSER_APP="${1}" || BROWSER_APP="$(browserFor ${2})"
     shift 2
 fi
 
@@ -16,7 +15,8 @@ PIPE_INPUT=$(get-stdin &)
 [[ -z ${PIPE_INPUT} ]] && URL="${1:-$(pbpaste)}"
 
 _open-browser() { 
-    open -a "/Applications/${CURR_BROWSER:-${DEFAULT_BROWSER}}.app" "${1:-${URL}}" 2> ${TMPDIR}/ToStdErr.txt 
+[[ -x "${BROWSER_APP}" ]] || BROWSER_APP="$(browserFor ${DEFAULT_BROWSER})"
+    open -a "${BROWSER_APP}" "${1:-${URL}}" 2> ${TMPDIR}/ToStdErr.txt 
 }
 
 _open-browser

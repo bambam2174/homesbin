@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_ip-address () {
+	ifconfig | grep --color=auto -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep --color=auto -v 127.0.0.1 | awk '{print $2}' | cut -f2 -d:
+}
+_ip-address ${@}
