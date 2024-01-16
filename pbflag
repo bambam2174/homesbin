@@ -1,7 +1,0 @@
-#!/bin/zsh
-
-
-_pbflag () {
-	flag "${@}" | pbcopy
-}
-_pbflag ${@}

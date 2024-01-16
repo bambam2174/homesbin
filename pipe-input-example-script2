@@ -3,8 +3,10 @@
 
 _pipe-input-example-script () {
     IFS=${DELIMITER_ENDL}
-    INP=($(get-stdin)) 
+    INP=($(get-stdin &)) 
 	echo "Input via Pipe \${#INP}=${#INP} ${INP}"
 	echo "Input via Args \$#=$# or \${#@}=${#@} ${@} "
+    echo "$(ecko 'Input via Pipe ' 118 88)$(ecko " \${#INP}=${#INP} ${INP}" 88 118)" # > /dev/stdin
+	ecko "Input via Args \$#=$# or \${#@}=${#@} ${@} " 118 88 # > /dev/stdin
 }
 _pipe-input-example-script ${@}

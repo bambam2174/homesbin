@@ -1,11 +1,21 @@
 #!/bin/zsh
 
-ARR_VOICES=($(say-voices4lang ${3}))
-VOICE=${ARR_VOICES[${4:-1}]}
+INP=($(get-stdin &))
 
-_imtranslate-say () {
+if [[ -n ${INP} ]]
+then
+#    ecko "INP \$@ $@"
+    TRANSLATION="$(im-translate "${INP}" ${1} ${2})"
+    ARR_VOICES=($(say-voices4lang ${2}))
+    VOICE=${ARR_VOICES[${3:-1}]}
+else
+#    ecko "\$@ $@"
     TRANSLATION="$(im-translate "${1}" ${2} ${3})"
-    ecko " ${TRANSLATION} " 118 88
-    say -v ${VOICE} "${TRANSLATION}"
-}
-_imtranslate-say ${@}
+    ARR_VOICES=($(say-voices4lang ${3}))
+    VOICE=${ARR_VOICES[${4:-1}]}
+fi
+SZ_SOURCE="${INP:-${1}}"
+ecko " ${SZ_SOURCE} " 88 118 >> /dev/stdin
+ecko " ${TRANSLATION} " 118 88
+say -v ${VOICE:-${ARR_VOICES[1]}} "${TRANSLATION}"
+whoami

@@ -2,5 +2,5 @@
 
 VARNAME=$(echo ${${0//uc-/}##*/} | uppercase) 
 VARNAME=${VARNAME//-/_} 
-CURR_CMD="echo \$UC_${VARNAME}" 
+CURR_CMD="echo ${1} \$UC_${VARNAME}" 
 eval ${CURR_CMD}

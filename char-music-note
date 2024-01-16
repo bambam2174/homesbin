@@ -1,7 +1,0 @@
-#!/bin/zsh
-
-
-_char-music-note () {
-	echo ${1} ${UC_MUSIC_NOTE}
-}
-_char-music-note ${@}

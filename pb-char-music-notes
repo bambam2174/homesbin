@@ -1,7 +1,0 @@
-#!/bin/zsh
-
-
-_pb-char-music-notes () {
-	char-music-notes ${1} | pbcopy
-}
-_pb-char-music-notes ${@}
