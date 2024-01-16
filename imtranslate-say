@@ -15,7 +15,6 @@ else
     VOICE=${ARR_VOICES[${4:-1}]}
 fi
 SZ_SOURCE="${INP:-${1}}"
-ecko " ${SZ_SOURCE} " 88 118 >> /dev/stdin
+ecko " ${SZ_SOURCE} " 88 118 # > /dev/stdin
 ecko " ${TRANSLATION} " 118 88
 say -v ${VOICE:-${ARR_VOICES[1]}} "${TRANSLATION}"
-whoami
