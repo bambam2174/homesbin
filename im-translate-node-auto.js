@@ -30,7 +30,9 @@ fetch("https://translate.google.es/translate_a/single?client=gtx&dt=t&dt=bd&dj=1
 }).then(response => {
     return response.json();
 }).then(translation => {
-    console.log(translation.sentences[0].trans);
+    translation.sentences.forEach(sentence => {
+        console.log(sentence.trans);
+    })
 });
 
 

@@ -31,5 +31,7 @@ fetch("https://translate.google.sn/translate_a/single", {
 }).then(response => {
     return response.json();
 }).then(translation => {
-    console.log(translation.sentences[0].trans);
+    translation.sentences.forEach(sentence => {
+        console.log(sentence.trans);
+    })
 });
