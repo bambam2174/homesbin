@@ -1,7 +1,12 @@
 #!/bin/zsh
 
+echo "Hey Hoe "
+ecko " \$# $# \n \$@ $@ " 117 88
 
 _list-array-elements () {
+echo " 2: Hey Hoe "
+ecko " 2: \$# $# \n \$@ $@ " 117 88
+return 1
 	for el in ${@}
 	do
 		echo "${el}"

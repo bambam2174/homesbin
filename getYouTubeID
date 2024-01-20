@@ -1,5 +1,20 @@
 #!/bin/zsh
 
-VIDEO="${1}"
+IFS=${DELIMITER_ENDL}
 
-fileroot $VIDEO | cut -d '-' -f2
+_getYTID () {
+	FN="${1##*/}" 
+	FN="$(fileroot ${FN})" 
+	[[ $FN[-12] = '-' ]] && echo $FN[$((${#FN}-10)),-1]
+}
+
+if [[ $# -eq 0 ]]
+then
+    INPUT_STDIN=($({ get-stdin | sed -E "s/\/[  ]*$//g" } &))
+fi
+    
+for fo in ${INPUT_STDIN:-${@}}
+do
+    _getYTID "${fo}"
+done
+

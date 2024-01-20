@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+_dotfileobjects () {
+	TS=$(timestamp) 
+	TFOLDER="${1:-${HOME}}" 
+	ls -G -G -G -1AF -lhG -d ${TFOLDER}/\.* | sed -E "s/${REGEX_LS_L_PROLOG}/${2}/g" | sed -E "s/->/,/g" > >(tee -a $TMPDIR/dotfileobjects-$(path2string -n ${TFOLDER})-${TS}.csv)
+}
+_dotfileobjects ${@}

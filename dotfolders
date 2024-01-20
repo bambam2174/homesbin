@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+
+_dotfolders () {
+	TS=$(timestamp) 
+	TFOLDER="${1:-${HOME}}" 
+	for fo in ${TFOLDER}/\.*
+	do
+		[[ -d "${fo}" ]] && echo "${fo}" > >(tee -a $TMPDIR/dotfolders-$(path2string -n ${TFOLDER})-${TS}.csv)
+	done
+}
+_dotfolders ${@}

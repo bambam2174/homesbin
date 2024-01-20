@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+
+_update-vim () {
+	source cd ~/.vim_runtime
+	git reset --hard
+	git clean -d --force
+	git pull --rebase
+	python update_plugins.py
+}
+_update-vim ${@}

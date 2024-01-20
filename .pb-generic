@@ -1,8 +1,14 @@
 #!/bin/zsh
 
 # truth-bomb 1 | pbcopy
-
+#ARRPARAM=(${@})
+ARRPARAM=()
+for el in ${@}
+do 
+    ARRPARAM+="\"${el}\""
+done
 CMD="${0##*/}"
-CMD2EVAL="${CMD/pb-/} ${@} | pbcopy"
+CMD2EVAL_="${CMD/pb-/} "${@}" | pbcopy"
+CMD2EVAL="${CMD/pb-/} ${ARRPARAM} | pbcopy"
 $(eval "${CMD2EVAL}")
 

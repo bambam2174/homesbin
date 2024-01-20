@@ -1,6 +1,14 @@
 #!/bin/zsh
 
 export ARR_SPLIT=() 
+VERBOSE=false
+
+if [[ ${#1} -gt 1 ]] && startsWithDash ${1} && [ ${1/-/} = 'v' -o ${1/-/} = '-verbose' ]
+then
+    VERBOSE=true
+    ecko " \$SHLVL ${SHLVL} " 88 118
+    shift
+fi
 
 _split2arr () {
     while [[ $# -gt 0 ]]
@@ -9,10 +17,19 @@ _split2arr () {
         [[ ${#1} -gt 1 ]] && STR2SPLIT="${1}" && shift
     done
 	IFS=${DELIMITER_ENDL}
-	for i in $(listit ${STR2SPLIT} ${DELIMITER})
-	do
-		[[ -n ${i} ]] && ARR_SPLIT+=("${i}") 
-	done
-    echo '${#ARR_SPLIT}='${#ARR_SPLIT}
+    if [[ ${SHLVL} -gt 1 ]]
+    then
+        listit ${STR2SPLIT} ${DELIMITER}
+    else
+        for i in $(listit ${STR2SPLIT} ${DELIMITER})
+        do
+            ARR_SPLIT+="${i}" 
+        done
+        [[ ${SHLVL} -eq 1 ]] && ecko '${#ARR_SPLIT}='${#ARR_SPLIT} 118 88 > /dev/stdin
+        ${VERBOSE} && { 
+            ecko 'copy & paste line below'
+            ecko 'list-array-elements ${ARR_SPLIT}' 118 88 > /dev/stdin
+        }
+    fi
 }
 _split2arr ${@}

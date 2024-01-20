@@ -3,12 +3,12 @@
 
 _cdd () {
 	ARR_OPTS=() 
-	TARGET2GO='' 
+	TARGET2GO='.' 
 	for param in ${@}
 	do
 		startsWithDash "${param}" && ARR_OPTS+="${param}"  || TARGET2GO="${param}" 
 	done
-	[[ -f "${TARGET2GO}" ]] && TARGET2GO=$(dirname "${TARGET2GO}") 
+	[[ -d "${TARGET2GO}" ]] || TARGET2GO=$(dirname "${TARGET2GO}") 
 	builtin cd ${ARR_OPTS} ${TARGET2GO}
 }
 _cdd ${@}
