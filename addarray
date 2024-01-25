@@ -32,8 +32,7 @@ _addarray() {
     ARRNAME=${1}
     shift
     CMD="echo \$${ARRNAME}"
-    echo $CMD
-    eval $CMD
+    #eval $CMD
 
     SZ_ELEMENTS=''
     if [[ -n ${@} ]]
@@ -53,5 +52,4 @@ _addarray() {
 
 }
 _addarray ${@}
-echo "\$?=$?"
 

@@ -1,11 +1,27 @@
 #!/bin/zsh
 
-
 _code_ () {
-	[[ ${#} -eq 1 ]] && [[ -n ${1} ]] && [[ -d "${1}" ]] && {
-        [[ ${1} = '.' ]] && setvar -t ${SHELL_VARS_PROJECTS} PROJECTS_LATEST "${PWD}" ||  setvar -t ${SHELL_VARS_PROJECTS} PROJECTS_LATEST "${1}" 
-    }
+	[[ ${#} -eq 1 ]] && 
+        [[ -n ${1} ]] && 
+        [[ -d "${1}" ]] && 
+        {
+            [[ ${1} = '.' ]] && 
+                setvar -t ${SHELL_VARS_PROJECTS} PROJECTS_LATEST "${PWD}" || 
+                setvar -t ${SHELL_VARS_PROJECTS} PROJECTS_LATEST "${1}"
+            }
+
 	source ${SHELL_VARS_PROJECTS}
-    [[ ${#} -eq 0 ]] && original code ${PROJECTS_LATEST} || original code $@
+
+	if [[ ${#} -eq 0 ]]
+	then
+		original code ${PROJECTS_LATEST}
+	else
+		if [[ ${ARR_PROJECTS_LATEST[-1]} != "${PROJECTS_LATEST}" ]]
+		then
+			addarray ${SHELL_VARS_PROJECTS} ARR_PROJECTS_LATEST "${PROJECTS_LATEST}"
+		fi
+		original code $@
+	fi
 }
+
 _code_ ${@}

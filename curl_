@@ -1,10 +1,12 @@
 #!/bin/zsh
 
-source ${SHELL_VARS_OUTPUT}
+curl -V
 
-LIBCURL="--libcurl ${OUTPUT_CURL}/getfile-$(date +%s).c"
+source ${SHELL_VARS_OUTPUT}
+URL="${@[-1]}"
+LIBCURL=(--libcurl ${OUTPUT_CURL}/getfile-${URL##*/}-$(date +%s).c)
 
 curl__ () {
-	contains-link ${@} && original curl ${LIBCURL} ${@} || original curl ${LIBCURL} ${@} $(pbpaste) -O
+	contains-link ${@} && curl ${LIBCURL} ${@} || curl ${LIBCURL} ${@} $(pbpaste) -O
 }
 curl__ ${@}
