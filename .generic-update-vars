@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+SCRIPT=${0##*/} 
+
+_update-vars () {
+	POSTFIX="${SCRIPT//update-vars/}"
+	if [[ -n "${POSTFIX}" ]]
+	then
+		POSTFIX_UPPERCASE="$(uppercase ${POSTFIX//-/_})"
+		CURR_SHELL_VARS=$(eval "echo \$SHELL_VARS${POSTFIX_UPPERCASE}")
+	else
+		CURR_SHELL_VARS="${SHELL_VARS}"
+	fi
+	[[ -r "${CURR_SHELL_VARS}" ]] || return 255
+	SZ_SHA512="$(sha512sum ${CURR_SHELL_VARS})"
+	PATH2SHA512="${TMPDIR}/$(filename ${CURR_SHELL_VARS//\./})-${TERM_SESSION_ID}"
+	SOURCING_NEEDED=false
+	if [[ -r "${PATH2SHA512}" ]]
+	then
+		CURR_SHA512="$(cat ${PATH2SHA512})"
+		[[ ${CURR_SHA512} = ${SZ_SHA512} ]] || SOURCING_NEEDED=true
+	else
+		SOURCING_NEEDED=true
+	fi
+	${SOURCING_NEEDED} && {
+		source ${CURR_SHELL_VARS}
+		echo ${SZ_SHA512} > "${PATH2SHA512}"
+	}
+}
+
+__update-vars () {
+	POSTFIX="${SCRIPT//update-vars/}"
+    POSTFIX_UPPERCASE="$(uppercase ${POSTFIX//-/_})"
+    [[ -n "${POSTFIX}" ]] && CURR_SHELL_VARS=$(eval "echo \$SHELL_VARS${POSTFIX_UPPERCASE}")  || CURR_SHELL_VARS="${SHELL_VARS}" 
+	SZ_SHA512=($(sha512sum "${CURR_SHELL_VARS}")) 
+	PATH2SHA512="${TMPDIR}/$(filename ${CURR_SHELL_VARS//\./})"
+    CURR_SHA512="$(cat ${PATH2SHA512})"
+    [[ ${CURR_SHA512} = ${SZ_SHA512[1]} ]] || {
+        source ${CURR_SHELL_VARS}
+    }
+	#echo ${SZ_SHA512[1]} > ${PATH2SHA512}
+}
+
+_update-vars

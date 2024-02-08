@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+SCRIPT=${0##*/} 
+
+_update-aliases () {
+	POSTFIX="${SCRIPT//update-aliases/}"
+	if [[ -n "${POSTFIX}" ]]
+	then
+		POSTFIX_UPPERCASE="$(uppercase ${POSTFIX//-/_})"
+		CURR_SHELL_ALIASES=$(eval "echo \$SHELL_ALIASES${POSTFIX_UPPERCASE}")
+	else
+		CURR_SHELL_ALIASES="${SHELL_ALIASES}"
+	fi
+	[[ -r "${CURR_SHELL_ALIASES}" ]] || return 255
+	SZ_SHA512="$(sha512sum ${CURR_SHELL_ALIASES})"
+	PATH2SHA512="${TMPDIR}/$(filename ${CURR_SHELL_ALIASES//\./})-${TERM_SESSION_ID}"
+	SOURCING_NEEDED=false
+	if [[ -r "${PATH2SHA512}" ]]
+	then
+		CURR_SHA512="$(cat ${PATH2SHA512})"
+		[[ ${CURR_SHA512} = ${SZ_SHA512} ]] || SOURCING_NEEDED=true
+	else
+		SOURCING_NEEDED=true
+	fi
+	${SOURCING_NEEDED} && {
+		source ${CURR_SHELL_ALIASES}
+		echo ${SZ_SHA512} > "${PATH2SHA512}"
+	}
+}
+
+__update-aliases () {
+	POSTFIX="${SCRIPT//update-aliases/}"
+    POSTFIX_UPPERCASE="$(uppercase ${POSTFIX//-/_})"
+    [[ -n "${POSTFIX}" ]] && CURR_SHELL_ALIASES=$(eval "echo \$SHELL_ALIASES${POSTFIX_UPPERCASE}")  || CURR_SHELL_ALIASES="${SHELL_ALIASES}" 
+	SZ_SHA512=($(sha512sum "${CURR_SHELL_ALIASES}")) 
+	PATH2SHA512="${TMPDIR}/$(filename ${CURR_SHELL_ALIASES//\./})"
+    CURR_SHA512="$(cat ${PATH2SHA512})"
+    [[ ${CURR_SHA512} = ${SZ_SHA512[1]} ]] || {
+        source ${CURR_SHELL_ALIASES}
+    }
+	#echo ${SZ_SHA512[1]} > ${PATH2SHA512}
+}
+
+_update-aliases
