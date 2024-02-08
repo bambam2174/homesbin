@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+ALL=false
+
+OPTIONS=$(echo ${${0//ps--/}##*/})
+[[ $# -gt 0 ]] && startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-all' ] && ALL=true && shift
+CURR_CMD="ps -${OPTIONS} ${@}"
+
+[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+
+IFS_PREV+=${IFS} 
+
+IFS=${DELIMITER_ENDL} 
+
+ecko " ${CURR_CMD} " 117 88 > /dev/stdin
+RESULT=($(eval ${CURR_CMD})) 
+
+LAST_ARG="${@[-1]}"
+
+source ${SHELL_VARS_OUTPUT}
+_output() {
+    ${ALL} && list-array-elements $RESULT || list-array-elements $RESULT | head -n 1
+    list-array-elements $RESULT | grep --color=auto "\b${LAST_ARG}\b"
+}
+
+#_output | tee "${OUTPUT_PROCESS_STATUS}/ps-${OPTIONS}-$(path2string "XXX${@//\ /_}")-$(timestamp).txt"
+_output | tee "${OUTPUT_PROCESS_STATUS}/${CURR_CMD//\ /_}-$(timestamp).txt"

@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+ALL=false
+
+OPTIONS=$(echo ${${0//ps-/}##*/})
+[[ $# -gt 0 ]] && startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-all' ] && ALL=true && shift
+CURR_CMD="ps -${OPTIONS} ${@}"
+
+[[ -z ${IFS_PREV} ]] && IFS_PREV=() 
+
+IFS_PREV+=${IFS} 
+
+IFS=${DELIMITER_ENDL} 
+
+ecko " ${CURR_CMD} " 117 88 > /dev/stdin
+RESULT=($(eval ${CURR_CMD})) 
+
+source ${SHELL_VARS_OUTPUT}
+
+${ALL} && list-array-elements $RESULT || list-array-elements $RESULT | head -n 1
+list-array-elements $RESULT | grep --color=auto "\b${@[-1]}\b"
