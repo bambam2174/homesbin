@@ -1,0 +1,38 @@
+#!/bin/zsh
+
+ALL=false
+startsWithDash ${1} && [ ${1/-/} = 'a' -o ${1/-/} = '-all' ] && { ALL=true; shift }
+
+INP=($(get-stdin &))
+
+if [[ -n ${INP} ]]
+then
+#    ecko "INP \$@ $@"
+    TRANSLATION="$(im-translate "${INP}" ${1} ${2})"
+    ARR_VOICES=($(say-voices4lang ${2}))
+    VOICE=${ARR_VOICES[${3:-1}]}
+else
+#    ecko "\$@ $@"
+    TRANSLATION="$(im-translate "${1}" ${2} ${3})"
+    ARR_VOICES=($(say-voices4lang ${3}))
+    VOICE=${ARR_VOICES[${4:-1}]}
+fi
+    
+${ALL} && VOICE=(${ARR_VOICES}) # || VOICE=(${VOICE})
+SZ_SOURCE="${INP:-${1}}"
+
+_output() {
+    echo "$(ecko " ${SZ_SOURCE} " 88 118)$(ecko "  ⟹   " 19 201)$(ecko " ${TRANSLATION} " 118 88)" > /dev/stdin
+    echo " ${SZ_SOURCE} " # > /dev/stdin
+    echo " ${TRANSLATION} " # > /dev/stdin
+    CNT=1
+    for CURR_VOICE in ${VOICE}
+    do
+        ecko " ${CURR_VOICE} " $((88+$CNT)) $((118-$CNT))  > /dev/stdin
+        say -v "${CURR_VOICE}" "${TRANSLATION}"
+        ((CNT++))
+    done
+}
+source ${SHELL_VARS_OUTPUT}
+
+_output | tee "${OUTPUT_TRANSLATIONS}/${0##*/}•$(timestamp).txt"
