@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_sha512sum () {
+	shasum -a 512 ${@}
+}
+_sha512sum ${@}

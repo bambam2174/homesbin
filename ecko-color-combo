@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+_ecko-color-combo () {
+	CNT=0 
+	FROM=${1:-1} 
+	TO=${2:-5} 
+	for i in {${FROM}..${TO}}
+	do
+		for j in {${FROM}..${TO}}
+		do
+			[[ $i = $j ]] && continue
+			((++CNT))
+			echo "$(ecko " ${CNT} " 117 88) $(ecko " ${i} ${j} " $i $j)"
+		done
+	done
+}
+_ecko-color-combo ${@}

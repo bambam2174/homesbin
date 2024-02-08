@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+SZ_COLS=""
+COLS=( 1 )
+REGEX_OUTPUT='.*'
+startsWithDash ${1} && [ ${1/-/} = 't' -o ${1/-/} = '-trim' ] && REGEX_OUTPUT='\S.*' && shift
+FS=' '
+FS_OUT=' '
+startsWithDash ${1} && [ ${1/-/} = 'd' -o ${1/-/} = '-delimiter' ] && FS="${2}" && shift 2
+startsWithDash ${1} && [ ${1/-/} = 's' -o ${1/-/} = '-separator' ] && FS_OUT="${2}" && shift 2
+#if [[ ${#} -gt 2 ]]
+if ! isNumeric "${1}" && [[ -r "${1}" ]]
+then
+    SZ_LISTE="$(cat "${1}")"
+    shift
+    COLS=(${@})
+else
+    COLS=(${@})
+    INPUT_PIPE="$(cat < /dev/stdin)"
+    [[ -n ${INPUT_PIPE} ]] && SZ_LISTE="${INPUT_PIPE}"
+fi
+
+for col in $COLS
+do 
+    SZ_COLS+="\$${col}\"${FS_OUT}\""
+done
+
+
+#if [[ ${COLS[1]} -lt 0 ]]
+#then
+#    ((COLS*=-1))
+#    echo "${SZ_LISTE}" |rev | awk -F "${FS}"  ''' {print '${SZ_COLS}'} ''' | rev | grep -oE "${REGEX_OUTPUT}" | sed -E "s/${FS_OUT}$//g"
+#else
+    echo "${SZ_LISTE}" | awk -F "${FS}"  ''' {print '${SZ_COLS}'} ''' | grep -oE "${REGEX_OUTPUT}"  | sed -E "s/${FS_OUT}$//g"
+#fi
+

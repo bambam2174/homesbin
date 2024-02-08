@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+CMDNAME=${0}
+
+_findFilesByExt () {
+    usage "${CMDNAME}" "${#}" 1 'ext [path2folder] [maxdepth]' "finds files with said extension in current or given folder. Maxdepth limits maximal serach depth" || . retexit ${?}
+	OPTS=() 
+	isNumeric ${@[-1]} && OPTS+=(-maxdepth ${@[-1]}) 
+	isNumeric ${2} && FOLDER="${PWD}"  || FOLDER="${2}" 
+	SUDO_ASKPASS=${BIN}/memecho find ${FOLDER} -iname "*.${1}" ${OPTS} | tee -a "${TMPDIR}/ext-${1}-in-$(path2string ${FOLDER}).txt"
+}
+_findFilesByExt ${@}

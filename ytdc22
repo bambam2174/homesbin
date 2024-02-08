@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+_ytdc22 () {
+    PARAM_URL="${1:-$(pbpaste)}"
+    isURL "${PARAM_URL}" ||  PARAM_URL="$(yt2disk ${PARAM_URL})"
+    youtube-dl --no-mark-watched --no-check-certificate -f 22 "${PARAM_URL}"
+}
+_ytdc22 ${@}

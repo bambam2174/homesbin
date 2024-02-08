@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_url2filename () {
+	echo "${1}" | sed -e "s/http[s]*:\/\///g" | sed -e "s/[=&?\/]/${2:-${SLASH_DIVISION}}/g"
+}
+_url2filename ${@}

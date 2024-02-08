@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_npm-install-sentry-profiling-node () {
+	npm install --save @sentry/node @sentry/profiling-node
+}
+_npm-install-sentry-profiling-node ${@}

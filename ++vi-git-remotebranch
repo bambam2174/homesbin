@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+
+_++vi-git-remotebranch () {
+	local remote
+	local branch_name="${hook_com[branch]}" 
+	remote="$(git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)" 
+	remote=${remote/refs\/(remotes|heads)\/} 
+	if (( $+_POWERLEVEL9K_VCS_SHORTEN_LENGTH && $+_POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH ))
+	then
+		if (( ${#hook_com[branch]} > _POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH && ${#hook_com[branch]} > _POWERLEVEL9K_VCS_SHORTEN_LENGTH ))
+		then
+			case $_POWERLEVEL9K_VCS_SHORTEN_STRATEGY in
+				(truncate_middle) hook_com[branch]="${branch_name:0:$_POWERLEVEL9K_VCS_SHORTEN_LENGTH}${_POWERLEVEL9K_VCS_SHORTEN_DELIMITER}${branch_name: -$_POWERLEVEL9K_VCS_SHORTEN_LENGTH}"  ;;
+				(truncate_from_right) hook_com[branch]="${branch_name:0:$_POWERLEVEL9K_VCS_SHORTEN_LENGTH}${_POWERLEVEL9K_VCS_SHORTEN_DELIMITER}"  ;;
+			esac
+		fi
+	fi
+	if (( _POWERLEVEL9K_HIDE_BRANCH_ICON ))
+	then
+		hook_com[branch]="${hook_com[branch]}" 
+	else
+		hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON')${hook_com[branch]}" 
+	fi
+	if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]]
+	then
+		hook_com[branch]+="$(print_icon 'VCS_REMOTE_BRANCH_ICON')${remote// /}" 
+	fi
+}
+_++vi-git-remotebranch ${@}

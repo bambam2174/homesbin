@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+SCRIPT=${0##*/}
+
+# name of branch as parameter
+_lsgit () {
+	if [[ ${#} -eq 0 ]]
+	then
+		echo "Usage: ${SCRIPT} branchname"
+		return 1
+	else
+		git ls-tree -r ${1} --name-only
+	fi
+}
+_lsgit ${@}

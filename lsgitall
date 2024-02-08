@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+# get a list of all files that ever existed
+
+_lsgitall () {
+	git log --pretty=format: --name-status | cut -f2- | sort -u
+}
+_lsgitall ${@}

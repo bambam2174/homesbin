@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_set-flags-CPP-curl () {
+	export CPPFLAGS=(${CPPFLAGS}) 
+	export LDFLAGS=(${LDFLAGS}) 
+	LINES_LIBCURL=($(cat $CELLAR/curl/8.0.1/lib/pkgconfig/libcurl.pc | grep -E '.*=.*')) 
+	list-array-elements $LINES_LIBCURL > $TMPDIR/libcurlvars.sh
+	source $TMPDIR/libcurlvars.sh
+	export CPPFLAGS+="-I${includedir}" 
+	export LDFLAGS+="-L${libdir}" 
+}
+_set-flags-CPP-curl ${@}
