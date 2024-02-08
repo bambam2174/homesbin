@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+_getAngleRadians () {
+	ax=$1 
+	ay=$2 
+	bx=$3 
+	by=$4 
+	SCALAR=$(($ax*$bx+$ay*$by)) 
+	ABS=$((($ax**2+$ay**2)**0.5*($bx**2+$by**2)**0.5)) 
+	acos $(($SCALAR/$ABS))
+}
+_getAngleRadians ${@}

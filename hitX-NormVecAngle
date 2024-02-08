@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_hitX-NormVecAngle () {
+	getAngleRadians ${1} $(($(sin $(acos ${1})))) ${2:-1} ${3:-0}
+}
+_hitX-NormVecAngle ${@}

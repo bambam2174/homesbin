@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+_vector-rotate () {
+	X=$((${1} * $(cos ${3}) + ${2} * -$(sin ${3})))
+	Y=$((${1} * $(sin ${3}) + ${2} *  $(cos ${3})))
+	VECTOR_ROT=(${X} ${Y})
+	echo ${VECTOR_ROT}
+}
+
+__vector-rotate () {
+	X=$((${1} * $(cos ${3}) + ${2} * -1 * $(sin ${3})))
+	Y=$((${1} * $(sin ${3}) + ${2} *  1 * $(cos ${3})))
+	VECTOR_ROT=(${X} ${Y})
+	echo ${VECTOR_ROT}
+}
+
+___vector-rotate () {
+	X=$(($1*$(cos $3)+$2*-1*$(sin $3))) 
+	Y=$(($1*$(sin $3)+$2*1*$(cos $3))) 
+	VECTOR_ROT=($X $Y) 
+	echo $VECTOR_ROT
+}
+_vector-rotate ${@}

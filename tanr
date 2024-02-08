@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+# Import math Library
+import math
+import sys
+
+precision = 100000
+angle = float(sys.argv[1])
+
+tangens = math.tan(angle)
+
+print(math.trunc(angle * precision) / precision)

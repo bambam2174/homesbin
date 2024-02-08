@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+
+_vector-length2 () {
+	sqrt $(($(pow $1 2)+$(pow $2 2)))
+}
+_vector-length2 ${@}
