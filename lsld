@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_REGEX}
 
 _lsld () {
 	ls -G -ld ${@} | sed -E "s/${REGEX_LS_L_PROLOG}/${SUBSTITUTE_CHARS}/g" | ccat

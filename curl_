@@ -1,12 +1,19 @@
 #!/bin/zsh
 
-curl -V
+which curl > /dev/stdin
+curl -V > /dev/stdin
 
 source ${SHELL_VARS_OUTPUT}
-URL="${@[-1]}"
-LIBCURL=(--libcurl ${OUTPUT_CURL}/getfile-${URL##*/}-$(date +%s).c)
 
-curl__ () {
-	contains-link ${@} && curl ${LIBCURL} ${@} || curl ${LIBCURL} ${@} $(pbpaste) -O
+ecko "$# ARGS $@" 118 88
+
+_curl () {
+    IDX=$(contains-link ${@})
+    
+    [[ -n ${IDX} ]] && URL="${@[${IDX}]}" || URL="$(pbpaste)"
+    LIBCURL=(--libcurl ${OUTPUT_CURL}/getfile-${URL##*/}-$(date +%s).c)
+    # ecko "URL $URL" 117 87
+    # ecko "LIBCURL $LIBCURL" 118 88
+    [[ -n ${IDX} ]] && curl ${LIBCURL} ${@} || curl ${LIBCURL} ${@} ${URL}
 }
-curl__ ${@}
+_curl ${@}

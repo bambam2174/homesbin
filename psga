@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_OUTPUT}
+source ${SHELL_VARS_REGEX}
 
 _psga () {
     LAST_ARG=${@[-1]}

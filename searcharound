@@ -1,8 +1,10 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_OUTPUT}
+
 [[ ${SHLVL} -eq 2 ]] && source ${SHELL_DEBUGSTATE}
 
-usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || . retexit $?
+usage "${0}" "$#" 2 '<searchterm> <path> [<number of lines after match> <number of lines before match>]' "returns search result with path and matching content" || . retexit 204
 
 GREP_OPTIONS=()
 
@@ -26,9 +28,9 @@ LOG="${TMP}/srcha/search_${1//\//•}.txt"
 mkdir -p $(dirname ${LOG})
 
 FILE_OR_DIR="${}"
-QUERY="${}
-"
-if isNumber ${3} && [[  ${3} -gt 0 ]]
+QUERY="${}"
+
+if isNumeric ${3} && [[  ${3} -gt 0 ]]
 then
     AFTER="-A ${3}"
 fi

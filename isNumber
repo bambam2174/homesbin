@@ -1,8 +1,10 @@
 #!/bin/zsh
 
-SZ_ARROWS_R=$(char-arrow-right -n  2 3); SZ_ARROWS_L=$(char-arrow-left -n  -2 -3)
+SZ_ARROWS_R=$(char-arrow-right -n  2 3)
+SZ_ARROWS_L=$(char-arrow-left -n  -2 -3)
 
 echo "isNumber is buggy. Use $(ecko "  ${SZ_ARROWS_R[1]}   isNumeric  ${SZ_ARROWS_L[1]}  " 88 188)  instead"  > /dev/stderr
 
 echo -n "…using $(ecko "  ${SZ_ARROWS_R[2]}  isNumeric  ${SZ_ARROWS_L[2]}  " 188 88)\n…result $(char-arrow 1) " > /dev/stderr
+
 isNumeric ${1}

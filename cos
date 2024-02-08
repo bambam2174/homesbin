@@ -4,6 +4,7 @@
 import math
 import sys
 
-angle = float(sys.argv[1])
+radians = float(sys.argv[1])
 
-print(math.cos(math.radians(angle)))
+cos_radians = math.cos(radians)
+print(math.trunc(cos_radians * 100000) / 100000)

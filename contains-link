@@ -1,10 +1,18 @@
 #!/bin/zsh
 
+IDX=0
 
 _contains-link () {
 	for p in ${@}
 	do
-		startsWith $p http && true && break
+        ((IDX++))
+		if startsWith $p http 
+        then 
+            echo ${IDX}
+            true
+            return #break 
+        fi
 	done
+    false
 }
 _contains-link ${@}

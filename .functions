@@ -2,6 +2,10 @@
 
 source $HOME/.debug_state
 
+isDebug && echo "1) \${SHELL_ALIAS_SOURCED} = ${SHELL_ALIAS_SOURCED}"
+([[ -z  ${SHELL_ALIAS_SOURCED} ]] || ! ${SHELL_ALIAS_SOURCED}) && export SHELL_ALIAS_SOURCED=true || return 222
+isDebug && echo "2) \${SHELL_ALIAS_SOURCED} = ${SHELL_ALIAS_SOURCED}"
+
 isDebug && echo "Script name ${0}" 2> /dev/null
 log-write "com.googlecode.iterm2" "${0} :"
 log-write "com.googlecode.iterm2" "\$SHELL_FUNCTIONS = ${SHELL_FUNCTIONS}"
@@ -16,8 +20,12 @@ SCRIPTNAME="${0}"
 export CLICOLOR=1
 
 [[ -z "$ALIASES_SET" ]] && [[ -r ~/.shell_aliases ]] && source ~/.shell_aliases
-[[ -z "$SHELL_VARS" ]]  && [[ -r ~/.shell_vars ]] && source ~/.shell_vars
+#[[ -z "${SHELL_VARS}" ]]  && [[ -r ~/.shell_vars ]] && source ~/.shell_vars
 
+source ~/.shell_vars
+source ~/.shell_vars_regex
+
+#source ${SHELL_VARS_REGEX}
 source ${BIN:-${HOME}/bin}/.functions-broot.sh
 
 scpup2 () 
@@ -339,7 +347,9 @@ man2type() {
 androiddoc () { 
     open "http://android-docs.local/${1}"; 
 }
-timestamp() {   date +"%s"; }
+
+# see $BIN/timestamp
+# timestamp() {   date +"%s"; }
 ymd() { date "+%Y%m%d"; }
 
 # Xcode-Project: execute from the folder with the Assests.xxasset/ folder
@@ -347,19 +357,6 @@ extractImages() {
     cp  *.imageset/*.${1} ${2}; 
 }
 
-# name of branch as parameter
-lsgit() { 
-    if [ ! ${1} ]; then
-         echo "Usage: lsgit branchname"
-         return 1
-     else
-        git ls-tree -r ${1} --name-only; 
-     fi
-}
-# get a list of all files that ever existed
-lsgitall() { 
-    git log --pretty=format: --name-status | cut -f2- | sort -u; 
-}
 # NixOS
 # https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
 
@@ -1260,9 +1257,10 @@ get-tag-attr-value-of-url () {
 	get-content-url "${1}" | grep --color=auto -oE "$SZ_REGEX" | sed -e "s/<${TAG}/\\${IFS}<${TAG}/g" | sed -e "s/<\/${TAG}>/<\/${TAG}>\\${IFS}/g" | grep --color=auto -oE "${TAG_ATTRIBUTE}=\"[^ ]*\""
 }
 
-url2filename () {
-	echo "${1}" | sed -e "s/http[s]*:\/\///g" | sed -e "s/[=&?\/]/./g"
-}
+# see $BIN/url2filename
+#url2filename () {
+#	echo "${1}" | sed -e "s/http[s]*:\/\///g" | sed -e "s/[=&?\/]/./g"
+#}
 
 tmpfunc() {
 	_usage "${0}" "${#}" 1 "<any>" "nur um params zu checkn" || return 1 # '${0} $# <ARG CONT MIN> <PARAMS> <Description>' "checks parameters and prints help if necessary"

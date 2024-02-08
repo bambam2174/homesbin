@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_REGEX}
 
 _isInteger () {
 	[[ ${1} =~ $REGEX_INTEGER ]] && return 0 || return 1

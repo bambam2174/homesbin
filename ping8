@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-mkdir -p  "${OUTPUT_PING}"
+#mkdir -p  "${OUTPUT_PING}"
+source ${SHELL_VARS_OUTPUT}
 
 _ping8 () {
 	ping 8.8.8.8 | tee "${OUTPUT_PING}/ping8888.$(timestamp).date.txt"

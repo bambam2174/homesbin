@@ -7,7 +7,7 @@ startsWithDash "${1}" && [[ ${1//-/} = 's' ]] && QTS="'" && shift
 startsWithDash "${1}" && [[ ${1//-/} = 'a' ]] && QTS="" && shift
 startsWithDash "${1}" && [[ ${1//-/} = 'k' ]] && KEEP=true && shift
 
-[[ ${SHLVL} -gt 1 ]] && [[ -r  ~/bin/.functions ]] && source ~/bin/.functions
+#[[ ${SHLVL} -gt 1 ]] && [[ -r  ~/bin/.functions ]] && source ~/bin/.functions
 
 SCRIPTNAME="$(basename $0)"
 CURR_SHELL_VARS="${SHELL_VARS}"
@@ -45,9 +45,13 @@ _addvar() {
     else
         echo "${SZ_EXPORT}${PNAME}=${QTS}${PVALUE//\\/}${QTS}" >> $CURR_SHELL_VARS
     fi
+
+    ARR_SHA512=($(sha512sum "${CURR_SHELL_VARS}"))
+    PATH2SHA512="${TMPDIR}/$(filename ${CURR_SHELL_VARS//\./})"
+    echo ${ARR_SHA512[1]} > ${PATH2SHA512}
 #    source $CURR_SHELL_VARS
 }
 
 _addvar ${@}
 
-source $CURR_SHELL_VARS
+# source $CURR_SHELL_VARS

@@ -3,8 +3,8 @@
 # Import math Library
 import math
 import sys
-from  decimal import Decimal
 
-angle = Decimal(sys.argv[1])
+radians = float(sys.argv[1])
 
-print(math.sin(math.radians(angle)))
+sin_radians = math.sin(radians)
+print(math.trunc(sin_radians * 100000) / 100000)

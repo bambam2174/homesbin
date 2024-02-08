@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 CMDNAME=${0##*/}
+source ${SHELL_VARS_REGEX}
 
 _find-scripts-named () {
     usage "${CMDNAME}" "$#" 1 '<scriptname> [<maxdepth>]' 'Searches $BIN for any script with the name passed in the 1st argument in the depth according to the 2nd argument' || return 6996 

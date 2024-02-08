@@ -1,13 +1,11 @@
 #!/bin/zsh
 
-source ~/bin/.functions
+SHELL_ALIAS_SOURCED=false
+source ~/.shell_aliases
 
 _usage() {
-	if isFunction "$1"; then
-		CMD="$1"
-	else
-		CMD=$(basename "$1")
-	fi
+	
+    CMD=$(basename "$1")
 
 	ARG_CNT=$2
 	ARG_CNT_MIN=$3

@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+source ${SHELL_VARS_REGEX}
+
 [[ ${#} -eq 0 ]] && . rts 124
 
 [[ ${1} =~ $REGEX_IS_NUMERIC ]] 2> /dev/null

@@ -2,31 +2,34 @@
 
 IFS=${DELIMITER_ENDL}
 IS_HISTFILE=false
-startsWithDash ${1} && ([[ ${1/-/} = 'H' ]] || [[ ${1/-/} = '-histfile' ]]) && IS_HISTFILE=true && shift
+VERBOSE=false
+[[ $# -gt 0 ]] && startsWithDash ${1} && ([[ ${1/-/} = 'H' ]] || [[ ${1/-/} = '-histfile' ]]) && IS_HISTFILE=true && shift
+[[ $# -gt 0 ]] && startsWithDash ${1} && ([[ ${1/-/} = 'v' ]] || [[ ${1/-/} = '-verbose' ]]) && VERBOSE=true && shift
 alias grepTimestampHistoryFile="grep -oE '^:\s?\d{10}:\d{1};' | grep -oE '\d{10}'"
 alias grepTimestampAny="grep -oE '\d{10}'"
 
 INPUT_STDIN=($(get-stdin &))
 if [[ -n ${INPUT_STDIN} ]]
 then
-    #echo ${INPUT_STDIN}
-    #echo ${#INPUT_STDIN}
     for INPUT_ELEMENT in ${INPUT_STDIN}
     do
-        #ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampHistoryFile))
-        #! ${IS_HISTFILE} && [[ -z $ARR_CURR_TS ]] &&  ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampAny))
-        ${IS_HISTFILE} && { ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampHistoryFile));SEDAT=123 } || ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampAny))
+        ${IS_HISTFILE} && ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampHistoryFile)) || ARR_CURR_TS=($(echo ${INPUT_ELEMENT} | grepTimestampAny))
         for CURR_TS in ${ARR_CURR_TS}
         do
             [[ -n $CURR_TS ]] && CURR_DATE=$(date -r ${CURR_TS}) || CURR_DATE=''
-            INPUT_ELEMENT="${INPUT_ELEMENT/${CURR_TS}/${CURR_DATE}}"
+            INPUT_ELEMENT_DATE="${INPUT_ELEMENT/${CURR_TS}/${CURR_DATE}}"
         done
-        echo "${INPUT_ELEMENT}"
+        if ${VERBOSE}
+        then
+            ${IS_HISTFILE} && echo "${INPUT_ELEMENT_DATE}" || echo "${INPUT_ELEMENT} ⟹   ${CURR_DATE}"
+        else
+            ${IS_HISTFILE} && echo "${INPUT_ELEMENT_DATE}" || echo "${CURR_DATE}"
+        fi
     done
 else
 
     [[ ${#@} -gt 0 ]] && TS="${1}" || TS="$(pbpaste)"
 
-    isNumber ${TS} && [[ ${#TS} -ge 10 ]] &&  date -r ${TS}
+    isNumeric ${TS} && [[ ${#TS} -ge 10 ]] &&  date -r ${TS}
 fi
 
